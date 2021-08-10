@@ -1,0 +1,29 @@
+{
+  "name": "fisheye",
+  "version": "1.0.0",
+  "description": "A dynamic website for photographers",
+  "main": "index.html",
+  "scripts": {
+    "sass": "sass --watch --style=compressed ./sass/main.scss:./public/css/main.css ./sass/pages.scss:./public/css/pages.css",
+    "prefix": "postcss ./public/css/*.css --use autoprefixer -d ./public/css/prefixed/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AEMuto/AntoineMarseaud_6_10082021.git"
+  },
+  "author": "Antoine Marseaud",
+  "browserslist": [
+    "last 4 versions"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AEMuto/AntoineMarseaud_6_10082021/issues"
+  },
+  "homepage": "https://github.com/AEMuto/AntoineMarseaud_6_10082021#readme",
+  "devDependencies": {
+    "stylelint": "^13.13.1",
+    "stylelint-config-idiomatic-order": "^8.1.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-order": "^4.1.0"
+  }
+}
