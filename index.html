@@ -1,13 +1,122 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fisheye</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="public/css/normalize.css" />
+    <link rel="stylesheet" href="public/css/main.css" />
+    <title>Fisheye - Page d'Accueil</title>
+  </head>
 
-</body>
+  <body>
+    <button class="scrollToTop">Passer au contenu</button>
+
+    <!-- HEADER-start -------------------------------------------------------->
+    <header class="header header-homepage">
+      <a class="logo" href="index.html">
+        <img src="public/img/logo.svg" alt="Fisheye Home page" />
+      </a>
+      <!-- NAV-start --------------------------------------------------------->
+      <!-- Exemple de filtrage accessible https://webaim.org/discussion/mail_thread?thread=6989
+	    <nav aria-label="Transaction Filters">
+	    <button aria-label="Filter by dollar amount range">Amount Range</button>
+	    </nav>
+	    -->
+      <nav class="nav" aria-label="Photographers categories tags">
+        <button class="btn btn--tag" aria-label="Filter by portrait tag">
+          <span aria-hidden="true">#</span>
+          Portrait
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by art tag">
+          <span aria-hidden="true">#</span>
+          Art
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by fashion tag">
+          <span aria-hidden="true">#</span>
+          Fashion
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by architecture tag">
+          <span aria-hidden="true">#</span>
+          Architecture
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by travel tag">
+          <span aria-hidden="true">#</span>
+          Travel
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by sport tag">
+          <span aria-hidden="true">#</span>
+          Sport
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by animals tag">
+          <span aria-hidden="true">#</span>
+          Animals
+        </button>
+        <button class="btn btn--tag" aria-label="Filter by events tag">
+          <span aria-hidden="true">#</span>
+          Events
+        </button>
+      </nav>
+      <!-- NAV-end ----------------------------------------------------------->
+      <h1 class="heading" tabindex="0">Nos photographes</h1>
+    </header>
+    <!-- HEADER-end ---------------------------------------------------------->
+
+    <!-- MAIN-start ---------------------------------------------------------->
+    <main class="main main-homepage">
+      <div class="card card-user">
+        <a
+          class="card-user__heading"
+          href="public/pages/mimi-keel.html"
+          aria-label="Mimi Keel Page"
+        >
+          <img
+            class="card-user__avatar"
+            src="public/img/photographers_avatars/md-avatar-MimiKeel.jpg"
+            alt=""
+          />
+          <h2 class="card-user__name">Mimi Keel</h2>
+        </a>
+        <ul aria-label="Mimi Keel Informations." class="card-user__info" tabindex="0">
+          <li class="card-user__info__location">
+            London, UK
+            <span class="sr-only">.</span>
+          </li>
+          <li class="card-user__info__motto">
+            Voir le beau dans le quotidien
+            <span class="sr-only">.</span>
+          </li>
+          <li class="card-user__info__rate">
+            400€
+            <span class="sr-only">par</span>
+            <span aria-hidden="true">/</span>
+            jour
+            <span class="sr-only">.</span>
+          </li>
+        </ul>
+        <nav class="card-user__tags" aria-label="Mimi Keel Tags">
+          <button class="btn btn--tag" aria-label="Portrait tag">
+            <span aria-hidden="true">#</span>
+            portrait
+          </button>
+          <button class="btn btn--tag" aria-label="Events tag">
+            <span aria-hidden="true">#</span>
+            events
+          </button>
+          <button class="btn btn--tag" aria-label="Travel tag">
+            <span aria-hidden="true">#</span>
+            travel
+          </button>
+          <button class="btn btn--tag" aria-label="Animals tag">
+            <span aria-hidden="true">#</span>
+            animals
+          </button>
+        </nav>
+      </div>
+    </main>
+    <!-- MAIN-end ------------------------------------------------------------>
+  </body>
 </html>

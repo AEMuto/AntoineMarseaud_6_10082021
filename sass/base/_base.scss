@@ -1,0 +1,51 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+html {
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+// On hérite box-sizing: border-box; depuis notre sélecteur <html>
+// Apparemment mieux que d'appliquer box-sizing: border-box; directement au sélecteur *
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea {
+  &:focus {
+    box-shadow: inset 0 0 0 1px $clr-input;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.scrollToTop {
+  display: none;
+}

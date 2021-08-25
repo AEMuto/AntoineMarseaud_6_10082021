@@ -1,2 +1,72 @@
 @use '../utils/variables' as *;
 @use '../utils/mixins' as *;
+
+button {
+  border: none;
+  background: none;
+}
+
+.btn {
+  background: $primary;
+  color: white;
+  cursor: pointer;
+  &.btn--desktop {
+    display: none;
+    @include responsive(md) {
+      display: block;
+    }
+  }
+
+  &.btn--mobile {
+    position: fixed;
+    z-index: 1;
+    bottom: 1.875rem;
+    left: 50%;
+    padding: 0.4rem 1.25rem;
+    font-size: 1.125rem;
+    transform: translateX(-50%);
+    @include responsive(md) {
+      display: none;
+    }
+  }
+
+}
+
+.btn.btn--tag {
+  padding: .25rem .5rem .25rem .25rem;
+  border: .5px solid $clr-border;
+  background: white;
+  border-radius: 11px;
+  color: $primary;
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.btn.btn--cta {
+  padding: 1.25rem 0.625rem;
+  border-radius: 0.313rem;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.btn.btn--dropdown {
+  display: flex;
+  width: 170px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 0.313rem;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.btn.btn--submit {
+  min-width: 170px;
+  padding: .5rem 0;
+  color: white;
+  font-size: 1.125rem;
+}

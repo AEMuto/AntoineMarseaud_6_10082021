@@ -1,2 +1,15 @@
 @use '../utils/variables' as *;
 @use '../utils/mixins' as *;
+
+.main {
+  padding: 0 $padding-page;
+}
+
+.main-homepage {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  @include responsive(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

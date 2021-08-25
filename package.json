@@ -25,5 +25,10 @@
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-order": "^4.1.0"
+  },
+  "prettier": {
+    "printWidth": 90,
+    "jsxBracketSameLine": true,
+    "htmlWhitespaceSensitivity": "ignore"
   }
 }

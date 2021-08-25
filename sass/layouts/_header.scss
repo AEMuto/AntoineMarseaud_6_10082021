@@ -1,2 +1,48 @@
 @use '../utils/variables' as *;
 @use '../utils/mixins' as *;
+
+.header {
+  padding: 2.5rem $padding-page clamp(2.5rem, 10vw, 6rem) $padding-page;
+}
+
+.header-homepage {
+  display: grid;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  grid-template-areas:
+    "Logo Heading"
+    "Nav Nav";
+  @include responsive(lg) {
+    grid-template-areas: "Logo Nav Heading";
+    grid-template-columns: auto 1fr auto;
+  }
+  .logo {
+    width: clamp(150px, 20vw, 200px);
+    grid-area: Logo;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .heading {
+    margin: 0;
+    color: $primary;
+    font-size: clamp(0.875rem, 3vw, 2.25rem);
+    font-weight: 400;
+    grid-area: Heading;
+    justify-self: end;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-area: Nav;
+    & > * {
+      margin: 0.5rem 0.25rem;
+    }
+  }
+}

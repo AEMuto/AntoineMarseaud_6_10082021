@@ -1,1 +1,24 @@
 @use 'variables' as *;
+
+@mixin responsive($width) {
+  @if $width == sm {
+    @media only screen and (min-width: $sm) {
+      @content;
+    }
+  }
+  @if $width == md {
+    @media only screen and (min-width: $md) {
+      @content;
+    }
+  }
+  @if $width == lg {
+    @media only screen and (min-width: $lg) {
+      @content;
+    }
+  }
+  @if $width == landscape {
+    @media only screen and (orientation: landscape) {
+      @content;
+    }
+  }
+}

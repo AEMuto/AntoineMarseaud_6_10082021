@@ -1,0 +1,23 @@
+// Couleurs
+$primary: #901c1c;
+$secondary: #d3573c;
+$tertiary: #db8876;
+$clr-input: #312E2E;
+$clr-alt-text: #525252;
+$clr-alt-bg: #fafafa;
+$clr-border: #c4c4c4;
+$clr-rate: #757575;
+
+// Typography
+
+// Layout
+$padding-calc: calc(
+  20 * (1px - ((100vw - 375px) / 1065)) + 100 * ((100vw - 375px) / 1065)
+);
+
+$padding-page: max(#{$padding-calc}, (100vw - 1240px) / 2);
+
+// Breakpoints
+$sm: 768px;
+$md: 900px;
+$lg: 1200px;
