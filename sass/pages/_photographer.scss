@@ -104,6 +104,8 @@
     @include responsive(sm) {
       display: flex;
     }
+    &__wrapper {
+    }
     &__instruction {
       margin-right: 1.5rem;
     }
@@ -119,6 +121,13 @@
       color: white;
       font-size: 1.125rem;
       font-weight: 700;
+    }
+    .dropdown li {
+      cursor: pointer;
+      &:hover,
+      &:focus {
+        font-style: italic;
+      }
     }
     .dropdown li:first-child {
       display: flex;

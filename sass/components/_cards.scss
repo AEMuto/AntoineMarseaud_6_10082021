@@ -6,10 +6,12 @@
   flex-direction: column;
 }
 
-.card-user {
+.card-photographer {
   align-items: center;
   margin-bottom: 2rem;
+  opacity: 0;
   text-align: center;
+  transition: opacity ease-in-out 0.5s;
   &__avatar {
     margin-bottom: 1rem;
     border-radius: 50%;
@@ -41,6 +43,10 @@
   &__tags > * {
     margin: 0.5rem 0.313rem;
   }
+}
+
+.card-photographer.loaded {
+  opacity: 1;
 }
 
 .card-photo {

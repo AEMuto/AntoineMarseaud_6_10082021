@@ -11,7 +11,7 @@
     <link href="../css/pages.css" rel="stylesheet" />
     <title>Mimi Keel</title>
   </head>
-  <body>
+  <body class="preload">
     <!-- HEADER-start -------------------------------------------------------->
     <header class="header header-photographer">
       <a class="logo" href="../../index.html">
@@ -22,60 +22,13 @@
     <!-- MAIN-start ---------------------------------------------------------->
     <main class="main main-photographer">
       <!-- INFO_SECTION-start ------------------------------------------------>
-      <section class="info">
-        <h1 class="info__name" tabindex="0">Mimi Keel</h1>
-        <div tabindex="0">
-          <p class="info__location">
-            London, UK
-            <span class="sr-only">.</span>
-          </p>
-          <p class="info__motto">
-            Voir le beau dans le quotidien
-            <span class="sr-only">.</span>
-          </p>
-        </div>
-        <nav aria-label="Photography categories tags" class="info__tags">
-          <button aria-label="Filter by portrait tag" class="btn btn--tag">
-            <span aria-hidden="true">#</span>
-            portrait
-          </button>
-          <button aria-label="Filter by events tag" class="btn btn--tag">
-            <span aria-hidden="true">#</span>
-            events
-          </button>
-          <button aria-label="Filter by travel tag" class="btn btn--tag">
-            <span aria-hidden="true">#</span>
-            travel
-          </button>
-          <button aria-label="Filter by animals tag" class="btn btn--tag">
-            <span aria-hidden="true">#</span>
-            animals
-          </button>
-        </nav>
-        <button class="btn btn--cta btn--mobile">Contactez-moi</button>
-        <button class="btn btn--cta btn--desktop">Contactez-moi</button>
-        <img
-          alt="Mimi Keel"
-          class="info__avatar"
-          src="../img/photographers_avatars/md-avatar-MimiKeel.jpg"
-          tabindex="0"
-        />
-        <aside class="info__aside" tabindex="0">
-          <div class="info__aside__wrapper">
-            <span>
-              297 081
-              <img alt="" class="info__aside__like" src="../img/icons/like-black.svg" />
-            </span>
-            <span class="info__aside__rate">300€ / jour</span>
-          </div>
-        </aside>
-      </section>
+      <section class="info"></section>
       <!-- INFO_SECTION-end -------------------------------------------------->
       <!-- GALLERY_SECTION-start --------------------------------------------->
       <section aria-label="Photographies gallery" class="gallery">
         <div class="gallery__sort">
           <span class="gallery__sort__instruction" id="sort-instruction">Trier par</span>
-          <div>
+          <div class="gallery__sort__wrapper">
             <button
               aria-haspopup="listbox"
               aria-labelledby="sort-instruction btn--dropdown"
@@ -95,6 +48,7 @@
               class="dropdown"
               role="listbox"
               tabindex="-1"
+              hidden
             >
               <li aria-selected="true" id="popularity" role="option">
                 Popularité
@@ -187,11 +141,18 @@
       <!-- GALLERY_SECTION-end ----------------------------------------------->
     </main>
     <!-- MAIN-end ------------------------------------------------------------>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal__form__label" tabindex="0">
+    <!-- MODAL_CONTACT-start ------------------------------------------------->
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal__form__label"
+      tabindex="0"
+    >
       <form class="modal__form" action="" autocomplete="off">
         <h1 class="modal__form__title" id="modal__form__label">
-	        Contactez-moi <br>
-          Mimi Keel
+          Contactez-moi
+          <br />
         </h1>
         <label for="firstname">Prénom</label>
         <input type="text" id="firstname" />
@@ -202,9 +163,20 @@
         <label for="message">Votre Message</label>
         <textarea type="text" id="message"></textarea>
         <input class="btn btn--submit" type="submit" />
-	      <img role="button" aria-label="Close Form" src="../img/icons/close.svg" alt="" class="close-btn" tabindex="0"/>
+        <img
+          role="button"
+          aria-label="Close Form"
+          src="../img/icons/close.svg"
+          alt=""
+          class="close-btn"
+          tabindex="0"
+        />
       </form>
     </div>
+    <!-- MODAL_CONTACT-end --------------------------------------------------->
+    <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
+    <div class="lightbox"></div>
+    <!-- MODAL_LIGHTBOX-end -------------------------------------------------->
   </body>
   <script type="module" src="../../js/pages/photographer.mjs"></script>
 </html>

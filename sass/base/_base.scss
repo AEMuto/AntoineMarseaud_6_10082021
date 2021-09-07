@@ -19,6 +19,15 @@ html {
   margin: 0;
 }
 
+// On fait en sorte qu'aucune transitions ne se produisent lors du chargement de la page
+
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
 ul {
   list-style: none;
 }

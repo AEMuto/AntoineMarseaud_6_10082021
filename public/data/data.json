@@ -5,7 +5,12 @@
       "id": 243,
       "city": "London",
       "country": "UK",
-      "tags": ["portrait", "events", "travel", "animals"],
+      "tags": [
+        "portrait",
+        "events",
+        "travel",
+        "animals"
+      ],
       "tagline": "Voir le beau dans le quotidien",
       "price": 400,
       "portrait": "MimiKeel.jpg"
@@ -15,7 +20,10 @@
       "id": 930,
       "city": "Paris",
       "country": "France",
-      "tags": ["sports", "architecture"],
+      "tags": [
+        "sport",
+        "architecture"
+      ],
       "tagline": "Capturer des compositions complexes",
       "price": 250,
       "portrait": "EllieRoseWilkens.jpg"
@@ -25,7 +33,11 @@
       "id": 82,
       "city": "Montreal",
       "country": "Canada",
-      "tags": ["art", "fashion", "events"],
+      "tags": [
+        "art",
+        "fashion",
+        "events"
+      ],
       "tagline": "Photographe freelance",
       "price": 500,
       "portrait": "TracyGalindo.jpg"
@@ -35,7 +47,10 @@
       "id": 527,
       "city": "Mexico City",
       "country": "Mexico",
-      "tags": ["travel", "portrait"],
+      "tags": [
+        "travel",
+        "portrait"
+      ],
       "tagline": "Toujours aller de l'avant",
       "price": 350,
       "portrait": "NabeelBradford.jpg"
@@ -45,7 +60,12 @@
       "id": 925,
       "city": "Barcelona",
       "country": "Spain",
-      "tags": ["sport", "fashion", "events", "animals"],
+      "tags": [
+        "sport",
+        "fashion",
+        "events",
+        "animals"
+      ],
       "tagline": "Je crée des souvenirs",
       "price": 275,
       "portrait": "RhodeDubois.jpg"
@@ -55,7 +75,10 @@
       "id": 195,
       "city": "Berlin",
       "country": "Germany",
-      "tags": ["travel", "architecture"],
+      "tags": [
+        "travel",
+        "architecture"
+      ],
       "tagline": "Toujours à la recherche de LA photo",
       "price": 300,
       "portrait": "MarcelNikolic.jpg"
@@ -67,595 +90,767 @@
       "photographerId": 82,
       "title": "Fashion Yellow Beach",
       "image": "Fashion_Yellow_Beach.jpg",
-      "tags": ["fashion"],
+      "tags": [
+        "fashion"
+      ],
       "likes": 62,
       "date": "2011-12-08",
-      "price": 55
+      "price": 55,
+      "desc": "Portrait plein-pied d'un modèle féminin aux cheveux brun, elle est habillé d'un survêtement jaune et de bottines blanches. L'arrière plan est un terrain de basket en béton avec la mer derrière. La lumière est rasante et provient de la gauche."
     },
     {
       "id": 8520927,
       "photographerId": 82,
       "title": "Fashion Urban Jungle",
       "image": "Fashion_Urban_Jungle.jpg",
-      "tags": ["fashion"],
+      "tags": [
+        "fashion"
+      ],
       "likes": 11,
       "date": "2011-11-06",
-      "price": 55
+      "price": 55,
+      "desc": "Portrait plein-pied d'un modèle féminin aux cheveux blonds, elle est habillé d'une tenue imprimée de motifs végétaux vert et bleu sur fond noir. Elle se tient accroupie avec la jambe droite tendue et sa main gauche enrobant le côté gauche de son visage. Elle se trouve au milieu d'un pont avec des grattes-ciels en arrière-plan."
     },
     {
       "id": 9025895,
       "photographerId": 82,
       "title": "Fashion Pattern on a Pattern",
       "image": "Fashion_Pattern_on_Pattern.jpg",
-      "tags": ["fashion"],
+      "tags": [
+        "fashion"
+      ],
       "likes": 72,
       "date": "2013-08-12",
-      "price": 55
+      "price": 55,
+      "desc": "Portrait en plan américain d'un modèle féminin aux cheveux longs et noirs. Elle porte une robe à rayures verticales noir, jaune, orange et bleu, tombant au dessus des genoux. Elle a également une besace rouge et un gilet jaune posé sur ses épaules, dont elle tient négligemment le bout des manches avec ses mains. L'arrière-plan est un mur avec un dallage large en motif de damier."
     },
     {
       "id": 9275938,
       "photographerId": 82,
       "title": "Wedding Gazebo",
-      "image": "Event-_WeddingGazebo.jpg",
-      "tags": ["events"],
+      "image": "Event_WeddingGazebo.jpg",
+      "tags": [
+        "events"
+      ],
       "likes": 69,
       "date": "2018-02-22",
-      "price": 55
+      "price": 55,
+      "desc": "Belvédère paré de bouquets de fleur pour une cérémonie de mariage."
     },
     {
       "id": 2053494,
       "photographerId": 82,
       "title": "Sparkles",
       "image": "Event_Sparklers.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 2,
       "date": "2020-05-25",
-      "price": 55
+      "price": 55,
+      "desc": "Couple de marié de dos avec les invités en arrière-plan tenant chacun une bougie magique produisant des étincelles."
     },
     {
       "id": 7324238,
       "photographerId": 82,
       "title": "18th Anniversary",
       "image": "Event_18thAnniversary.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 33,
       "date": "2019-06-12",
-      "price": 55
+      "price": 55,
+      "desc": "Table avec couverts et une bouteille de vin. En arrière-plan des ballons gonflables indiquant qu'il s'agit d'une fête d'anniversaire pour les 18 ans de quelqu'un."
     },
     {
       "id": 8328953,
       "photographerId": 82,
       "title": "Wooden Horse Sculpture",
       "video": "Art_Wooden_Horse_Sculpture.mp4",
-      "tags": ["art"],
+      "tags": [
+        "art"
+      ],
       "likes": 24,
       "date": "2011-12-08",
-      "price": 100
+      "price": 100,
+      "desc": "Sculpture en bois d'un cheval."
     },
     {
       "id": 7502053,
       "photographerId": 82,
       "title": "Triangle Man",
       "image": "Art_Triangle_Man.jpg",
-      "tags": ["art"],
+      "tags": [
+        "art"
+      ],
       "likes": 88,
       "date": "2007-05-07",
-      "price": 55
+      "price": 55,
+      "desc": "Fresque au pochoir d'intérieur composée d'un triangle évidée avec des bords blancs épais, et en arrière-plan, un torse d'homme avec un long cou et la tête regardant vers le ciel."
     },
     {
       "id": 8523492,
       "photographerId": 82,
       "title": "Purple Tunnel",
       "image": "Art_Purple_light.jpg",
-      "tags": ["art"],
+      "tags": [
+        "art"
+      ],
       "likes": 24,
       "date": "2018-05-05",
-      "price": 55
+      "price": 55,
+      "desc": "Allée souterraine recouverte de tags avec un éclairage aux néons couleur pourpre électrique."
     },
     {
       "id": 75902334,
       "photographerId": 82,
       "title": "Art Mine",
       "image": "Art_Mine.jpg",
-      "tags": ["art"],
+      "tags": [
+        "art"
+      ],
       "likes": 75,
       "date": "2019-11-25",
-      "price": 55
+      "price": 55,
+      "desc": "Fresque composée d'un motif alternatif rouge et bleu de tête d'oiseaux."
     },
-
     {
       "id": 73852953,
       "photographerId": 925,
       "title": "8 Rows",
       "image": "Sport_2000_with_8.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 52,
       "date": "2013-02-30",
-      "price": 70
+      "price": 70,
+      "desc": "Vue aèrienne rapprochée d'un groupe d'athlètes s'entraînant à l'aviron."
     },
     {
       "id": 92758372,
       "photographerId": 925,
       "title": "Fashion Wings",
       "image": "Fashion_Wings.jpg",
-      "tags": ["fashion"],
+      "tags": [
+        "fashion"
+      ],
       "likes": 58,
       "date": "2018-07-17",
-      "price": 70
+      "price": 70,
+      "desc": "Portrait plein pied d'un modèle masculin et féminin. Elle est habillé d'une robe-tunique bleu pâle. Il est habillé d'un blazer et pantalon blanc cassé. Il est torse-nu et se tient derrière elle. Ils sont tous les deux pieds-nus mais lui porte des sandales."
     },
     {
       "id": 32958383,
       "photographerId": 925,
       "title": "Melody Red on Stripes",
       "image": "Fashion_Melody_Red_on_Stripes.jpg",
-      "tags": ["fashion"],
+      "tags": [
+        "fashion"
+      ],
       "likes": 11,
       "date": "2019-08-12",
-      "price": 70
+      "price": 70,
+      "desc": "Modèle féminin habillé d'une robe rouge, d'une paire de basket blanche, avec des lunettes de soleil ronde. Elle descend un escalier."
     },
     {
       "id": 928587383,
       "photographerId": 925,
       "title": "Venture Conference",
       "image": "Event_VentureConference.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 2,
       "date": "2019-01-02",
-      "price": 70
+      "price": 70,
+      "desc": "Groupe de personnes en réunion de travail."
     },
     {
       "id": 725639493,
       "photographerId": 925,
       "title": "Product Pitch",
       "image": "Event_ProductPitch.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 3,
       "date": "2019-05-20",
-      "price": 70
+      "price": 70,
+      "desc": "Groupe de personnes en réunion avec l'un d'entre eux faisant la présentation d'un produit."
     },
     {
       "id": 23394384,
       "photographerId": 925,
       "title": "Musical Festival Keyboard",
       "image": "Event_KeyboardCheck.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 52,
       "date": "2019-07-18",
-      "price": 70
+      "price": 70,
+      "desc": "Femme jouant du synthétiseur lors d'un concert."
     },
     {
       "id": 87367293,
       "photographerId": 925,
       "title": "Musical Festival Singer",
       "image": "Event_Emcee.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 23,
       "date": "2018-02-22",
-      "price": 70
+      "price": 70,
+      "desc": "Slim Emcee, artiste ougandais tenant un microphone."
     },
     {
       "id": 593834784,
       "photographerId": 925,
       "title": "Animal Majesty",
       "image": "Animals_Majesty.jpg",
-      "tags": ["animals"],
+      "tags": [
+        "animals"
+      ],
       "likes": 52,
       "date": "2017-03-13",
-      "price": 70
+      "price": 70,
+      "desc": "Portrait d'un cerf. Cadrage vertical."
     },
     {
       "id": 83958935,
       "photographerId": 925,
       "title": "Cute Puppy on Sunset",
       "video": "Animals_Puppiness.mp4",
-      "tags": ["animals"],
+      "tags": [
+        "animals"
+      ],
       "likes": 52,
       "date": "2016-06-12",
-      "price": 70
+      "price": 70,
+      "desc": "Chien jouant avec sa laisse sur une plage, avec le soleil couchant."
     },
-
     {
       "id": 394583434,
       "photographerId": 527,
       "title": "Rock Mountains",
       "video": "Travel_Rock_Mountains.mp4",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 23,
       "date": "2017-03-18",
-      "price": 45
+      "price": 45,
+      "desc": ""
     },
     {
       "id": 343423425,
       "photographerId": 527,
       "title": "Outdoor Baths",
       "image": "Travel_Outdoor_Baths.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 101,
       "date": "2017-04-03",
-      "price": 45
+      "price": 45,
+      "desc": "Crête rocheuse d'une chaîne de montagne. Vue aérienne."
     },
     {
       "id": 73434243,
       "photographerId": 527,
       "title": "Road into the Hill",
       "image": "Travel_Road_into_Hill.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 99,
       "date": "2018-04-30",
-      "price": 45
+      "price": 45,
+      "desc": "Route zigzagant entre des collines semi-arides."
     },
     {
       "id": 23425523,
       "photographerId": 527,
       "title": "Bridge into the Forest",
       "image": "Travel_Bridge_into_Forest.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 34,
       "date": "2016-04-05",
-      "price": 45
+      "price": 45,
+      "desc": "Pont métallique dans une forêt luxuriante."
     },
     {
       "id": 23134513,
       "photographerId": 527,
       "title": "Boat Wonderer",
       "image": "Travel_Boat_Wanderer.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 23,
       "date": "2017-03-18",
-      "price": 45
+      "price": 45,
+      "desc": "Format paysage, avec un premier-plan l'avant d'un canoë et en arrière-plan un lac de haute-montagne."
     },
     {
       "id": 92352352,
       "photographerId": 527,
       "title": "Portrait Sunkiss",
       "image": "Portrait_Sunkissed.jpg",
-      "tags": ["portrait"],
+      "tags": [
+        "portrait"
+      ],
       "likes": 66,
       "date": "2018-05-24",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait gros plan d'une femme souriante avec un chignon. Ses cheveux sont roux."
     },
     {
       "id": 34513453,
       "photographerId": 527,
       "title": "Shaw Potrait",
       "image": "Portrait_Shaw.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 52,
       "date": "2017-04-21",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait plan taille noir et blanc d'un homme."
     },
     {
       "id": 23523533,
       "photographerId": 527,
       "title": "Alexandra",
       "image": "Portrait_Alexandra.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 95,
       "date": "2018-11-02",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait gros plan en noir et blanc d'une femme. Ses cheveux sont court et blancs."
     },
     {
       "id": 525834234,
       "photographerId": 527,
       "title": "Afternoon Break",
       "image": "Portrait_AfternoonBreak.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 25,
       "date": "2019-01-02",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait noir et blanc, plan poitrine d'un homme agé tenant une cigarette entre l'index et le majeur. Sa main gauche sous le menton."
     },
-
     {
       "id": 623534343,
       "photographerId": 243,
       "title": "Lonesome",
       "image": "Travel_Lonesome.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 88,
       "date": "2019-02-03",
-      "price": 45
+      "price": 45,
+      "desc": "Panoramique de paysage de monts et vallées. La point de vue est en plongée totale. Le premier plan montre de grands rochers avec une silhouette humaine solitaire. L'arrière plan dépeint des collines recouvertes d'une forêt de conifères."
     },
     {
       "id": 625025343,
       "photographerId": 243,
       "title": "Hillside Color",
       "image": "Travel_HillsideColor.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 85,
       "date": "2019-04-03",
-      "price": 45
+      "price": 45,
+      "desc": "Village de Manarola situé dans le parc national des Cinque Terre. Des maisons pittoresques multicolores surplombant une falaise se jetant dans la mer."
     },
     {
       "id": 2525345343,
       "photographerId": 243,
       "title": "Wednesday Potrait",
       "image": "Portrait_Wednesday.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 34,
       "date": "2019-04-07",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait en noir et blanc d'une fillette faisant une grimace."
     },
     {
       "id": 2523434634,
       "photographerId": 243,
       "title": "Nora Portrait",
       "image": "Portrait_Nora.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 63,
       "date": "2019-04-07",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait d'une femme torse nu. Photographie prise dans le Cafe Gaze à Lincoln, États-Unis."
     },
     {
       "id": 398847109,
       "photographerId": 243,
       "title": "Raw Black Portrait",
       "image": "Portrait_Background.jpg",
-      "tags": ["portait"],
+      "tags": [
+        "portait"
+      ],
       "likes": 55,
       "date": "2019-06-20",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait plan taille en noir et blanc d'une femme."
     },
     {
       "id": 2534342,
       "photographerId": 243,
       "title": "Seaside Wedding",
       "image": "Event_SeasideWedding.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 25,
       "date": "2019-06-21",
-      "price": 45
+      "price": 45,
+      "desc": "Grande table pouvant accueillir une vingtaine de personnes. Les couverts sont dressés avec des serviettes rouges. En arrière plan on peut voir une plage."
     },
     {
       "id": 65235234,
       "photographerId": 243,
       "title": "Boulder Wedding",
       "image": "Event_PintoWedding.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 52,
       "date": "2019-06-25",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait plein pied d'un couple de marié au milieu de rochers."
     },
     {
       "id": 23523434,
       "photographerId": 243,
       "title": "Benevides Wedding",
       "image": "Event_BenevidesWedding.jpg",
-      "tags": ["events"],
+      "tags": [
+        "events"
+      ],
       "likes": 77,
       "date": "2019-06-28",
-      "price": 45
+      "price": 45,
+      "desc": "Portrait paysage d'un couple de marié se tenant seul au centre du lieu de la cérémonie."
     },
     {
       "id": 5234343,
       "photographerId": 243,
       "title": "Wild Horses in the Mountains",
       "video": "Animals_Wild_Horses_in_the_mountains.mp4",
-      "tags": ["animals"],
+      "tags": [
+        "animals"
+      ],
       "likes": 142,
       "date": "2019-08-23",
-      "price": 60
+      "price": 60,
+      "desc": "Harde de chevaux au galop."
     },
     {
       "id": 95234343,
       "photographerId": 243,
       "title": "Rainbow Bird",
       "image": "Animals_Rainbow.jpg",
-      "tags": ["animals"],
+      "tags": [
+        "animals"
+      ],
       "likes": 59,
       "date": "2019-07-02",
-      "price": 60
+      "price": 60,
+      "desc": "Rollier à longs brins. Un oiseau de l'Afrique subsaharienne."
     },
-
     {
       "id": 52343416,
       "photographerId": 195,
       "title": "Japanese Tower, Kyoto",
       "image": "Travel_Tower.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 25,
       "date": "2019-04-03",
-      "price": 60
+      "price": 60,
+      "desc": "Ruelle japonaise traditionnelle de Ninenzaka dans le quartier historique de Higashiyama."
     },
     {
       "id": 2523434,
       "photographerId": 195,
       "title": "Senset on Canals, Venice",
       "image": "Travel_SunsetonCanals.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 53,
       "date": "2019-05-06",
-      "price": 60
+      "price": 60,
+      "desc": "Grand canal de Venise, à l'aube."
     },
     {
       "id": 95293534,
       "photographerId": 195,
       "title": "Mountain and Lake",
       "image": "Travel_OpenMountain.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 33,
       "date": "2019-05-12",
-      "price": 60
+      "price": 60,
+      "desc": "Piburger See, lac dans les alpes autrichiennes."
     },
     {
       "id": 356234343,
       "photographerId": 195,
       "title": "City Bike and Stair, Paris",
       "image": "Travel_Bike_and_Stair.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 53,
       "date": "2019-06-20",
-      "price": 60
+      "price": 60,
+      "desc": "Vélo posé contre une rambarde d'escalier devant un immeuble."
     },
     {
       "id": 235234343,
       "photographerId": 195,
       "title": "Adventure Door, India",
       "image": "Travel_Adventure_Door.jpg",
-      "tags": ["travel"],
+      "tags": [
+        "travel"
+      ],
       "likes": 63,
       "date": "2019-06-26",
-      "price": 60
+      "price": 60,
+      "desc": "Intérieur de L’Alhambra, porte laissant voir en contrebas la ville de Grenade."
     },
     {
       "id": 6234234343,
       "photographerId": 195,
       "title": "Contrast, St Petersburg",
       "image": "Architecture_Contrast.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 52,
       "date": "2019-06-30",
-      "price": 60
+      "price": 60,
+      "desc": "Vue en contre-plongée de la nouvelle synagogue de Berlin."
     },
     {
       "id": 6525666253,
       "photographerId": 195,
       "title": "On a Hill, Tibet",
       "image": "Architecture_On_a_hill.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 63,
       "date": "2019-07-20",
-      "price": 60
+      "price": 60,
+      "desc": "Key Gompa, monastère du boudhisme tibétain. En arrière-plan on peut voir la rivière Spiti. Il est situé dans la vallée de Spiti en Himachai Pradesh, une région de l'Inde."
     },
     {
       "id": 98252523433,
       "photographerId": 195,
       "title": "Leaning Tower, Pisa",
       "image": "Architecture_Dome.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 88,
       "date": "2020-01-05",
-      "price": 60
+      "price": 60,
+      "desc": "Vue en contre-plongée de la tour de Pise."
     },
     {
       "id": 9259398453,
       "photographerId": 195,
       "title": "Circle Highways, Buenos Aires",
       "video": "Architecture_coverr_circle_empty_highway_in_buenos_aires_587740985637.mp4",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 57,
       "date": "2020-01-20",
-      "price": 65
+      "price": 65,
+      "desc": "Travelling d'une vue aérienne plongeante vers l'horizon, d'un échangeur d'autoroute à Buenos Aire."
     },
     {
       "id": 3523523534,
       "photographerId": 195,
       "title": "Corner Building and Blue Sky",
       "image": "Architecture_Corner_Room.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 54,
       "date": "2020-05-05",
-      "price": 60
+      "price": 60,
+      "desc": "Coin d'un immeuble à la façade orange et aux fenêtres blanches."
     },
-
     {
       "id": 952343423,
       "photographerId": 930,
       "title": "Tricks in the Air",
       "video": "Sport_Tricks_in_the_air.mp4",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 150,
       "date": "2018-02-30",
-      "price": 70
+      "price": 70,
+      "desc": "Danseuse aérienne s'entraînant."
     },
     {
       "id": 235234343,
       "photographerId": 930,
       "title": "Climber",
       "image": "Sport_Next_Hold.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 101,
       "date": "2018-03-05",
-      "price": 65
+      "price": 65,
+      "desc": "Vue en contreplongée d'une femme pratiquant l'escalade sur une paroie rocheuse."
     },
     {
       "id": 235343222,
       "photographerId": 930,
       "title": "Surfer",
       "image": "sport_water_tunnel.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 103,
       "date": "2018-03-10",
-      "price": 70
+      "price": 70,
+      "desc": "Surfeur au centre d'un rouleau."
     },
     {
       "id": 7775342343,
       "photographerId": 930,
       "title": "Skier",
       "image": "Sport_Sky_Cross.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 77,
       "date": "2018-04-16",
-      "price": 50
+      "price": 50,
+      "desc": "Instantané d'un skieur au milieu d'un saut."
     },
     {
       "id": 9253445784,
       "photographerId": 930,
       "title": "Race End",
       "image": "Sport_Race_End.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 88,
       "date": "2018-04-22",
-      "price": 65
+      "price": 65,
+      "desc": "Groupe d'athlètes féminins lors d'une course dans un stade."
     },
     {
       "id": 22299394,
       "photographerId": 930,
       "title": "Jump!",
       "image": "Sport_Jump.jpg",
-      "tags": ["sport"],
+      "tags": [
+        "sport"
+      ],
       "likes": 95,
       "date": "2018-04-27",
-      "price": 70
+      "price": 70,
+      "desc": "Instantané d'un skateboarder au milieu d'une figure dans un skatepark."
     },
     {
       "id": 3452342633,
       "photographerId": 930,
       "title": "White Light",
       "image": "Architecture_White_Light.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 52,
       "date": "2018-05-03",
-      "price": 75
+      "price": 75,
+      "desc": ""
     },
     {
       "id": 939234243,
       "photographerId": 930,
       "title": "Water on Modern Building",
       "image": "Architecture_Water_on_Modern.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 55,
       "date": "2018-05-10",
-      "price": 72
+      "price": 72,
+      "desc": ""
     },
     {
       "id": 222959233,
       "photographerId": 930,
       "title": "Horseshoe",
       "image": "Architecture_Horseshoe.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 85,
       "date": "2018-05-15",
-      "price": 71
+      "price": 71,
+      "desc": "Vue intérieur en contre-plongée du dôme du musée Solomon R. Guggenheim à New York."
     },
     {
       "id": 965933434,
       "photographerId": 930,
       "title": "Cross Bar",
       "image": "Architecture_Cross_Bar.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 66,
       "date": "2018-05-20",
-      "price": 58
+      "price": 58,
+      "desc": "Vue en contre-plongée d'achitecture abstraite au paroie reflective orange."
     },
     {
       "id": 777723343,
       "photographerId": 930,
       "title": "Connected Curves",
       "image": "Architecture_Connected_Curves.jpg",
-      "tags": ["architecture"],
+      "tags": [
+        "architecture"
+      ],
       "likes": 79,
       "date": "2018-05-21",
-      "price": 80
+      "price": 80,
+      "desc": "Vue en contreplongée d'un immeuble tout en courbe de béton blanc."
     }
   ]
 }

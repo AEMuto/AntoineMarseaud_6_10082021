@@ -12,7 +12,7 @@
     <title>Fisheye - Page d'Accueil</title>
   </head>
 
-  <body>
+  <body class="preload">
     <button class="scrollToTop">Passer au contenu</button>
 
     <!-- HEADER-start -------------------------------------------------------->
@@ -27,37 +27,29 @@
 	    </nav>
 	    -->
       <nav class="nav" aria-label="Photographers categories tags">
-        <button class="btn btn--tag" aria-label="Filter by portrait tag">
-          <span aria-hidden="true">#</span>
-          Portrait
+        <button class="btn btn--tag" aria-label="Filter by portrait tag" data-value="portrait">
+          <span aria-hidden="true">#</span>Portrait
         </button>
-        <button class="btn btn--tag" aria-label="Filter by art tag">
-          <span aria-hidden="true">#</span>
-          Art
+        <button class="btn btn--tag" aria-label="Filter by art tag" data-value="art">
+          <span aria-hidden="true">#</span>Art
         </button>
-        <button class="btn btn--tag" aria-label="Filter by fashion tag">
-          <span aria-hidden="true">#</span>
-          Fashion
+        <button class="btn btn--tag" aria-label="Filter by fashion tag" data-value="fashion">
+          <span aria-hidden="true">#</span>Fashion
         </button>
-        <button class="btn btn--tag" aria-label="Filter by architecture tag">
-          <span aria-hidden="true">#</span>
-          Architecture
+        <button class="btn btn--tag" aria-label="Filter by architecture tag" data-value="architecture">
+          <span aria-hidden="true">#</span>Architecture
         </button>
-        <button class="btn btn--tag" aria-label="Filter by travel tag">
-          <span aria-hidden="true">#</span>
-          Travel
+        <button class="btn btn--tag" aria-label="Filter by travel tag" data-value="travel">
+          <span aria-hidden="true">#</span>Travel
         </button>
-        <button class="btn btn--tag" aria-label="Filter by sport tag">
-          <span aria-hidden="true">#</span>
-          Sport
+        <button class="btn btn--tag" aria-label="Filter by sport tag" data-value="sport">
+          <span aria-hidden="true">#</span>Sport
         </button>
-        <button class="btn btn--tag" aria-label="Filter by animals tag">
-          <span aria-hidden="true">#</span>
-          Animals
+        <button class="btn btn--tag" aria-label="Filter by animals tag" data-value="animals">
+          <span aria-hidden="true">#</span>Animals
         </button>
-        <button class="btn btn--tag" aria-label="Filter by events tag">
-          <span aria-hidden="true">#</span>
-          Events
+        <button class="btn btn--tag" aria-label="Filter by events tag" data-value="events">
+          <span aria-hidden="true">#</span>Events
         </button>
       </nav>
       <!-- NAV-end ----------------------------------------------------------->
@@ -66,57 +58,8 @@
     <!-- HEADER-end ---------------------------------------------------------->
 
     <!-- MAIN-start ---------------------------------------------------------->
-    <main class="main main-homepage">
-      <div class="card card-user">
-        <a
-          class="card-user__heading"
-          href="public/pages/mimi-keel.html"
-          aria-label="Mimi Keel Page"
-        >
-          <img
-            class="card-user__avatar"
-            src="public/img/photographers_avatars/md-avatar-MimiKeel.jpg"
-            alt=""
-          />
-          <h2 class="card-user__name">Mimi Keel</h2>
-        </a>
-        <ul aria-label="Mimi Keel Informations." class="card-user__info" tabindex="0">
-          <li class="card-user__info__location">
-            London, UK
-            <span class="sr-only">.</span>
-          </li>
-          <li class="card-user__info__motto">
-            Voir le beau dans le quotidien
-            <span class="sr-only">.</span>
-          </li>
-          <li class="card-user__info__rate">
-            400€
-            <span class="sr-only">par</span>
-            <span aria-hidden="true">/</span>
-            jour
-            <span class="sr-only">.</span>
-          </li>
-        </ul>
-        <nav class="card-user__tags" aria-label="Mimi Keel Tags">
-          <button class="btn btn--tag" aria-label="Portrait tag">
-            <span aria-hidden="true">#</span>
-            portrait
-          </button>
-          <button class="btn btn--tag" aria-label="Events tag">
-            <span aria-hidden="true">#</span>
-            events
-          </button>
-          <button class="btn btn--tag" aria-label="Travel tag">
-            <span aria-hidden="true">#</span>
-            travel
-          </button>
-          <button class="btn btn--tag" aria-label="Animals tag">
-            <span aria-hidden="true">#</span>
-            animals
-          </button>
-        </nav>
-      </div>
-    </main>
+    <main class="main main-homepage"></main>
     <!-- MAIN-end ------------------------------------------------------------>
   </body>
+  <script type="module" src="js/main.mjs"></script>
 </html>
