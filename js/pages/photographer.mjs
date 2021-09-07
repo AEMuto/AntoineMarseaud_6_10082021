@@ -1,11 +1,15 @@
 import { getPhotographers, verifySessionStorage } from "../utils/photographerService.mjs";
 import { makeInfoHeader } from "../components/photographerInfoHeader.mjs";
+import { makeMediaCard } from "../components/mediaCard.mjs";
 
 // Enlever la classe preload sur body après chargement de la page
 // pour que les transitions se déroulent normalement
 window.onload = () => {
   document.querySelector("body").classList.remove("preload");
 };
+
+// Récupérer l'ID du photographe
+const photographerId = parseInt(document.querySelector('meta[name="PhotographerId"]').content);
 
 // Containers dans lesquels on injecte les templates
 const photographerInfoContainer = document.querySelector("section.info");
@@ -24,14 +28,16 @@ let submitButton;
 // Initialisation
 async function initialize() {
   await verifySessionStorage();
-  photographerState = getPhotographers(243);
 
   // Info Section
+  photographerState = getPhotographers(photographerId);
   const infoSectionTemplate = makeInfoHeader(photographerState);
   photographerInfoContainer.insertAdjacentHTML("afterbegin", infoSectionTemplate);
 
   // Medias
-  console.table(photographerState.medias);
+  mediaState = photographerState.medias
+  const mediaCardsTemplate = makeMediaCard(mediaState);
+  mediaCardsTemplate.forEach(card => mediaContainer.insertAdjacentHTML('afterbegin', card));
 
   // Modal Title
   modalTitleContainer.insertAdjacentHTML("beforeend", photographerState.name);
