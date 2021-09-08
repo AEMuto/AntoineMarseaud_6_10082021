@@ -1,5 +1,9 @@
-import {verifySessionStorage, getPhotographers, wait} from "./utils/photographerService.mjs";
-import {makePhotographerCards} from "./components/photographerCard.mjs";
+import {
+  verifySessionStorage,
+  getPhotographers,
+  wait,
+} from "./utils/photographerService.mjs";
+import { makePhotographerCards } from "./components/photographerCard.mjs";
 
 // Enlever la classe preload sur body après chargement de la page
 // pour que les transitions se déroulent normalement
@@ -25,33 +29,41 @@ async function initialize() {
   const cardsArray = makePhotographerCards(photographers);
 
   // Injecter chaque template HTML dans le DOM
-  cardsArray.forEach(card => main.insertAdjacentHTML("afterbegin", card));
+  cardsArray.forEach((card) => main.insertAdjacentHTML("afterbegin", card));
 
   // Par défaut l'élément .card-photographer à une opacité de 0
   // Pour chacun d'entre eux rajouter la classe .loaded
-  let currentCards = document.querySelectorAll('.card-photographer');
+  let currentCards = document.querySelectorAll(".card-photographer");
   for (const card of currentCards) {
-    await wait(100);
-    card.classList.add('loaded');
-    await wait(100);
+    await wait(50);
+    card.classList.add("loaded");
   }
 
   // Filtrage des Photographes lors du click sur un tag
-  function filterPhotographersCards(e) {
-    console.log('FILTERED! AHAH!');
-    console.log(e.target.dataset.value);
-    const tagValue = e.target.dataset.value;
-    currentCards.forEach(card => card.style.display = "flex");
-    return currentCards.forEach(card => {
-      return !card.dataset.tags.includes(tagValue)
-        ? card.style.display = "none"
-        : '';
-    });
+  let filteredBy;
+
+  function displayAllCards() {
+    return currentCards.forEach((card) => (card.style.display = "flex"));
   }
-  tags = document.querySelectorAll('.btn--tag');
-  tags.forEach(tag => {
-    tag.addEventListener('click', filterPhotographersCards)
-  })
+
+  function filterPhotographersCards(e) {
+    const tagValue = e.target.dataset.value;
+    displayAllCards();
+    if (!filteredBy || filteredBy !== tagValue) {
+      filteredBy = tagValue;
+      return currentCards.forEach((card) => {
+        return !card.dataset.tags.includes(tagValue) ? (card.style.display = "none") : "";
+      });
+    } else {
+      filteredBy = undefined;
+      return displayAllCards();
+    }
+  }
+
+  tags = document.querySelectorAll(".btn--tag");
+  tags.forEach((tag) => {
+    tag.addEventListener("click", filterPhotographersCards);
+  });
 }
 
 initialize();

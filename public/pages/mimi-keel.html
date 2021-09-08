@@ -103,7 +103,36 @@
     </div>
     <!-- MODAL_CONTACT-end --------------------------------------------------->
     <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
-    <div class="lightbox"></div>
+    <div class="lightbox" hidden>
+      <div
+        class="carousel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Vue rapprochée de X"
+        tabindex="0"
+      >
+        <div class="carousel__items">
+          <figure class="item">
+            <div class="item__wrapper">
+              <img src="../img/243/Event_PintoWedding.webp" alt="" tabindex="0"/>
+            </div>
+            <figcaption class="item__title" tabindex="0">Title</figcaption>
+          </figure>
+	        <div class="carousel__controls">
+		        <button class="carousel__controls__prev">
+			        <img src="../img/icons/chevron_left-primary.svg" alt="" />
+		        </button>
+		        <button class="carousel__controls__next">
+			        <img src="../img/icons/chevron_right-primary.svg" alt="" />
+		        </button>
+		        <button class="carousel__controls__close">
+			        <img src="../img/icons/close-primary.svg" alt="" />
+		        </button>
+	        </div>
+        </div>
+       
+      </div>
+    </div>
     <!-- MODAL_LIGHTBOX-end -------------------------------------------------->
   </body>
   <script type="module" src="../../js/pages/photographer.mjs"></script>
