@@ -53,16 +53,20 @@
   &__img-wrapper {
     position: relative;
     overflow: hidden;
-    height: clamp(190px, 21vw, 300px);
+    height: 190px;
     border-radius: 0.313rem;
+    @include responsive(sm) {
+      height: 300px;
+    }
   }
   &__img-wrapper img {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: auto;
-    // object-fit: cover;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    //width: 100%;
+    min-height: 100%;
+    min-width: 100%;
   }
   &__txt {
     display: flex;

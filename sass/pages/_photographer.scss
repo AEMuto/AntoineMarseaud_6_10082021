@@ -108,8 +108,6 @@
     @include responsive(sm) {
       display: flex;
     }
-    &__wrapper {
-    }
     &__instruction {
       margin-right: 1.5rem;
     }
@@ -156,7 +154,7 @@
   }
   &__wrapper {
     display: grid;
-    gap: clamp(0.625rem, 10vw, 1.25rem) clamp(0.625rem, 10vw, 5rem);
+    gap: clamp(0.625rem, 10vw, 2rem) clamp(0.625rem, 10vw, 3rem);
     grid-auto-rows: 1fr;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     @include responsive(md) {
@@ -255,6 +253,10 @@
   justify-content: center;
   background: white;
   inset: 0;
+  // Cacher la lightbox
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s;
   // border: solid black 1px;
   .carousel {
     position: relative;
@@ -277,7 +279,6 @@
         340 * (1px - ((100vw - 375px) / 1065)) + 1200 * ((100vw - 375px) / 1065)
       );
       max-width: 1200px;
-      pointer-events: all;
       transform: translateX(-50%);
       & > * {
         position: absolute;
@@ -334,4 +335,9 @@
       font-size: clamp(0.875rem, 2vw, 1.5rem);
     }
   }
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
 }

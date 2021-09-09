@@ -10,7 +10,7 @@ export function makePhotographerCards(photographers) {
         >
           <img
             class="card-photographer__avatar"
-            src="public/img/photographers_avatars/md-avatar-${portraitSlug}.webp"
+            src="public/medias/photographers_avatars/md-avatar-${portraitSlug}.webp"
             alt=""
           />
           <h2 class="card-photographer__name">${name}</h2>

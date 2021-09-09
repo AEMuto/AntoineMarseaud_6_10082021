@@ -34,7 +34,7 @@ export function makeInfoHeader({
         <img
           alt="${name}"
           class="info__avatar"
-          src="../img/photographers_avatars/md-avatar-${portraitSlug}.webp"
+          src="../medias/photographers_avatars/md-avatar-${portraitSlug}.webp"
           tabindex="0"
         />
         <aside class="info__aside" tabindex="0">
@@ -42,7 +42,7 @@ export function makeInfoHeader({
             <span>
               ${likes}
               <span class="sr-only">.</span>
-              <img alt="" class="info__aside__like" src="../img/icons/like-black.svg" />
+              <img alt="" class="info__aside__like" src="../medias/icons/like-black.svg" />
             </span>
             <span class="info__aside__rate">
 							${price}€

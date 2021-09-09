@@ -14,16 +14,50 @@ const photographerId = parseInt(document.querySelector('meta[name="PhotographerI
 // Containers dans lesquels on injecte les templates
 const photographerInfoContainer = document.querySelector("section.info");
 const mediaContainer = document.querySelector(".gallery__wrapper");
-const modalTitleContainer = document.querySelector('.modal__form__title');
+
 let photographerState;
 let mediaState;
+let galleryImages;
 
+const modalTitleContainer = document.querySelector('.modal__form__title');
 let currentContactButton;
 let contactButton;
 let closeButton;
-let modal;
+let modalForm;
+// nonModalNodes nous permet de récupérer les éléments "tabulable".
+// Il y a les boutons, les liens, les inputs et les éléments avec l'attribut tabindex="0".
+// Lorsqu'une modale apparait tous ces éléments en dehors de la modale ne devrait plus
+// être "tabulable" par l'utilisateur.
 let nonModalNodes;
 let submitButton;
+
+const modalLightbox = document.querySelector('.lightbox');
+const closeButtonLightbox = modalLightbox.querySelector('.carousel__controls__close');
+
+function getOutsideFocusableElements() {
+  const selectors = `header a, header button, header [tabindex="0"], main a, main button, main [tabindex="0"]`;
+  return Array.from(document.querySelectorAll(selectors));
+}
+
+function getInsideFocusableElements(modalName) {
+  const selector = `.${modalName} [tabindex="-1"]`;
+  const modal = document.querySelector(`.${modalName}`);
+  return Array.from(modal.querySelectorAll(selector));
+}
+
+function toogleFocus(elements) {
+  if (elements[0].tabIndex === 0) {
+    elements.forEach((element) => {
+      element.tabIndex = "-1";
+      element.setAttribute("aria-hidden", "true");
+    });
+  } else {
+    elements.forEach((element) => {
+      element.tabIndex = "0";
+      element.setAttribute("aria-hidden", "false");
+    });
+  }
+}
 
 // Initialisation
 async function initialize() {
@@ -38,6 +72,20 @@ async function initialize() {
   mediaState = photographerState.medias
   const mediaCardsTemplate = makeMediaCard(mediaState);
   mediaCardsTemplate.forEach(card => mediaContainer.insertAdjacentHTML('afterbegin', card));
+  galleryImages = mediaContainer.querySelectorAll('.card-photo__img-wrapper');
+
+  // Lightbox
+  function openLightbox(e) {
+    e.preventDefault();
+    modalLightbox.classList.add("open");
+  }
+  function closeLightbox() {
+    modalLightbox.classList.remove("open");
+  }
+  galleryImages.forEach(img => {
+    img.addEventListener('click', openLightbox)
+  });
+  closeButtonLightbox.addEventListener('click', closeLightbox);
 
   // Modal Title
   modalTitleContainer.insertAdjacentHTML("beforeend", photographerState.name);
@@ -47,7 +95,7 @@ async function initialize() {
   // 1. Elements
   contactButton = Array.from(document.querySelectorAll(".btn--cta"));
   closeButton = document.querySelector(".close-btn");
-  modal = document.querySelector(".modal");
+  modalForm = document.querySelector(".modal");
   nonModalNodes = Array.from(
     document.querySelectorAll('header a, main a, main button, main [tabindex="0"]')
   );
@@ -56,8 +104,8 @@ async function initialize() {
   // 2. Fonctions
   function openModal(e) {
     currentContactButton = e.target;
-    modal.classList.add("open");
-    modal.focus();
+    modalForm.classList.add("open");
+    modalForm.focus();
     nonModalNodes.forEach((node) => {
       node.tabIndex = "-1";
       node.setAttribute("aria-hidden", "true");
@@ -65,7 +113,7 @@ async function initialize() {
   }
 
   function closeModal() {
-    modal.classList.remove("open");
+    modalForm.classList.remove("open");
     nonModalNodes.forEach((node) => {
       node.tabIndex = "0";
       node.setAttribute("aria-hidden", "false");
@@ -83,7 +131,7 @@ async function initialize() {
     return e.key === "Enter" && closeModal();
   });
 
-  modal.addEventListener("click", (e) => {
+  modalForm.addEventListener("click", (e) => {
     const isOutside = !e.target.closest(".modal__form");
     return isOutside && closeModal();
   });
@@ -92,6 +140,9 @@ async function initialize() {
     e.stopPropagation();
     return e.key === "Escape" && closeModal();
   });
+
+  const testNonModalNodes = getOutsideFocusableElements();
+  console.log(testNonModalNodes);
 }
 
 initialize();
