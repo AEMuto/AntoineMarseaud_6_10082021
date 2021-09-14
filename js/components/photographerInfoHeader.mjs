@@ -23,7 +23,7 @@ export function makeInfoHeader({
         <nav aria-label="Photography categories tags" class="info__tags">
           ${tags
             .map((tag) => {
-              return `<button aria-label="Filter by ${tag} tag" class="btn btn--tag">
+              return `<button aria-label="Filter by ${tag} tag" class="btn btn--tag" data-value="${tag}">
             <span aria-hidden="true">#</span>${tag}
           </button>`;
             })

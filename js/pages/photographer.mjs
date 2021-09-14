@@ -1,6 +1,6 @@
 import { getPhotographers, verifySessionStorage } from "../utils/photographerService.mjs";
 import { makeInfoHeader } from "../components/photographerInfoHeader.mjs";
-import { makeMediaCard } from "../components/mediaCard.mjs";
+import { makeMediaCard, makeLightboxMedia } from "../components/mediaCard.mjs";
 
 // Enlever la classe preload sur body après chargement de la page
 // pour que les transitions se déroulent normalement
@@ -9,7 +9,9 @@ window.onload = () => {
 };
 
 // Récupérer l'ID du photographe
-const photographerId = parseInt(document.querySelector('meta[name="PhotographerId"]').content);
+const photographerId = parseInt(
+  document.querySelector('meta[name="PhotographerId"]').content
+);
 
 // Containers dans lesquels on injecte les templates
 const photographerInfoContainer = document.querySelector("section.info");
@@ -19,7 +21,9 @@ let photographerState;
 let mediaState;
 let galleryImages;
 
-const modalTitleContainer = document.querySelector('.modal__form__title');
+let tags;
+
+const modalTitleContainer = document.querySelector(".modal__form__title");
 let currentContactButton;
 let contactButton;
 let closeButton;
@@ -31,8 +35,11 @@ let modalForm;
 let nonModalNodes;
 let submitButton;
 
-const modalLightbox = document.querySelector('.lightbox');
-const closeButtonLightbox = modalLightbox.querySelector('.carousel__controls__close');
+const lightbox = document.querySelector(".lightbox");
+const lightboxMediaContainer = lightbox.querySelector(".item");
+const closeButtonLightbox = lightbox.querySelector(".carousel__controls__close");
+const prevButtonLightbox = lightbox.querySelector(".carousel__controls__prev");
+const nextButtonLightbox = lightbox.querySelector(".carousel__controls__next");
 
 function getOutsideFocusableElements() {
   const selectors = `header a, header button, header [tabindex="0"], main a, main button, main [tabindex="0"]`;
@@ -67,27 +74,174 @@ async function initialize() {
   photographerState = getPhotographers(photographerId);
   const infoSectionTemplate = makeInfoHeader(photographerState);
   photographerInfoContainer.insertAdjacentHTML("afterbegin", infoSectionTemplate);
+  tags = photographerInfoContainer.querySelectorAll('.btn--tag');
 
   // Medias
-  mediaState = photographerState.medias
-  const mediaCardsTemplate = makeMediaCard(mediaState);
-  mediaCardsTemplate.forEach(card => mediaContainer.insertAdjacentHTML('afterbegin', card));
-  galleryImages = mediaContainer.querySelectorAll('.card-photo__img-wrapper');
+  mediaState = photographerState.medias;
+  let tempMediaState;
+  let mediaCardsTemplate = makeMediaCard(mediaState);
+  mediaCardsTemplate.forEach((card) =>
+    mediaContainer.insertAdjacentHTML("beforeend", card)
+  );
+  galleryImages = mediaContainer.querySelectorAll(".card-photo");
+  let lightboxMedias = makeLightboxMedia(mediaState);
 
-  // Lightbox
+  // TODO: Likes Incrementation *******************************************************************
+
+  // Sorting **************************************************************************************
+  const sortingForm = document.querySelector(".gallery__sort");
+  const sortingButton = document.querySelector(".btn--dropdown");
+  const sortingMenu = document.querySelector(".dropdown");
+  const sortingMenuOptions = sortingMenu.querySelectorAll('[role="option"]');
+
+  let selectedSort = "popularity";
+
+  function toggleDropdown() {
+    sortingMenu.hidden = !sortingMenu.hidden;
+    document.dispatchEvent(new CustomEvent("dropdownVisibility"));
+  }
+
+  function outsideClick(e) {
+    const isOutside = !e.target.closest(".dropdown");
+    if (isOutside) {
+      sortingMenu.hidden = !sortingMenu.hidden;
+    }
+  }
+
+  function sortMedia(sortBy) {
+    console.log(sortBy)
+    switch (sortBy) {
+      case 'popularity':
+        tempMediaState = mediaState.sort((a, b) => b.likes - a.likes);
+        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        break;
+      case 'date':
+        tempMediaState = mediaState.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
+        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        break;
+      case 'title':
+        tempMediaState = mediaState.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        break;
+      default:
+        console.log('error');
+    }
+  }
+
+  sortingButton.addEventListener("click", toggleDropdown);
+
+  document.addEventListener("dropdownVisibility", (e) => {
+    if (!sortingMenu.hidden) {
+      setTimeout(() => {
+        document.addEventListener("click", outsideClick);
+      }, 10);
+    }
+    document.removeEventListener("click", outsideClick);
+  });
+
+  sortingMenuOptions.forEach((option) => {
+    option.addEventListener("click", (e) => {
+      sortingButton.firstChild.textContent = e.target.textContent;
+      selectedSort = e.target.id;
+      console.table(mediaState);
+      sortMedia(selectedSort);
+      toggleDropdown();
+    });
+  });
+  // Filtering ************************************************************************************
+  let filteredBy;
+  // TODO: Changer le style du tag sélectionné
+  function updateMediaState() {
+    mediaContainer.innerHTML = '';
+    mediaCardsTemplate = makeMediaCard(tempMediaState);
+    mediaCardsTemplate.forEach((card) =>
+      mediaContainer.insertAdjacentHTML("beforeend", card)
+    );
+    galleryImages = mediaContainer.querySelectorAll(".card-photo");
+    galleryImages.forEach((img) => {
+      img.addEventListener("click", openLightbox);
+    });
+    lightboxMedias = makeLightboxMedia(tempMediaState);
+  }
+
+  function filterMedias(e) {
+    const tagValue = e.target.dataset.value;
+    if (!filteredBy || filteredBy !== tagValue) {
+      filteredBy = tagValue;
+      tempMediaState = mediaState.filter(media => media.tags.includes(tagValue));
+      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+    } else {
+      filteredBy = undefined;
+      tempMediaState = mediaState;
+      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+    }
+  }
+
+  tags.forEach(tag => tag.addEventListener('click', filterMedias));
+  document.addEventListener('mediaStateChanged', updateMediaState);
+
+  // Lightbox *************************************************************************************
+
+  /**
+   * selectMedia(id)
+   * Définir l'ordre de visionnage de la lightbox
+   * en fonction de l'id du média
+   * @param id
+   */
+  function selectMedia(id) {
+    const index = lightboxMedias.findIndex((media) => media.id === id);
+    lightboxMedias[index].currentMedia = true;
+    lightboxMedias[index + 1]
+      ? (lightboxMedias[index + 1].nextMedia = true)
+      : (lightboxMedias[0].nextMedia = true);
+    lightboxMedias[index - 1]
+      ? (lightboxMedias[index - 1].prevMedia = true)
+      : (lightboxMedias[lightboxMedias.length - 1].prevMedia = true);
+    return lightboxMedias[index].template;
+  }
+
+  function resetMedias() {
+    lightboxMedias.forEach(media => {
+      media.currentMedia = false;
+      media.prevMedia = false;
+      media.nextMedia = false;
+    });
+  }
+
+  function nextMedia() {
+    const id = lightboxMedias.find(media => media.nextMedia).id;
+    resetMedias();
+    lightboxMediaContainer.innerHTML = selectMedia(id);
+  }
+
+  function prevMedia() {
+    const id = lightboxMedias.find(media => media.prevMedia).id;
+    resetMedias();
+    lightboxMediaContainer.innerHTML = selectMedia(id);
+  }
+
   function openLightbox(e) {
     e.preventDefault();
-    modalLightbox.classList.add("open");
+    // Obtenir l'image et son titre pour la lightbox
+    const mediaId = parseInt(e.currentTarget.dataset.id);
+    lightboxMediaContainer.innerHTML = selectMedia(mediaId);
+    lightbox.classList.add("open");
   }
-  function closeLightbox() {
-    modalLightbox.classList.remove("open");
-  }
-  galleryImages.forEach(img => {
-    img.addEventListener('click', openLightbox)
-  });
-  closeButtonLightbox.addEventListener('click', closeLightbox);
 
-  // Modal Title
+  function closeLightbox() {
+    resetMedias();
+    lightbox.classList.remove("open");
+  }
+
+  galleryImages.forEach((img) => {
+    img.addEventListener("click", openLightbox);
+  });
+
+  closeButtonLightbox.addEventListener("click", closeLightbox);
+  nextButtonLightbox.addEventListener('click', nextMedia);
+  prevButtonLightbox.addEventListener('click', prevMedia);
+
+  // Modal ****************************************************************************************
   modalTitleContainer.insertAdjacentHTML("beforeend", photographerState.name);
 
   // Gestion de l'ouverture et de la fermeture de la modale
@@ -142,48 +296,7 @@ async function initialize() {
   });
 
   const testNonModalNodes = getOutsideFocusableElements();
-  console.log(testNonModalNodes);
+  // console.log(testNonModalNodes);
 }
 
 initialize();
-
-// Gestion du dropdown pour le triage des médias
-
-// Formulaire de triage des médias
-const sortingForm = document.querySelector(".gallery__sort");
-const sortingButton = document.querySelector(".btn--dropdown");
-const sortingMenu = document.querySelector(".dropdown");
-const sortingMenuOptions = sortingMenu.querySelectorAll('[role="option"]');
-let selectedSort = "popularity";
-
-function toggleDropdown() {
-  sortingMenu.hidden = !sortingMenu.hidden;
-  document.dispatchEvent(new CustomEvent("dropdownVisibility"));
-}
-
-function outsideClick(e) {
-  const isOutside = !e.target.closest(".dropdown");
-  if (isOutside) {
-    sortingMenu.hidden = !sortingMenu.hidden;
-  }
-}
-
-sortingButton.addEventListener("click", toggleDropdown);
-
-document.addEventListener("dropdownVisibility", (e) => {
-  if (!sortingMenu.hidden) {
-    setTimeout(() => {
-      document.addEventListener("click", outsideClick);
-    }, 10);
-  }
-  document.removeEventListener("click", outsideClick);
-});
-
-sortingMenuOptions.forEach((option) => {
-  option.addEventListener("click", (e) => {
-    sortingButton.firstChild.textContent = e.target.textContent;
-    selectedSort = e.target.id;
-    console.log("Selected sort is ", selectedSort);
-    toggleDropdown();
-  });
-});
