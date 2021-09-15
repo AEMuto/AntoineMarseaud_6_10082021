@@ -69,3 +69,10 @@ button {
   color: white;
   font-size: 1.125rem;
 }
+
+.btn.btn--like {
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

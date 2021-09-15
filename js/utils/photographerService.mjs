@@ -32,6 +32,9 @@ export function wait(ms = 0) {
 function organizeData(data) {
   const usersInfo = data.photographers;
   const usersMedias = data.media;
+  // Rajouter la propriété liked aux medias
+  // Permet de savoir si un média a été 'liké'
+  usersMedias.forEach(media => media.liked = false);
   const users = [];
   usersInfo.forEach(({ city, country, id, name, portrait, price, tagline, tags }) => {
     const userMedias = usersMedias.filter((media) => media.photographerId === id).sort((a, b) => b.likes - a.likes);
@@ -49,8 +52,6 @@ function organizeData(data) {
       portrait,
       medias: userMedias,
       likes: userLikes,
-      sortMedias() {},
-      filterMedias() {},
     };
     users.push(result);
   });

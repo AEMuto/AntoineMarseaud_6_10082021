@@ -74,7 +74,7 @@ async function initialize() {
   photographerState = getPhotographers(photographerId);
   const infoSectionTemplate = makeInfoHeader(photographerState);
   photographerInfoContainer.insertAdjacentHTML("afterbegin", infoSectionTemplate);
-  tags = photographerInfoContainer.querySelectorAll('.btn--tag');
+  tags = photographerInfoContainer.querySelectorAll(".btn--tag");
 
   // Medias
   mediaState = photographerState.medias;
@@ -86,80 +86,170 @@ async function initialize() {
   galleryImages = mediaContainer.querySelectorAll(".card-photo");
   let lightboxMedias = makeLightboxMedia(mediaState);
 
-  // TODO: Likes Incrementation *******************************************************************
-
   // Sorting **************************************************************************************
   const sortingForm = document.querySelector(".gallery__sort");
   const sortingButton = document.querySelector(".btn--dropdown");
   const sortingMenu = document.querySelector(".dropdown");
-  const sortingMenuOptions = sortingMenu.querySelectorAll('[role="option"]');
+  const sortingMenuOptions = Array.from(sortingMenu.querySelectorAll('[role="option"]'));
 
   let selectedSort = "popularity";
+  let dropdownVisible = false;
 
-  function toggleDropdown() {
+  function toggleAriaExpanded(element) {
+    return element.getAttribute("aria-expanded") === "false"
+      ? element.setAttribute("aria-expanded", "true")
+      : element.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleAriaSelected(element) {
+    return element.getAttribute("aria-selected") === "false"
+      ? element.setAttribute("aria-selected", "true")
+      : element.setAttribute("aria-selected", "false");
+  }
+
+  function toggleDropdown(e) {
+    console.log(e.target);
+    dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
-    document.dispatchEvent(new CustomEvent("dropdownVisibility"));
+    toggleAriaExpanded(sortingMenu);
+    sortingMenu.tabIndex = 0;
+    sortingMenu.focus();
+    setTimeout(() => {
+      document.addEventListener("click", outsideClick);
+    }, 10);
+    setTimeout(() => {
+      document.addEventListener("keydown", cycleThroughOptions);
+    }, 10);
+  }
+
+  function cycleThroughOptions(e) {
+    let index;
+    switch (e.key) {
+      case "Tab":
+        dropdownVisible = !dropdownVisible;
+        sortingMenu.hidden = !sortingMenu.hidden;
+        toggleAriaExpanded(sortingMenu);
+        sortingMenu.tabIndex = -1;
+        galleryImages[0].focus();
+        document.removeEventListener("keydown", cycleThroughOptions);
+        document.removeEventListener("click", outsideClick);
+        break;
+      case "Escape":
+        dropdownVisible = !dropdownVisible;
+        sortingMenu.hidden = !sortingMenu.hidden;
+        toggleAriaExpanded(sortingMenu);
+        sortingMenu.tabIndex = -1;
+        sortingButton.focus();
+        document.removeEventListener("keydown", cycleThroughOptions);
+        document.removeEventListener("click", outsideClick);
+        break;
+      case "Enter":
+        e.preventDefault();
+        sortingButton.firstChild.textContent = selectedSort;
+        sortMedia(selectedSort);
+        dropdownVisible = !dropdownVisible;
+        sortingMenu.hidden = !sortingMenu.hidden;
+        toggleAriaExpanded(sortingMenu);
+        sortingMenu.tabIndex = -1;
+        sortingButton.focus();
+        document.removeEventListener("keydown", cycleThroughOptions);
+        document.removeEventListener("click", outsideClick);
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        index = sortingMenuOptions.findIndex(option => option.getAttribute('aria-selected') === 'true');
+        toggleAriaSelected(sortingMenuOptions[index]);
+        index++;
+        if (index > sortingMenuOptions.length - 1) { index = 0 }
+        toggleAriaSelected(sortingMenuOptions[index]);
+        selectedSort = sortingMenuOptions[index].id;
+        console.log(selectedSort);
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        index = sortingMenuOptions.findIndex(option => option.getAttribute('aria-selected') === 'true');
+        toggleAriaSelected(sortingMenuOptions[index]);
+        index--;
+        if (index < 0) { index = sortingMenuOptions.length - 1 }
+        toggleAriaSelected(sortingMenuOptions[index]);
+        selectedSort = sortingMenuOptions[index].id;
+        console.log(selectedSort);
+        break;
+      default:
+        console.log(e.key);
+    }
   }
 
   function outsideClick(e) {
     const isOutside = !e.target.closest(".dropdown");
     if (isOutside) {
+      dropdownVisible = !dropdownVisible;
       sortingMenu.hidden = !sortingMenu.hidden;
+      toggleAriaExpanded(sortingMenu);
+      sortingMenu.tabIndex = -1;
+      document.removeEventListener("click", outsideClick);
+      document.removeEventListener("keydown", cycleThroughOptions);
     }
+    document.removeEventListener("click", outsideClick);
+    document.removeEventListener("keydown", cycleThroughOptions);
   }
 
   function sortMedia(sortBy) {
-    console.log(sortBy)
     switch (sortBy) {
-      case 'popularity':
+      case "Popularité":
         tempMediaState = mediaState.sort((a, b) => b.likes - a.likes);
         document.dispatchEvent(new CustomEvent("mediaStateChanged"));
         break;
-      case 'date':
-        tempMediaState = mediaState.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
+      case "Date":
+        tempMediaState = mediaState.sort((a, b) =>
+          a.date < b.date ? 1 : b.date < a.date ? -1 : 0
+        );
         document.dispatchEvent(new CustomEvent("mediaStateChanged"));
         break;
-      case 'title':
-        tempMediaState = mediaState.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+      case "Titre":
+        tempMediaState = mediaState.sort((a, b) =>
+          a.title > b.title ? 1 : b.title > a.title ? -1 : 0
+        );
         document.dispatchEvent(new CustomEvent("mediaStateChanged"));
         break;
       default:
-        console.log('error');
+        console.log("Aucune option de triage trouvée.");
     }
+  }
+
+  function handleClickOptions(e) {
+    sortingMenuOptions.forEach(option => {
+
+    });
+    sortingButton.firstChild.textContent = e.target.textContent;
+    selectedSort = e.target.id;
+    sortMedia(selectedSort);
+    dropdownVisible = !dropdownVisible;
+    sortingMenu.hidden = !sortingMenu.hidden;
+    toggleAriaExpanded(sortingMenu);
+    sortingMenu.tabIndex = -1;
   }
 
   sortingButton.addEventListener("click", toggleDropdown);
 
-  document.addEventListener("dropdownVisibility", (e) => {
-    if (!sortingMenu.hidden) {
-      setTimeout(() => {
-        document.addEventListener("click", outsideClick);
-      }, 10);
-    }
-    document.removeEventListener("click", outsideClick);
+  // TODO: Appliquer aria-selected à l'option cliqué
+  sortingMenuOptions.forEach((option) => {
+    option.addEventListener("click", handleClickOptions);
   });
 
-  sortingMenuOptions.forEach((option) => {
-    option.addEventListener("click", (e) => {
-      sortingButton.firstChild.textContent = e.target.textContent;
-      selectedSort = e.target.id;
-      console.table(mediaState);
-      sortMedia(selectedSort);
-      toggleDropdown();
-    });
-  });
   // Filtering ************************************************************************************
+
   let filteredBy;
   // TODO: Changer le style du tag sélectionné
   function updateMediaState() {
-    mediaContainer.innerHTML = '';
+    mediaContainer.innerHTML = "";
     mediaCardsTemplate = makeMediaCard(tempMediaState);
     mediaCardsTemplate.forEach((card) =>
       mediaContainer.insertAdjacentHTML("beforeend", card)
     );
     galleryImages = mediaContainer.querySelectorAll(".card-photo");
     galleryImages.forEach((img) => {
-      img.addEventListener("click", openLightbox);
+      img.addEventListener("click", handleLightboxClick);
     });
     lightboxMedias = makeLightboxMedia(tempMediaState);
   }
@@ -168,7 +258,7 @@ async function initialize() {
     const tagValue = e.target.dataset.value;
     if (!filteredBy || filteredBy !== tagValue) {
       filteredBy = tagValue;
-      tempMediaState = mediaState.filter(media => media.tags.includes(tagValue));
+      tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
       document.dispatchEvent(new CustomEvent("mediaStateChanged"));
     } else {
       filteredBy = undefined;
@@ -177,10 +267,10 @@ async function initialize() {
     }
   }
 
-  tags.forEach(tag => tag.addEventListener('click', filterMedias));
-  document.addEventListener('mediaStateChanged', updateMediaState);
+  tags.forEach((tag) => tag.addEventListener("click", filterMedias));
+  document.addEventListener("mediaStateChanged", updateMediaState);
 
-  // Lightbox *************************************************************************************
+  // Lightbox & Likes Incrementation **************************************************************
 
   /**
    * selectMedia(id)
@@ -201,7 +291,7 @@ async function initialize() {
   }
 
   function resetMedias() {
-    lightboxMedias.forEach(media => {
+    lightboxMedias.forEach((media) => {
       media.currentMedia = false;
       media.prevMedia = false;
       media.nextMedia = false;
@@ -209,23 +299,36 @@ async function initialize() {
   }
 
   function nextMedia() {
-    const id = lightboxMedias.find(media => media.nextMedia).id;
+    const id = lightboxMedias.find((media) => media.nextMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
   }
 
   function prevMedia() {
-    const id = lightboxMedias.find(media => media.prevMedia).id;
+    const id = lightboxMedias.find((media) => media.prevMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
   }
 
-  function openLightbox(e) {
+  /**
+   * Event Delegation
+   * @param e
+   */
+  function handleLightboxClick(e) {
     e.preventDefault();
-    // Obtenir l'image et son titre pour la lightbox
-    const mediaId = parseInt(e.currentTarget.dataset.id);
-    lightboxMediaContainer.innerHTML = selectMedia(mediaId);
-    lightbox.classList.add("open");
+    if (e.target.dataset.behaviour === "openLightbox") {
+      // Obtenir l'image et son titre pour la lightbox
+      const mediaId = parseInt(e.currentTarget.dataset.id);
+      lightboxMediaContainer.innerHTML = selectMedia(mediaId);
+      lightbox.classList.add("open");
+    }
+    if (e.target.dataset.behaviour === "incrementLike") {
+      const mediaId = parseInt(e.currentTarget.dataset.id);
+      const media = mediaState.find((media) => media.id === mediaId);
+      media.likes++;
+      tempMediaState = mediaState;
+      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+    }
   }
 
   function closeLightbox() {
@@ -234,12 +337,12 @@ async function initialize() {
   }
 
   galleryImages.forEach((img) => {
-    img.addEventListener("click", openLightbox);
+    img.addEventListener("click", handleLightboxClick);
   });
 
   closeButtonLightbox.addEventListener("click", closeLightbox);
-  nextButtonLightbox.addEventListener('click', nextMedia);
-  prevButtonLightbox.addEventListener('click', prevMedia);
+  nextButtonLightbox.addEventListener("click", nextMedia);
+  prevButtonLightbox.addEventListener("click", prevMedia);
 
   // Modal ****************************************************************************************
   modalTitleContainer.insertAdjacentHTML("beforeend", photographerState.name);
@@ -264,6 +367,7 @@ async function initialize() {
       node.tabIndex = "-1";
       node.setAttribute("aria-hidden", "true");
     });
+    window.addEventListener('keydown', handleEscapeModal);
   }
 
   function closeModal() {
@@ -273,7 +377,13 @@ async function initialize() {
       node.setAttribute("aria-hidden", "false");
     });
     currentContactButton.focus();
+    window.removeEventListener('keydown', handleEscapeModal);
   }
+
+  function handleEscapeModal(e) {
+    return e.key === "Escape" && closeModal();
+  }
+
   // 3. Listeners
   contactButton.forEach((button) => {
     button.addEventListener("click", openModal);
@@ -288,11 +398,6 @@ async function initialize() {
   modalForm.addEventListener("click", (e) => {
     const isOutside = !e.target.closest(".modal__form");
     return isOutside && closeModal();
-  });
-
-  window.addEventListener("keydown", (e) => {
-    e.stopPropagation();
-    return e.key === "Escape" && closeModal();
   });
 
   const testNonModalNodes = getOutsideFocusableElements();

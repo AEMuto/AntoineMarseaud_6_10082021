@@ -127,8 +127,9 @@
     .dropdown li {
       cursor: pointer;
       &:hover,
-      &:focus {
+      &[aria-selected="true"] {
         font-style: italic;
+        color: yellow;
       }
     }
     .dropdown li:first-child {
