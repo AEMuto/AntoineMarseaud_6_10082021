@@ -110,14 +110,14 @@ async function initialize() {
   function toggleDropdown(e) {
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
-    toggleAriaExpanded(sortingMenu);
-    sortingMenu.tabIndex = 0;
+    toggleAriaExpanded(sortingButton);
+    // sortingMenu.tabIndex = 0;
     sortingMenu.focus();
     setTimeout(() => {
       document.addEventListener("click", outsideClick);
     }, 10);
     setTimeout(() => {
-      document.addEventListener("keydown", cycleThroughOptions);
+      sortingMenu.addEventListener("keydown", cycleThroughOptions);
     }, 10);
   }
 
@@ -127,19 +127,19 @@ async function initialize() {
       case "Tab":
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
-        toggleAriaExpanded(sortingMenu);
-        sortingMenu.tabIndex = -1;
+        toggleAriaExpanded(sortingButton);
+        // sortingMenu.tabIndex = -1;
         galleryImages[0].focus();
-        document.removeEventListener("keydown", cycleThroughOptions);
+        sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
         break;
       case "Escape":
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
-        toggleAriaExpanded(sortingMenu);
-        sortingMenu.tabIndex = -1;
+        toggleAriaExpanded(sortingButton);
+        // sortingMenu.tabIndex = -1;
         sortingButton.focus();
-        document.removeEventListener("keydown", cycleThroughOptions);
+        sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
         break;
       case "Enter":
@@ -148,10 +148,22 @@ async function initialize() {
         sortMedia(selectedSort);
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
-        toggleAriaExpanded(sortingMenu);
-        sortingMenu.tabIndex = -1;
+        toggleAriaExpanded(sortingButton);
+        // sortingMenu.tabIndex = -1;
         sortingButton.focus();
-        document.removeEventListener("keydown", cycleThroughOptions);
+        sortingMenu.removeEventListener("keydown", cycleThroughOptions);
+        document.removeEventListener("click", outsideClick);
+        break;
+      case "Space":
+        e.preventDefault();
+        sortingButton.firstChild.textContent = selectedSort;
+        sortMedia(selectedSort);
+        dropdownVisible = !dropdownVisible;
+        sortingMenu.hidden = !sortingMenu.hidden;
+        toggleAriaExpanded(sortingButton);
+        // sortingMenu.tabIndex = -1;
+        sortingButton.focus();
+        sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
         break;
       case "ArrowDown":
@@ -161,8 +173,9 @@ async function initialize() {
         index++;
         if (index > sortingMenuOptions.length - 1) { index = 0 }
         toggleAriaSelected(sortingMenuOptions[index]);
+        sortingMenuOptions[index].focus();
         selectedSort = sortingMenuOptions[index].id;
-        console.log(selectedSort);
+        sortingMenu.setAttribute('aria-activedescendant', selectedSort);
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -171,8 +184,9 @@ async function initialize() {
         index--;
         if (index < 0) { index = sortingMenuOptions.length - 1 }
         toggleAriaSelected(sortingMenuOptions[index]);
+        sortingMenuOptions[index].focus();
         selectedSort = sortingMenuOptions[index].id;
-        console.log(selectedSort);
+        sortingMenu.setAttribute('aria-activedescendant', selectedSort);
         break;
       default:
         console.log(e.key);
@@ -184,13 +198,13 @@ async function initialize() {
     if (isOutside) {
       dropdownVisible = !dropdownVisible;
       sortingMenu.hidden = !sortingMenu.hidden;
-      toggleAriaExpanded(sortingMenu);
-      sortingMenu.tabIndex = -1;
+      toggleAriaExpanded(sortingButton);
+      // sortingMenu.tabIndex = -1;
       document.removeEventListener("click", outsideClick);
-      document.removeEventListener("keydown", cycleThroughOptions);
+      sortingMenu.removeEventListener("keydown", cycleThroughOptions);
     }
     document.removeEventListener("click", outsideClick);
-    document.removeEventListener("keydown", cycleThroughOptions);
+    sortingMenu.removeEventListener("keydown", cycleThroughOptions);
   }
 
   function sortMedia(sortBy) {
@@ -245,8 +259,8 @@ async function initialize() {
     sortMedia(selectedSort);
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
-    toggleAriaExpanded(sortingMenu);
-    sortingMenu.tabIndex = -1;
+    toggleAriaExpanded(sortingButton);
+    // sortingMenu.tabIndex = -1;
 
   }
 

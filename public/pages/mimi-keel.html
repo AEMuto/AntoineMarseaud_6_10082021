@@ -33,6 +33,7 @@
             <button
               aria-haspopup="listbox"
               aria-labelledby="sort-instruction btn--dropdown"
+              aria-expanded="false"
               class="btn btn--dropdown"
               id="btn--dropdown"
             >
@@ -44,8 +45,8 @@
               />
             </button>
             <ul
-              aria-expanded="false"
               aria-labelledby="sort-instruction"
+              aria-activedescendant="Popularité"
               class="dropdown"
               role="listbox"
               tabindex="-1"
@@ -76,6 +77,7 @@
       aria-modal="true"
       aria-labelledby="modal__form__label"
       tabindex="-1"
+      aria-hidden="true"
     >
       <form class="modal__form" action="" autocomplete="off" tabindex="-1">
         <h1 class="modal__form__title" id="modal__form__label">
@@ -103,17 +105,16 @@
     </div>
     <!-- MODAL_CONTACT-end --------------------------------------------------->
     <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
-    <div class="lightbox">
+    <div class="lightbox" aria-hidden="true">
       <div
         class="carousel"
         role="dialog"
         aria-modal="true"
-        aria-label="Vue rapprochée de X"
+        aria-label="Lightbox"
         tabindex="-1"
       >
         <div class="carousel__items">
-          <figure class="item">
-          </figure>
+          <figure class="item"></figure>
           <div class="carousel__controls">
             <button class="carousel__controls__prev" tabindex="-1">
               <img src="../medias/icons/chevron_left-primary.svg" alt="" />
