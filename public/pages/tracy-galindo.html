@@ -51,7 +51,7 @@
               tabindex="-1"
               hidden
             >
-              <li aria-selected="true" id="popularity" role="option">
+              <li aria-selected="true" id="Popularité" role="option">
                 Popularité
                 <img
                   alt=""
@@ -59,8 +59,8 @@
                   src="../medias/icons/dropdown-arrow-up.svg"
                 />
               </li>
-              <li aria-selected="false" id="date" role="option">Date</li>
-              <li aria-selected="false" id="title" role="option">Titre</li>
+              <li aria-selected="false" id="Date" role="option">Date</li>
+              <li aria-selected="false" id="Titre" role="option">Titre</li>
             </ul>
           </div>
         </div>
@@ -75,35 +75,58 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal__form__label"
-      tabindex="0"
+      tabindex="-1"
     >
-      <form class="modal__form" action="" autocomplete="off">
+      <form class="modal__form" action="" autocomplete="off" tabindex="-1">
         <h1 class="modal__form__title" id="modal__form__label">
           Contactez-moi
           <br />
         </h1>
         <label for="firstname">Prénom</label>
-        <input type="text" id="firstname" />
+        <input type="text" id="firstname" tabindex="-1" />
         <label for="lastname">Nom</label>
-        <input type="text" id="lastname" />
+        <input type="text" id="lastname" tabindex="-1" />
         <label for="email">Email</label>
-        <input type="email" id="email" />
+        <input type="email" id="email" tabindex="-1" />
         <label for="message">Votre Message</label>
-        <textarea type="text" id="message"></textarea>
-        <input class="btn btn--submit" type="submit" />
+        <textarea type="text" id="message" tabindex="-1"></textarea>
+        <input class="btn btn--submit" type="submit" tabindex="-1" />
         <img
           role="button"
           aria-label="Close Form"
           src="../medias/icons/close.svg"
           alt=""
           class="close-btn"
-          tabindex="0"
+          tabindex="-1"
         />
       </form>
     </div>
     <!-- MODAL_CONTACT-end --------------------------------------------------->
     <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
-    <div class="lightbox"></div>
+    <div class="lightbox">
+      <div
+        class="carousel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Vue rapprochée de X"
+        tabindex="-1"
+      >
+        <div class="carousel__items">
+          <figure class="item"></figure>
+          <div class="carousel__controls">
+            <button class="carousel__controls__prev" tabindex="-1">
+              <img src="../medias/icons/chevron_left-primary.svg" alt="" />
+            </button>
+            <button class="carousel__controls__next" tabindex="-1">
+              <img src="../medias/icons/chevron_right-primary.svg" alt="" />
+            </button>
+            <button class="carousel__controls__close" tabindex="-1">
+              <img src="../medias/icons/close-primary.svg" alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- MODAL_LIGHTBOX-end -------------------------------------------------->
   </body>
   <script type="module" src="../../js/pages/photographer.mjs"></script>

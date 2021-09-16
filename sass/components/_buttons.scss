@@ -29,17 +29,22 @@ button {
       display: none;
     }
   }
-
 }
 
 .btn.btn--tag {
-  padding: .25rem .5rem .25rem .25rem;
-  border: .5px solid $clr-border;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  border: 0.5px solid $clr-border;
   background: white;
   border-radius: 11px;
   color: $primary;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  &:hover,
+  &[aria-selected="true"] {
+    border-color: $primary;
+    background: $primary;
+    color: white;
+  }
 }
 
 .btn.btn--cta {
@@ -65,7 +70,7 @@ button {
 
 .btn.btn--submit {
   min-width: 170px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   color: white;
   font-size: 1.125rem;
 }

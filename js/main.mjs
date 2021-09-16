@@ -47,20 +47,24 @@ async function initialize() {
   }
 
   function filterPhotographersCards(e) {
+    tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
     const tagValue = e.target.dataset.value;
+    const selectedTags = tags.filter(tag => tag.dataset.value === tagValue);
     displayAllCards();
     if (!filteredBy || filteredBy !== tagValue) {
+      selectedTags.forEach(tag => tag.setAttribute('aria-selected', 'true'));
       filteredBy = tagValue;
       return currentCards.forEach((card) => {
         return !card.dataset.tags.includes(tagValue) ? (card.style.display = "none") : "";
       });
     } else {
+      selectedTags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
       filteredBy = undefined;
       return displayAllCards();
     }
   }
 
-  tags = document.querySelectorAll(".btn--tag");
+  tags = Array.from(document.querySelectorAll(".btn--tag"));
   tags.forEach((tag) => {
     tag.addEventListener("click", filterPhotographersCards);
   });

@@ -46,6 +46,7 @@
   &__tags {
     grid-row: 3;
     .btn--tag {
+      margin: 0.5rem 0.25rem;
       font-size: clamp(0.813rem, 4vw, 1.125rem);
     }
   }
@@ -128,8 +129,8 @@
       cursor: pointer;
       &:hover,
       &[aria-selected="true"] {
-        font-style: italic;
         color: yellow;
+        font-style: italic;
       }
     }
     .dropdown li:first-child {

@@ -108,7 +108,6 @@ async function initialize() {
   }
 
   function toggleDropdown(e) {
-    console.log(e.target);
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingMenu);
@@ -197,16 +196,35 @@ async function initialize() {
   function sortMedia(sortBy) {
     switch (sortBy) {
       case "Popularité":
+        if(tempMediaState) {
+          tempMediaState = tempMediaState.sort((a, b) => b.likes - a.likes);
+          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          break;
+        }
         tempMediaState = mediaState.sort((a, b) => b.likes - a.likes);
         document.dispatchEvent(new CustomEvent("mediaStateChanged"));
         break;
       case "Date":
+        if(tempMediaState) {
+          tempMediaState = tempMediaState.sort((a, b) =>
+            a.date < b.date ? 1 : b.date < a.date ? -1 : 0
+          );
+          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          break;
+        }
         tempMediaState = mediaState.sort((a, b) =>
           a.date < b.date ? 1 : b.date < a.date ? -1 : 0
         );
         document.dispatchEvent(new CustomEvent("mediaStateChanged"));
         break;
       case "Titre":
+        if (tempMediaState) {
+          tempMediaState = tempMediaState.sort((a, b) =>
+            a.title > b.title ? 1 : b.title > a.title ? -1 : 0
+          );
+          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          break;
+        }
         tempMediaState = mediaState.sort((a, b) =>
           a.title > b.title ? 1 : b.title > a.title ? -1 : 0
         );
@@ -216,23 +234,24 @@ async function initialize() {
         console.log("Aucune option de triage trouvée.");
     }
   }
-
+  // TODO: Appliquer aria-selected à l'option cliqué
   function handleClickOptions(e) {
     sortingMenuOptions.forEach(option => {
-
+      option.setAttribute("aria-selected", "false");
     });
-    sortingButton.firstChild.textContent = e.target.textContent;
-    selectedSort = e.target.id;
+    e.currentTarget.setAttribute("aria-selected", "true");
+    sortingButton.firstChild.textContent = e.currentTarget.textContent;
+    selectedSort = e.currentTarget.id;
     sortMedia(selectedSort);
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingMenu);
     sortingMenu.tabIndex = -1;
+
   }
 
   sortingButton.addEventListener("click", toggleDropdown);
 
-  // TODO: Appliquer aria-selected à l'option cliqué
   sortingMenuOptions.forEach((option) => {
     option.addEventListener("click", handleClickOptions);
   });
@@ -256,11 +275,14 @@ async function initialize() {
 
   function filterMedias(e) {
     const tagValue = e.target.dataset.value;
+    tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
     if (!filteredBy || filteredBy !== tagValue) {
+      e.currentTarget.setAttribute('aria-selected', 'true');
       filteredBy = tagValue;
       tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
       document.dispatchEvent(new CustomEvent("mediaStateChanged"));
     } else {
+      e.currentTarget.setAttribute('aria-selected', 'false');
       filteredBy = undefined;
       tempMediaState = mediaState;
       document.dispatchEvent(new CustomEvent("mediaStateChanged"));
