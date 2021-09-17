@@ -72,15 +72,15 @@
     <!-- MAIN-end ------------------------------------------------------------>
     <!-- MODAL_CONTACT-start ------------------------------------------------->
     <div
-      class="modal"
+      class="modal-contact"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal__form__label"
       tabindex="-1"
       aria-hidden="true"
     >
-      <form class="modal__form" action="" autocomplete="off" tabindex="-1">
-        <h1 class="modal__form__title" id="modal__form__label">
+      <form class="modal-contact__form" action="" autocomplete="off" tabindex="-1">
+        <h1 class="modal-contact__form__title" id="modal__form__label" tabindex="-1">
           Contactez-moi
           <br />
         </h1>
@@ -92,20 +92,15 @@
         <input type="email" id="email" tabindex="-1" />
         <label for="message">Votre Message</label>
         <textarea type="text" id="message" tabindex="-1"></textarea>
-        <input class="btn btn--submit" type="submit" tabindex="-1" />
-        <img
-          role="button"
-          aria-label="Close Form"
-          src="../medias/icons/close.svg"
-          alt=""
-          class="close-btn"
-          tabindex="-1"
-        />
+        <input class="btn btn--form btn--submit" type="submit" tabindex="-1" />
+        <button aria-label="Close Form" class="btn btn--form btn--close" tabindex="-1">
+          <img role="button" src="../medias/icons/close.svg" alt="" />
+        </button>
       </form>
     </div>
     <!-- MODAL_CONTACT-end --------------------------------------------------->
     <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
-    <div class="lightbox" aria-hidden="true">
+    <div class="modal-lightbox" aria-hidden="true" tabindex="-1">
       <div
         class="carousel"
         role="dialog"

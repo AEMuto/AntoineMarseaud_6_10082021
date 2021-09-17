@@ -23,23 +23,6 @@ let galleryImages;
 
 let tags;
 
-const modalTitleContainer = document.querySelector(".modal__form__title");
-let currentContactButton;
-let contactButton;
-let closeButton;
-let modalForm;
-// nonModalNodes nous permet de récupérer les éléments "tabulable".
-// Il y a les boutons, les liens, les inputs et les éléments avec l'attribut tabindex="0".
-// Lorsqu'une modale apparait tous ces éléments en dehors de la modale ne devrait plus
-// être "tabulable" par l'utilisateur.
-let nonModalNodes;
-let submitButton;
-
-const lightbox = document.querySelector(".lightbox");
-const lightboxMediaContainer = lightbox.querySelector(".item");
-const closeButtonLightbox = lightbox.querySelector(".carousel__controls__close");
-const prevButtonLightbox = lightbox.querySelector(".carousel__controls__prev");
-const nextButtonLightbox = lightbox.querySelector(".carousel__controls__next");
 
 function getOutsideFocusableElements() {
   const selectors = `header a, header button, header [tabindex="0"], main a, main button, main [tabindex="0"]`;
@@ -72,7 +55,7 @@ async function initialize() {
 
   // Info Section
   photographerState = getPhotographers(photographerId);
-  const infoSectionTemplate = makeInfoHeader(photographerState);
+  let infoSectionTemplate = makeInfoHeader(photographerState);
   photographerInfoContainer.insertAdjacentHTML("afterbegin", infoSectionTemplate);
   tags = photographerInfoContainer.querySelectorAll(".btn--tag");
 
@@ -86,7 +69,13 @@ async function initialize() {
   galleryImages = mediaContainer.querySelectorAll(".card-photo");
   let lightboxMedias = makeLightboxMedia(mediaState);
 
-  // Sorting **************************************************************************************
+  // General Functions ****************************************************************************
+
+
+
+
+  // Gallery's Medias Sorting *********************************************************************
+
   const sortingForm = document.querySelector(".gallery__sort");
   const sortingButton = document.querySelector(".btn--dropdown");
   const sortingMenu = document.querySelector(".dropdown");
@@ -248,7 +237,7 @@ async function initialize() {
         console.log("Aucune option de triage trouvée.");
     }
   }
-  // TODO: Appliquer aria-selected à l'option cliqué
+
   function handleClickOptions(e) {
     sortingMenuOptions.forEach(option => {
       option.setAttribute("aria-selected", "false");
@@ -270,10 +259,10 @@ async function initialize() {
     option.addEventListener("click", handleClickOptions);
   });
 
-  // Filtering ************************************************************************************
+  // Gallery's Medias Filtering *******************************************************************
 
   let filteredBy;
-  // TODO: Changer le style du tag sélectionné
+
   function updateMediaState() {
     mediaContainer.innerHTML = "";
     mediaCardsTemplate = makeMediaCard(tempMediaState);
@@ -282,7 +271,7 @@ async function initialize() {
     );
     galleryImages = mediaContainer.querySelectorAll(".card-photo");
     galleryImages.forEach((img) => {
-      img.addEventListener("click", handleLightboxClick);
+      img.addEventListener("click", handleGalleryCardClicks);
     });
     lightboxMedias = makeLightboxMedia(tempMediaState);
   }
@@ -306,14 +295,14 @@ async function initialize() {
   tags.forEach((tag) => tag.addEventListener("click", filterMedias));
   document.addEventListener("mediaStateChanged", updateMediaState);
 
-  // Lightbox & Likes Incrementation **************************************************************
+  // Gallery Cards Behaviour (openLightBox || incrementLike) **************************************
 
-  /**
-   * selectMedia(id)
-   * Définir l'ordre de visionnage de la lightbox
-   * en fonction de l'id du média
-   * @param id
-   */
+  const lightboxModal = document.querySelector(".modal-lightbox");
+  const lightboxMediaContainer = lightboxModal.querySelector(".item");
+  const closeButtonLightbox = lightboxModal.querySelector(".carousel__controls__close");
+  const prevButtonLightbox = lightboxModal.querySelector(".carousel__controls__prev");
+  const nextButtonLightbox = lightboxModal.querySelector(".carousel__controls__next");
+
   function selectMedia(id) {
     const index = lightboxMedias.findIndex((media) => media.id === id);
     lightboxMedias[index].currentMedia = true;
@@ -346,17 +335,13 @@ async function initialize() {
     lightboxMediaContainer.innerHTML = selectMedia(id);
   }
 
-  /**
-   * Event Delegation
-   * @param e
-   */
-  function handleLightboxClick(e) {
+  function handleGalleryCardClicks(e) {
     e.preventDefault();
     if (e.target.dataset.behaviour === "openLightbox") {
       // Obtenir l'image et son titre pour la lightbox
       const mediaId = parseInt(e.currentTarget.dataset.id);
       lightboxMediaContainer.innerHTML = selectMedia(mediaId);
-      lightbox.classList.add("open");
+      lightboxModal.classList.add("open");
     }
     if (e.target.dataset.behaviour === "incrementLike") {
       const mediaId = parseInt(e.currentTarget.dataset.id);
@@ -369,75 +354,62 @@ async function initialize() {
 
   function closeLightbox() {
     resetMedias();
-    lightbox.classList.remove("open");
+    lightboxModal.classList.remove("open");
   }
 
   galleryImages.forEach((img) => {
-    img.addEventListener("click", handleLightboxClick);
+    img.addEventListener("click", handleGalleryCardClicks);
   });
 
   closeButtonLightbox.addEventListener("click", closeLightbox);
   nextButtonLightbox.addEventListener("click", nextMedia);
   prevButtonLightbox.addEventListener("click", prevMedia);
 
-  // Modal ****************************************************************************************
-  modalTitleContainer.insertAdjacentHTML("beforeend", photographerState.name);
+  // Contact Modal ********************************************************************************
 
-  // Gestion de l'ouverture et de la fermeture de la modale
-  // contenant le formulaire de contact.
-  // 1. Elements
-  contactButton = Array.from(document.querySelectorAll(".btn--cta"));
-  closeButton = document.querySelector(".close-btn");
-  modalForm = document.querySelector(".modal");
-  nonModalNodes = Array.from(
-    document.querySelectorAll('header a, main a, main button, main [tabindex="0"]')
-  );
-  submitButton = document.querySelector(".btn--submit");
+  const contactModal = document.querySelector(".modal-contact");
+  const contactPhotographerName = contactModal.querySelector(".modal-contact__form__title");
+  const contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
+  const contactSubmitButton = contactModal.querySelector(".btn--submit");
+  const contactCloseButton = contactModal.querySelector(".btn--close");
 
-  // 2. Fonctions
+  let currentContactOpenButton;
+
+  contactPhotographerName.insertAdjacentHTML("beforeend", photographerState.name);
+
   function openModal(e) {
-    currentContactButton = e.target;
-    modalForm.classList.add("open");
-    modalForm.focus();
-    nonModalNodes.forEach((node) => {
-      node.tabIndex = "-1";
-      node.setAttribute("aria-hidden", "true");
-    });
-    window.addEventListener('keydown', handleEscapeModal);
+    currentContactOpenButton = e.target;
+    contactModal.classList.add("open");
+    contactModal.focus();
+    contactModal.addEventListener('keydown', handleEscapeModal);
   }
 
   function closeModal() {
-    modalForm.classList.remove("open");
-    nonModalNodes.forEach((node) => {
-      node.tabIndex = "0";
-      node.setAttribute("aria-hidden", "false");
-    });
-    currentContactButton.focus();
-    window.removeEventListener('keydown', handleEscapeModal);
+    contactModal.classList.remove("open");
+    currentContactOpenButton.focus();
+    contactModal.removeEventListener('keydown', handleEscapeModal);
   }
 
   function handleEscapeModal(e) {
     return e.key === "Escape" && closeModal();
   }
 
-  // 3. Listeners
-  contactButton.forEach((button) => {
+  contactOpenButton.forEach((button) => {
     button.addEventListener("click", openModal);
   });
 
-  closeButton.addEventListener("click", closeModal);
-  closeButton.addEventListener("keyup", (e) => {
+  contactCloseButton.addEventListener("click", closeModal);
+  contactCloseButton.addEventListener("keyup", (e) => {
     e.stopPropagation();
     return e.key === "Enter" && closeModal();
   });
 
-  modalForm.addEventListener("click", (e) => {
+  contactModal.addEventListener("click", (e) => {
+    e.preventDefault();
     const isOutside = !e.target.closest(".modal__form");
     return isOutside && closeModal();
   });
 
-  const testNonModalNodes = getOutsideFocusableElements();
-  // console.log(testNonModalNodes);
 }
 
 initialize();
