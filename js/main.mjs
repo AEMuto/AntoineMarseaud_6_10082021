@@ -47,8 +47,9 @@ async function initialize() {
   }
 
   function filterPhotographersCards(e) {
+    console.log(e.currentTarget);
     tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
-    const tagValue = e.target.dataset.value;
+    const tagValue = e.currentTarget.dataset.value;
     const selectedTags = tags.filter(tag => tag.dataset.value === tagValue);
     displayAllCards();
     if (!filteredBy || filteredBy !== tagValue) {

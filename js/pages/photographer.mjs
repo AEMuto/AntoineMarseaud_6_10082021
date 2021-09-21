@@ -1,6 +1,6 @@
 import { getPhotographers, verifySessionStorage } from "../utils/photographerService.mjs";
 import { makeInfoHeader } from "../components/photographerInfoHeader.mjs";
-import { makeMediaCard, makeLightboxMedia } from "../components/mediaCard.mjs";
+import { makeMediaCard, makeMediaLightbox, templateFactory } from "../components/mediaCard.mjs";
 
 // Enlever la classe preload sur body après chargement de la page
 // pour que les transitions se déroulent normalement
@@ -13,76 +13,117 @@ const photographerId = parseInt(
   document.querySelector('meta[name="PhotographerId"]').content
 );
 
-// Containers dans lesquels on injecte les templates
-const photographerInfoContainer = document.querySelector("section.info");
-const mediaContainer = document.querySelector(".gallery__wrapper");
-
-let photographerState;
-let mediaState;
-let galleryImages;
-
-let tags;
-
-
-function getOutsideFocusableElements() {
-  const selectors = `header a, header button, header [tabindex="0"], main a, main button, main [tabindex="0"]`;
-  return Array.from(document.querySelectorAll(selectors));
-}
-
-function getInsideFocusableElements(modalName) {
-  const selector = `.${modalName} [tabindex="-1"]`;
-  const modal = document.querySelector(`.${modalName}`);
-  return Array.from(modal.querySelectorAll(selector));
-}
-
-function toogleFocus(elements) {
-  if (elements[0].tabIndex === 0) {
-    elements.forEach((element) => {
-      element.tabIndex = "-1";
-      element.setAttribute("aria-hidden", "true");
-    });
-  } else {
-    elements.forEach((element) => {
-      element.tabIndex = "0";
-      element.setAttribute("aria-hidden", "false");
-    });
-  }
-}
-
 // Initialisation
 async function initialize() {
   await verifySessionStorage();
 
-  // Info Section
-  photographerState = getPhotographers(photographerId);
-  let infoSectionTemplate = makeInfoHeader(photographerState);
-  photographerInfoContainer.insertAdjacentHTML("afterbegin", infoSectionTemplate);
-  tags = photographerInfoContainer.querySelectorAll(".btn--tag");
+  // Injection des templates **********************************************************************
+  // Containers
+  const photographerInfoSection = document.querySelector("section.info");
+  const gallery = document.querySelector(".gallery__wrapper");
 
-  // Medias
-  mediaState = photographerState.medias;
+  const lightboxModal = document.querySelector(".modal-lightbox");
+  const lightboxMediaContainer = lightboxModal.querySelector(".item");
+
+  const contactModal = document.querySelector(".modal-contact");
+  const contactPhotographerName = contactModal.querySelector(".modal-contact__form__title");
+
+  // States
+  let photographerState = getPhotographers(photographerId);
+  let mediaState = photographerState.medias;
+  let tempPhotographerState;
   let tempMediaState;
-  let mediaCardsTemplate = makeMediaCard(mediaState);
-  mediaCardsTemplate.forEach((card) =>
-    mediaContainer.insertAdjacentHTML("beforeend", card)
+
+  // Instanciation
+  let infoHeader = templateFactory.createInstance(photographerState, 'infoHeader');
+  let galleryCardInstances = [];
+  let lightboxMediaInstances = [];
+  mediaState.forEach(media => {
+    galleryCardInstances.push(templateFactory.createInstance(media, 'card'));
+    lightboxMediaInstances.push(templateFactory.createInstance(media, 'lightbox'))
+  });
+
+  // Insertion
+  photographerInfoSection.insertAdjacentHTML("afterbegin", infoHeader.getTemplate());
+  galleryCardInstances.forEach(card =>
+    gallery.insertAdjacentHTML("beforeend", card.getTemplate())
   );
-  galleryImages = mediaContainer.querySelectorAll(".card-photo");
-  let lightboxMedias = makeLightboxMedia(mediaState);
+  contactPhotographerName.insertAdjacentHTML("beforeend", photographerState.name);
+  // L'insertion d'images dans la lightbox se fait lors du 'click' sur une image de la gallerie
 
-  // General Functions ****************************************************************************
+  // Variables post-insertion
+  let tags = photographerInfoSection.querySelectorAll(".btn--tag");
+  let galleryCards = gallery.querySelectorAll(".card-photo");
 
+  // Mis à jour de l'état *************************************************************************
 
+  function updateState() {
+    console.log('State Updated!')
+    if (!tempPhotographerState) {
+      console.log('No Photographer State');
+      console.log(tempPhotographerState);
+      tempPhotographerState = photographerState;
+    }
+    if (!tempMediaState) {
+      console.log('No Media State');
+      tempMediaState = mediaState;
+    }
+    photographerInfoSection.innerHTML = "";
+    gallery.innerHTML = "";
+    galleryCardInstances = [];
+    lightboxMediaInstances = [];
 
+    infoHeader = templateFactory.createInstance(tempPhotographerState, 'infoHeader');
+    tempMediaState.forEach(media => {
+      galleryCardInstances.push(templateFactory.createInstance(media, 'card'));
+      lightboxMediaInstances.push(templateFactory.createInstance(media, 'lightbox'))
+    });
 
-  // Gallery's Medias Sorting *********************************************************************
+    photographerInfoSection.insertAdjacentHTML("afterbegin", infoHeader.getTemplate());
+    galleryCardInstances.forEach(card =>
+      gallery.insertAdjacentHTML("beforeend", card.getTemplate())
+    );
 
-  const sortingForm = document.querySelector(".gallery__sort");
-  const sortingButton = document.querySelector(".btn--dropdown");
-  const sortingMenu = document.querySelector(".dropdown");
-  const sortingMenuOptions = Array.from(sortingMenu.querySelectorAll('[role="option"]'));
+    tags = photographerInfoSection.querySelectorAll(".btn--tag");
+    galleryCards = gallery.querySelectorAll(".card-photo");
 
-  let selectedSort = "popularity";
-  let dropdownVisible = false;
+    tags.forEach((tag) => tag.addEventListener("click", filterMedias));
+    galleryCards.forEach((img) => {
+      img.addEventListener("click", handleGalleryCardClicks);
+    });
+
+  }
+
+  document.addEventListener("stateChanged", updateState);
+
+  // Accessibility Functions ****************************************************************************
+
+  let focusableEls;
+  let firstFocusableEl;
+  let lastFocusableEl;
+
+  function addTrapFocus(element) {
+    const selector = element.className.split(' ')[0];
+    focusableEls = Array.from(element.querySelectorAll(`.${selector} [tabindex="0"]`));
+    // console.log(focusableEls);
+    firstFocusableEl = focusableEls[0];
+    lastFocusableEl = focusableEls[focusableEls.length - 1];
+    if (selector === 'modal-contact') {
+      element.addEventListener('keydown', handleContactKeysBehaviour);
+    }
+    if (selector === 'modal-lightbox') {
+      element.addEventListener('keydown', handleLightboxKeysBehaviour);
+    }
+  }
+
+  function removeTrapFocus(element) {
+    if (element.className === 'modal-contact') {
+      element.removeEventListener('keydown', handleContactKeysBehaviour);
+    }
+    if (element.className === 'modal-lightbox') {
+      element.removeEventListener('keydown', handleLightboxKeysBehaviour);
+    }
+  }
 
   function toggleAriaExpanded(element) {
     return element.getAttribute("aria-expanded") === "false"
@@ -96,11 +137,39 @@ async function initialize() {
       : element.setAttribute("aria-selected", "false");
   }
 
-  function toggleDropdown(e) {
+  function toggleAriaHidden(element) {
+    return element.getAttribute("aria-hidden") === "false"
+      ? element.setAttribute("aria-hidden", "true")
+      : element.setAttribute("aria-hidden", "false");
+  }
+
+  function toggleTabindex(element) {
+    return element.getAttribute("tabindex") === "0"
+      ? element.setAttribute("tabindex", "-1")
+      : element.setAttribute("tabindex", "0");
+  }
+
+  function toggleFocusable(element) {
+    const selector = element.className.split(' ')[0];
+    const elements = Array.from(element.querySelectorAll(`.${selector} [tabindex="-1"]`));
+    toggleAriaHidden(element);
+    toggleTabindex(element);
+    elements.forEach(element => toggleTabindex(element));
+  }
+
+  // Gallery's Medias Sorting *********************************************************************
+
+  const sortingButton = document.querySelector(".btn--dropdown");
+  const sortingMenu = document.querySelector(".dropdown");
+  const sortingMenuOptions = Array.from(sortingMenu.querySelectorAll('[role="option"]'));
+
+  let selectedSort = "popularity";
+  let dropdownVisible = false;
+
+  function toggleDropdown() {
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingButton);
-    // sortingMenu.tabIndex = 0;
     sortingMenu.focus();
     setTimeout(() => {
       document.addEventListener("click", outsideClick);
@@ -112,13 +181,13 @@ async function initialize() {
 
   function cycleThroughOptions(e) {
     let index;
+    console.log(e.key);
     switch (e.key) {
       case "Tab":
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
-        // sortingMenu.tabIndex = -1;
-        galleryImages[0].focus();
+        galleryCards[0].focus();
         sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
         break;
@@ -126,7 +195,6 @@ async function initialize() {
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
-        // sortingMenu.tabIndex = -1;
         sortingButton.focus();
         sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
@@ -138,19 +206,17 @@ async function initialize() {
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
-        // sortingMenu.tabIndex = -1;
         sortingButton.focus();
         sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
         break;
-      case "Space":
+      case " ": // Space
         e.preventDefault();
         sortingButton.firstChild.textContent = selectedSort;
         sortMedia(selectedSort);
         dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
-        // sortingMenu.tabIndex = -1;
         sortingButton.focus();
         sortingMenu.removeEventListener("keydown", cycleThroughOptions);
         document.removeEventListener("click", outsideClick);
@@ -201,37 +267,38 @@ async function initialize() {
       case "Popularité":
         if(tempMediaState) {
           tempMediaState = tempMediaState.sort((a, b) => b.likes - a.likes);
-          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
         tempMediaState = mediaState.sort((a, b) => b.likes - a.likes);
-        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Date":
         if(tempMediaState) {
           tempMediaState = tempMediaState.sort((a, b) =>
             a.date < b.date ? 1 : b.date < a.date ? -1 : 0
           );
-          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
         tempMediaState = mediaState.sort((a, b) =>
           a.date < b.date ? 1 : b.date < a.date ? -1 : 0
         );
-        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        console.log(tempMediaState);
+        document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Titre":
         if (tempMediaState) {
           tempMediaState = tempMediaState.sort((a, b) =>
             a.title > b.title ? 1 : b.title > a.title ? -1 : 0
           );
-          document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+          document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
         tempMediaState = mediaState.sort((a, b) =>
           a.title > b.title ? 1 : b.title > a.title ? -1 : 0
         );
-        document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+        document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       default:
         console.log("Aucune option de triage trouvée.");
@@ -249,8 +316,6 @@ async function initialize() {
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingButton);
-    // sortingMenu.tabIndex = -1;
-
   }
 
   sortingButton.addEventListener("click", toggleDropdown);
@@ -263,60 +328,52 @@ async function initialize() {
 
   let filteredBy;
 
-  function updateMediaState() {
-    mediaContainer.innerHTML = "";
-    mediaCardsTemplate = makeMediaCard(tempMediaState);
-    mediaCardsTemplate.forEach((card) =>
-      mediaContainer.insertAdjacentHTML("beforeend", card)
-    );
-    galleryImages = mediaContainer.querySelectorAll(".card-photo");
-    galleryImages.forEach((img) => {
-      img.addEventListener("click", handleGalleryCardClicks);
-    });
-    lightboxMedias = makeLightboxMedia(tempMediaState);
-  }
-
   function filterMedias(e) {
-    const tagValue = e.target.dataset.value;
+    const tagValue = e.currentTarget.dataset.value;
+    console.log(tagValue);
     tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
     if (!filteredBy || filteredBy !== tagValue) {
       e.currentTarget.setAttribute('aria-selected', 'true');
       filteredBy = tagValue;
+      photographerState.selectedTag = tagValue;
+      tempPhotographerState = photographerState;
       tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
-      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+      console.log(tempMediaState);
+      document.dispatchEvent(new CustomEvent("stateChanged"));
     } else {
       e.currentTarget.setAttribute('aria-selected', 'false');
       filteredBy = undefined;
+      photographerState.selectedTag = '';
+      tempPhotographerState = photographerState;
       tempMediaState = mediaState;
-      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+      document.dispatchEvent(new CustomEvent("stateChanged"));
     }
   }
 
   tags.forEach((tag) => tag.addEventListener("click", filterMedias));
-  document.addEventListener("mediaStateChanged", updateMediaState);
 
   // Gallery Cards Behaviour (openLightBox || incrementLike) **************************************
 
-  const lightboxModal = document.querySelector(".modal-lightbox");
-  const lightboxMediaContainer = lightboxModal.querySelector(".item");
-  const closeButtonLightbox = lightboxModal.querySelector(".carousel__controls__close");
-  const prevButtonLightbox = lightboxModal.querySelector(".carousel__controls__prev");
-  const nextButtonLightbox = lightboxModal.querySelector(".carousel__controls__next");
+  const lightboxCloseButton = lightboxModal.querySelector(".btn--close");
+  const lightboxPrevButton = lightboxModal.querySelector(".btn--prev");
+  const lightboxNextButton = lightboxModal.querySelector(".btn--next");
+
+  let selectedMedia;
 
   function selectMedia(id) {
-    const index = lightboxMedias.findIndex((media) => media.id === id);
-    lightboxMedias[index].currentMedia = true;
-    lightboxMedias[index + 1]
-      ? (lightboxMedias[index + 1].nextMedia = true)
-      : (lightboxMedias[0].nextMedia = true);
-    lightboxMedias[index - 1]
-      ? (lightboxMedias[index - 1].prevMedia = true)
-      : (lightboxMedias[lightboxMedias.length - 1].prevMedia = true);
-    return lightboxMedias[index].template;
+    const index = lightboxMediaInstances.findIndex((media) => media.id === id);
+    lightboxMediaInstances[index].currentMedia = true;
+    lightboxMediaInstances[index + 1]
+      ? (lightboxMediaInstances[index + 1].nextMedia = true)
+      : (lightboxMediaInstances[0].nextMedia = true);
+    lightboxMediaInstances[index - 1]
+      ? (lightboxMediaInstances[index - 1].prevMedia = true)
+      : (lightboxMediaInstances[lightboxMediaInstances.length - 1].prevMedia = true);
+    return lightboxMediaInstances[index].getTemplate();
   }
 
   function resetMedias() {
-    lightboxMedias.forEach((media) => {
+    lightboxMediaInstances.forEach((media) => {
       media.currentMedia = false;
       media.prevMedia = false;
       media.nextMedia = false;
@@ -324,91 +381,233 @@ async function initialize() {
   }
 
   function nextMedia() {
-    const id = lightboxMedias.find((media) => media.nextMedia).id;
+    const id = lightboxMediaInstances.find((media) => media.nextMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
   }
 
   function prevMedia() {
-    const id = lightboxMedias.find((media) => media.prevMedia).id;
+    const id = lightboxMediaInstances.find((media) => media.prevMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+  }
+
+  function closeLightbox() {
+    resetMedias();
+    toggleFocusable(lightboxModal);
+    lightboxModal.focus();
+    addTrapFocus(lightboxModal);
+    lightboxModal.classList.remove("open");
+    selectedMedia.focus();
+  }
+
+  function openLightbox(e) {
+    const mediaId = parseInt(e.currentTarget.dataset.id);
+    lightboxMediaContainer.innerHTML = selectMedia(mediaId);
+    lightboxModal.classList.add("open");
+    toggleFocusable(lightboxModal);
+    lightboxModal.focus();
+    addTrapFocus(lightboxModal);
+  }
+
+  function incrementLike(e) {
+    const mediaId = parseInt(e.currentTarget.dataset.id);
+    const media = mediaState.find((media) => media.id === mediaId);
+    if (media.liked) { return }
+    media.liked = !media.liked;
+    media.likes += 1;
+    photographerState.likes++;
+    tempPhotographerState = photographerState;
+    tempMediaState = mediaState;
+    document.dispatchEvent(new CustomEvent("stateChanged"));
   }
 
   function handleGalleryCardClicks(e) {
     e.preventDefault();
     if (e.target.dataset.behaviour === "openLightbox") {
-      // Obtenir l'image et son titre pour la lightbox
-      const mediaId = parseInt(e.currentTarget.dataset.id);
-      lightboxMediaContainer.innerHTML = selectMedia(mediaId);
-      lightboxModal.classList.add("open");
+      selectedMedia = e.target;
+      openLightbox(e);
     }
     if (e.target.dataset.behaviour === "incrementLike") {
-      const mediaId = parseInt(e.currentTarget.dataset.id);
-      const media = mediaState.find((media) => media.id === mediaId);
-      media.likes++;
-      tempMediaState = mediaState;
-      document.dispatchEvent(new CustomEvent("mediaStateChanged"));
+      incrementLike(e);
     }
   }
 
-  function closeLightbox() {
-    resetMedias();
-    lightboxModal.classList.remove("open");
+  function handleLightboxKeysBehaviour(e) {
+    const isTabPressed = (e.key === 'Tab');
+    if (!isTabPressed) {
+      switch (e.key) {
+        case 'Enter':
+          e.preventDefault();
+          if (e.target.className.includes('btn--close')) {
+            closeLightbox();
+          }
+          if (e.target.className.includes('btn--prev')) {
+            prevMedia();
+          }
+          if (e.target.className.includes('btn--next')) {
+            nextMedia();
+          }
+          break;
+        case 'Escape':
+          e.preventDefault();
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          prevMedia();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          nextMedia();
+          break;
+        default:
+          console.log(e.key);
+      }
+    }
+    if (e.shiftKey) /* shift + tab */ {
+      if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl.focus();
+        e.preventDefault();
+      }
+    } else /* tab */ {
+      if (document.activeElement === lastFocusableEl) {
+        firstFocusableEl.focus();
+        e.preventDefault();
+      }
+    }
   }
 
-  galleryImages.forEach((img) => {
+  galleryCards.forEach((img) => {
     img.addEventListener("click", handleGalleryCardClicks);
   });
 
-  closeButtonLightbox.addEventListener("click", closeLightbox);
-  nextButtonLightbox.addEventListener("click", nextMedia);
-  prevButtonLightbox.addEventListener("click", prevMedia);
+  lightboxCloseButton.addEventListener("click", closeLightbox);
+  lightboxNextButton.addEventListener("click", nextMedia);
+  lightboxPrevButton.addEventListener("click", prevMedia);
 
   // Contact Modal ********************************************************************************
 
-  const contactModal = document.querySelector(".modal-contact");
-  const contactPhotographerName = contactModal.querySelector(".modal-contact__form__title");
   const contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
-  const contactSubmitButton = contactModal.querySelector(".btn--submit");
+  const contactModalForm = contactModal.querySelector('.modal-contact__form');
+  const contactModalFormInputs = contactModalForm.querySelectorAll('[type="text"], [type="email"]');
+  const contactSubmitButton = contactModalForm.querySelector(".btn--submit");
   const contactCloseButton = contactModal.querySelector(".btn--close");
 
   let currentContactOpenButton;
+  let clientInputs = {
+    firstname: '',
+    lastname: '',
+    email: '',
+    message: ''
+  }
 
-  contactPhotographerName.insertAdjacentHTML("beforeend", photographerState.name);
-
-  function openModal(e) {
+  function openContactForm(e) {
     currentContactOpenButton = e.target;
     contactModal.classList.add("open");
+    toggleFocusable(contactModal);
     contactModal.focus();
-    contactModal.addEventListener('keydown', handleEscapeModal);
+    addTrapFocus(contactModal);
   }
 
-  function closeModal() {
+  function closeContactForm() {
+    toggleFocusable(contactModal);
+    removeTrapFocus(contactModal);
     contactModal.classList.remove("open");
     currentContactOpenButton.focus();
-    contactModal.removeEventListener('keydown', handleEscapeModal);
   }
 
-  function handleEscapeModal(e) {
-    return e.key === "Escape" && closeModal();
+  function handleContactKeysBehaviour(e) {
+    const isTabPressed = (e.key === 'Tab');
+    if (!isTabPressed) {
+      switch (e.key) {
+        case 'Enter':
+          e.preventDefault();
+          if (e.target.nodeName === 'INPUT' || e.target.nodeName === 'TEXTAREA') {
+            handleSubmit();
+          }
+          if(e.target.className.includes('btn--close')) {
+            console.log('Close Contact Form!');
+            closeContactForm();
+          }
+          break;
+        case 'Escape':
+          e.preventDefault();
+          closeContactForm();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          console.log('ArrowLeft pressed');
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          console.log('ArrowRight pressed');
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          console.log('ArrowDown pressed');
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          console.log('ArrowUp pressed');
+          break;
+        default:
+          console.log(e.key);
+      }
+    }
+    if (e.shiftKey) /* shift + tab */ {
+      if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl.focus();
+        e.preventDefault();
+      }
+    } else /* tab */ {
+      if (document.activeElement === lastFocusableEl) {
+        firstFocusableEl.focus();
+        e.preventDefault();
+      }
+    }
+  }
+
+  function handleSubmit() {
+    console.log(clientInputs);
+  }
+
+  function handleClientInput(e) {
+    switch (e.target.id) {
+      case 'firstname':
+        clientInputs.firstname = e.target.value;
+        break;
+      case 'lastname':
+        clientInputs.lastname = e.target.value;
+        break;
+      case 'email':
+        clientInputs.email = e.target.value;
+        break;
+      case 'message':
+        clientInputs.message = e.target.value;
+        break;
+      default:
+        console.log('Wrong Input');
+    }
   }
 
   contactOpenButton.forEach((button) => {
-    button.addEventListener("click", openModal);
+    button.addEventListener("click", openContactForm);
   });
 
-  contactCloseButton.addEventListener("click", closeModal);
-  contactCloseButton.addEventListener("keyup", (e) => {
-    e.stopPropagation();
-    return e.key === "Enter" && closeModal();
-  });
+  contactCloseButton.addEventListener("click", closeContactForm);
 
   contactModal.addEventListener("click", (e) => {
     e.preventDefault();
-    const isOutside = !e.target.closest(".modal__form");
-    return isOutside && closeModal();
+    const isOutside = !e.target.closest(".modal-contact__form");
+    return isOutside && closeContactForm();
   });
+
+  contactModalFormInputs.forEach(input => input.addEventListener('change', handleClientInput));
+
+  contactModalForm.addEventListener('submit', handleSubmit);
+
+  contactSubmitButton.addEventListener('click', handleSubmit);
 
 }
 
