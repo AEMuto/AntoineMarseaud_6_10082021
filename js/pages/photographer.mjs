@@ -58,16 +58,14 @@ async function initialize() {
   // Mis à jour de l'état *************************************************************************
 
   function updateState() {
-    console.log('State Updated!')
+
     if (!tempPhotographerState) {
-      console.log('No Photographer State');
-      console.log(tempPhotographerState);
       tempPhotographerState = photographerState;
     }
     if (!tempMediaState) {
-      console.log('No Media State');
       tempMediaState = mediaState;
     }
+
     photographerInfoSection.innerHTML = "";
     gallery.innerHTML = "";
     galleryCardInstances = [];
@@ -266,42 +264,44 @@ async function initialize() {
     switch (sortBy) {
       case "Popularité":
         if(tempMediaState) {
-          tempMediaState = tempMediaState.sort((a, b) => b.likes - a.likes);
+          tempMediaState.sort((a, b) => b.likes - a.likes);
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
-        tempMediaState = mediaState.sort((a, b) => b.likes - a.likes);
+        tempMediaState = mediaState;
+        tempMediaState.sort((a, b) => b.likes - a.likes);
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Date":
         if(tempMediaState) {
-          tempMediaState = tempMediaState.sort((a, b) =>
-            a.date < b.date ? 1 : b.date < a.date ? -1 : 0
-          );
+          tempMediaState.sort((a, b) => a.date < b.date ? 1 : b.date < a.date ? -1 : 0);
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
-        tempMediaState = mediaState.sort((a, b) =>
-          a.date < b.date ? 1 : b.date < a.date ? -1 : 0
-        );
-        console.log(tempMediaState);
+        tempMediaState = mediaState;
+        tempMediaState.sort((a, b) => a.date < b.date ? 1 : b.date < a.date ? -1 : 0);
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Titre":
         if (tempMediaState) {
-          tempMediaState = tempMediaState.sort((a, b) =>
-            a.title > b.title ? 1 : b.title > a.title ? -1 : 0
-          );
+          tempMediaState.sort((a, b) => a.title > b.title ? 1 : b.title > a.title ? -1 : 0);
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
-        tempMediaState = mediaState.sort((a, b) =>
-          a.title > b.title ? 1 : b.title > a.title ? -1 : 0
-        );
+        tempMediaState = mediaState;
+        tempMediaState.sort((a, b) => a.title > b.title ? 1 : b.title > a.title ? -1 : 0);
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       default:
-        console.log("Aucune option de triage trouvée.");
+        if(tempMediaState) {
+          tempMediaState.sort((a, b) => b.likes - a.likes);
+          document.dispatchEvent(new CustomEvent("stateChanged"));
+          break;
+        }
+        tempMediaState = mediaState;
+        tempMediaState.sort((a, b) => b.likes - a.likes);
+        document.dispatchEvent(new CustomEvent("stateChanged"));
+        break;
     }
   }
 
@@ -330,22 +330,30 @@ async function initialize() {
 
   function filterMedias(e) {
     const tagValue = e.currentTarget.dataset.value;
-    console.log(tagValue);
     tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
     if (!filteredBy || filteredBy !== tagValue) {
       e.currentTarget.setAttribute('aria-selected', 'true');
       filteredBy = tagValue;
-      photographerState.selectedTag = tagValue;
-      tempPhotographerState = photographerState;
-      tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
-      console.log(tempMediaState);
-      document.dispatchEvent(new CustomEvent("stateChanged"));
+      if (!tempMediaState && !tempPhotographerState) {
+        tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
+        tempPhotographerState = photographerState;
+        tempPhotographerState.selectedTag = tagValue;
+        document.dispatchEvent(new CustomEvent("stateChanged"));
+      } else {
+        tempMediaState = mediaState;
+        sortMedia(selectedSort);
+        tempMediaState = tempMediaState.filter((media) => media.tags.includes(tagValue));
+        tempPhotographerState.selectedTag = tagValue;
+        document.dispatchEvent(new CustomEvent("stateChanged"));
+      }
     } else {
+
       e.currentTarget.setAttribute('aria-selected', 'false');
       filteredBy = undefined;
       photographerState.selectedTag = '';
       tempPhotographerState = photographerState;
       tempMediaState = mediaState;
+      sortMedia(selectedSort);
       document.dispatchEvent(new CustomEvent("stateChanged"));
     }
   }
@@ -413,13 +421,17 @@ async function initialize() {
   function incrementLike(e) {
     const mediaId = parseInt(e.currentTarget.dataset.id);
     const media = mediaState.find((media) => media.id === mediaId);
-    if (media.liked) { return }
-    media.liked = !media.liked;
-    media.likes += 1;
-    photographerState.likes++;
-    tempPhotographerState = photographerState;
-    tempMediaState = mediaState;
-    document.dispatchEvent(new CustomEvent("stateChanged"));
+    if (media.liked) {
+      media.liked = !media.liked;
+      media.likes -= 1;
+      photographerState.likes--;
+      document.dispatchEvent(new CustomEvent("stateChanged"));
+    } else {
+      media.liked = !media.liked;
+      media.likes += 1;
+      photographerState.likes++;
+      document.dispatchEvent(new CustomEvent("stateChanged"));
+    }
   }
 
   function handleGalleryCardClicks(e) {
