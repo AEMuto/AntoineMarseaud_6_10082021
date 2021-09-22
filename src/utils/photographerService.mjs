@@ -1,4 +1,4 @@
-const endpoint = "../../public/data/data.json";
+const endpoint = "/public/data/data.json";
 
 async function getData() {
   const response = await fetch(endpoint);
