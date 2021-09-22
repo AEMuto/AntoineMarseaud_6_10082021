@@ -1,4 +1,4 @@
-const endpoint = "public/data/data.json";
+const endpoint = "https://raw.githubusercontent.com/AEMuto/AntoineMarseaud_6_10082021/main/public/data/data.json";
 
 async function getData() {
   const response = await fetch(endpoint);
