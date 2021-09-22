@@ -10,7 +10,7 @@ export function getPhotographers(id) {
   const photographers = sessionStorage.getItem("photographers");
   const result = JSON.parse(photographers);
   if (id) {
-    return result.find((photographer) => photographer.id === id);
+    return result.find(photographer => photographer.id === id);
   }
   return result;
 }
@@ -26,18 +26,18 @@ export async function verifySessionStorage() {
 }
 
 export function wait(ms = 0) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function organizeData(data) {
   const usersInfo = data.photographers;
   const usersMedias = data.media;
-  // Rajouter la propriété liked aux medias
-  // Permet de savoir si un média a été 'liké'
+  // Rajouter la propriété liked aux medias,
+  // permet de savoir si un média a été 'liké'
   usersMedias.forEach(media => media.liked = false);
   const users = [];
   usersInfo.forEach(({ city, country, id, name, portrait, price, tagline, tags }) => {
-    const userMedias = usersMedias.filter((media) => media.photographerId === id).sort((a, b) => b.likes - a.likes);
+    const userMedias = usersMedias.filter(media => media.photographerId === id).sort((a, b) => b.likes - a.likes);
     const userLikes = userMedias.reduce((acc, { likes }) => {
       return acc + likes;
     }, 0);

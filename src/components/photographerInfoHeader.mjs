@@ -1,51 +1,48 @@
-export function makeInfoHeader({
-  city,
-  country,
-  name,
-  portrait,
-  price,
-  tagline,
-  tags,
-  likes,
-}) {
-  let portraitSlug = portrait.split(".")[0];
-  return `<h1 class="info__name" tabindex="0">${name}</h1>
+export function PhotographerInfoHeader({ city, country, name, portrait, price, tagline, tags, likes, selectedTag }) {
+  this.city = city;
+  this.country = country;
+  this.name = name;
+  this.price = price;
+  this.tagline = tagline;
+  this.tags = tags;
+  this.likes = likes;
+  this.selectedTag = selectedTag;
+  this.portraitSlug = portrait.split(".")[0];
+  this.getTemplate = () => {
+    return `<h1 class="info__name" tabindex="0">${this.name}</h1>
         <div tabindex="0">
           <p class="info__location">
-            ${city}, ${country}
+            ${this.city}, ${this.country}
             <span class="sr-only">.</span>
           </p>
           <p class="info__motto">
-            ${tagline}
+            ${this.tagline}
             <span class="sr-only">.</span>
           </p>
         </div>
         <nav aria-label="Photography categories tags" class="info__tags">
-          ${tags
-            .map((tag) => {
-              return `<button aria-label="Filter by ${tag} tag" class="btn btn--tag" data-value="${tag}">
-            <span aria-hidden="true">#</span>${tag}
-          </button>`;
-            })
-            .join("")}
+          ${this.tags.map(tag => {
+      return `<button aria-label="Filter by ${tag} tag" class="btn btn--tag" data-value="${tag}" aria-selected="${(this.selectedTag === tag)}">
+                      <span aria-hidden="true">#</span>${tag}
+                    </button>`;}).join("")}
         </nav>
         <button class="btn btn--cta btn--mobile">Contactez-moi</button>
         <button class="btn btn--cta btn--desktop">Contactez-moi</button>
         <img
-          alt="${name}"
+          alt="${this.name}"
           class="info__avatar"
-          src="../medias/photographers_avatars/md-avatar-${portraitSlug}.webp"
+          src="../medias/photographers_avatars/md-avatar-${this.portraitSlug}.webp"
           tabindex="0"
         />
         <aside class="info__aside" tabindex="0">
           <div class="info__aside__wrapper">
             <span>
-              ${likes}
+              ${this.likes}
               <span class="sr-only">.</span>
               <img alt="" class="info__aside__like" src="../medias/icons/like-black.svg" />
             </span>
             <span class="info__aside__rate">
-							${price}€
+							${this.price}€
               <span class="sr-only">par</span>
               <span aria-hidden="true">/</span>
               jour
@@ -53,4 +50,5 @@ export function makeInfoHeader({
 						</span>
           </div>
         </aside>`;
+  }
 }

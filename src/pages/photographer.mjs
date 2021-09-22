@@ -1,6 +1,5 @@
 import { getPhotographers, verifySessionStorage } from "../utils/photographerService.mjs";
-import { makeInfoHeader } from "../components/photographerInfoHeader.mjs";
-import { makeMediaCard, makeMediaLightbox, templateFactory } from "../components/mediaCard.mjs";
+import { templateFactory } from "../components/factory.mjs";
 
 // Enlever la classe preload sur body après chargement de la page
 // pour que les transitions se déroulent normalement
@@ -49,11 +48,12 @@ async function initialize() {
     gallery.insertAdjacentHTML("beforeend", card.getTemplate())
   );
   contactPhotographerName.insertAdjacentHTML("beforeend", photographerState.name);
-  // L'insertion d'images dans la lightbox se fait lors du 'click' sur une image de la gallerie
+  // L'insertion d'images dans la lightbox se fait lors du 'click' sur une image de la galerie
 
   // Variables post-insertion
   let tags = photographerInfoSection.querySelectorAll(".btn--tag");
   let galleryCards = gallery.querySelectorAll(".card-photo");
+  let contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
 
   // Mis à jour de l'état *************************************************************************
 
@@ -84,12 +84,15 @@ async function initialize() {
 
     tags = photographerInfoSection.querySelectorAll(".btn--tag");
     galleryCards = gallery.querySelectorAll(".card-photo");
+    contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
 
     tags.forEach((tag) => tag.addEventListener("click", filterMedias));
     galleryCards.forEach((img) => {
       img.addEventListener("click", handleGalleryCardClicks);
     });
-
+    contactOpenButton.forEach((button) => {
+      button.addEventListener("click", openContactForm);
+    });
   }
 
   document.addEventListener("stateChanged", updateState);
@@ -347,7 +350,6 @@ async function initialize() {
         document.dispatchEvent(new CustomEvent("stateChanged"));
       }
     } else {
-
       e.currentTarget.setAttribute('aria-selected', 'false');
       filteredBy = undefined;
       photographerState.selectedTag = '';
@@ -500,7 +502,6 @@ async function initialize() {
 
   // Contact Modal ********************************************************************************
 
-  const contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
   const contactModalForm = contactModal.querySelector('.modal-contact__form');
   const contactModalFormInputs = contactModalForm.querySelectorAll('[type="text"], [type="email"]');
   const contactSubmitButton = contactModalForm.querySelector(".btn--submit");
@@ -582,6 +583,8 @@ async function initialize() {
 
   function handleSubmit() {
     console.log(clientInputs);
+    contactModalFormInputs.forEach(input => input.value = '');
+    setTimeout(() => closeContactForm(), 250);
   }
 
   function handleClientInput(e) {
