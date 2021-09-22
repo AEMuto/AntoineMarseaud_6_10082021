@@ -116,24 +116,8 @@ async function initialize() {
   function addTrapFocus(element) {
     const selector = element.className.split(' ')[0];
     focusableEls = Array.from(element.querySelectorAll(`.${selector} [tabindex="0"]`));
-    // console.log(focusableEls);
     firstFocusableEl = focusableEls[0];
     lastFocusableEl = focusableEls[focusableEls.length - 1];
-    if (selector === 'modal-contact') {
-      element.addEventListener('keydown', handleContactKeysBehaviour);
-    }
-    if (selector === 'modal-lightbox') {
-      element.addEventListener('keydown', handleLightboxKeysBehaviour);
-    }
-  }
-
-  function removeTrapFocus(element) {
-    if (element.className === 'modal-contact') {
-      element.removeEventListener('keydown', handleContactKeysBehaviour);
-    }
-    if (element.className === 'modal-lightbox') {
-      element.removeEventListener('keydown', handleLightboxKeysBehaviour);
-    }
   }
 
   function toggleAriaExpanded(element) {
@@ -162,7 +146,7 @@ async function initialize() {
 
   function toggleFocusable(element) {
     const selector = element.className.split(' ')[0];
-    const elements = Array.from(element.querySelectorAll(`.${selector} [tabindex="-1"]`));
+    const elements = Array.from(element.querySelectorAll(`.${selector} [tabindex]`));
     toggleAriaHidden(element);
     toggleTabindex(element);
     elements.forEach(element => toggleTabindex(element));
@@ -405,21 +389,23 @@ async function initialize() {
     const id = lightboxMediaInstances.find((media) => media.nextMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    addTrapFocus(lightboxModal);
   }
 
   function prevMedia() {
     const id = lightboxMediaInstances.find((media) => media.prevMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    addTrapFocus(lightboxModal);
   }
 
   function closeLightbox() {
     resetMedias();
     toggleFocusable(lightboxModal);
     lightboxModal.focus();
-    addTrapFocus(lightboxModal);
     lightboxModal.classList.remove("open");
     selectedMedia.focus();
+    document.removeEventListener('keydown', handleLightboxKeysBehaviour);
   }
 
   function openLightbox(e) {
@@ -427,8 +413,9 @@ async function initialize() {
     lightboxMediaContainer.innerHTML = selectMedia(mediaId);
     lightboxModal.classList.add("open");
     toggleFocusable(lightboxModal);
-    lightboxModal.focus();
     addTrapFocus(lightboxModal);
+    lightboxModal.focus();
+    document.addEventListener('keydown', handleLightboxKeysBehaviour);
   }
 
   function incrementLike(e) {
@@ -478,16 +465,16 @@ async function initialize() {
           }
           break;
         case 'Escape':
-          e.preventDefault();
           closeLightbox();
+          e.preventDefault();
           break;
         case 'ArrowLeft':
-          e.preventDefault();
           prevMedia();
+          e.preventDefault();
           break;
         case 'ArrowRight':
-          e.preventDefault();
           nextMedia();
+          e.preventDefault();
           break;
         default:
           console.log(e.key);
@@ -535,13 +522,14 @@ async function initialize() {
     toggleFocusable(contactModal);
     contactModal.focus();
     addTrapFocus(contactModal);
+    document.addEventListener('keydown', handleContactKeysBehaviour);
   }
 
   function closeContactForm() {
     toggleFocusable(contactModal);
-    removeTrapFocus(contactModal);
     contactModal.classList.remove("open");
     currentContactOpenButton.focus();
+    document.removeEventListener('keydown', handleContactKeysBehaviour);
   }
 
   function handleContactKeysBehaviour(e) {

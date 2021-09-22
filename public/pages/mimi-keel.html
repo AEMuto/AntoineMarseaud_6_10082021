@@ -110,15 +110,27 @@
     >
       <div class="lightbox">
         <div class="lightbox__items">
-          <figure class="item"></figure>
+          <figure class="item" tabindex="-1"></figure>
           <div class="lightbox__items__controls">
-            <button class="btn btn--lightbox btn--prev" tabindex="-1">
+            <button
+              class="btn btn--lightbox btn--prev"
+              aria-label="Image précédente"
+              tabindex="-1"
+            >
               <img src="../medias/icons/chevron_left-primary.svg" alt="" />
             </button>
-            <button class="btn btn--lightbox btn--next" tabindex="-1">
+            <button
+              class="btn btn--lightbox btn--next"
+              aria-label="Image suivante"
+              tabindex="-1"
+            >
               <img src="../medias/icons/chevron_right-primary.svg" alt="" />
             </button>
-            <button class="btn btn--lightbox btn--close" tabindex="-1">
+            <button
+              class="btn btn--lightbox btn--close"
+              aria-label="Fermer la lightbox"
+              tabindex="-1"
+            >
               <img src="../medias/icons/close-primary.svg" alt="" />
             </button>
           </div>
