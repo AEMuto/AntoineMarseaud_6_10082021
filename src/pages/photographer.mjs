@@ -84,15 +84,25 @@ async function initialize() {
 
     tags = photographerInfoSection.querySelectorAll(".btn--tag");
     galleryCards = gallery.querySelectorAll(".card-photo");
+    const lastFocusedLikeButton = document.querySelector('[data-lastfocused="true"]');
     contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
 
     tags.forEach((tag) => tag.addEventListener("click", filterMedias));
+
     galleryCards.forEach((img) => {
       img.addEventListener("click", handleGalleryCardClicks);
     });
+
     contactOpenButton.forEach((button) => {
       button.addEventListener("click", openContactForm);
     });
+
+    if (lastFocusedLikeButton) {
+      console.log(lastFocusedLikeButton);
+      lastFocusedLikeButton.focus();
+    } else {
+      document.querySelector('[aria-selected="true"]').focus();
+    }
   }
 
   document.addEventListener("stateChanged", updateState);
@@ -332,6 +342,7 @@ async function initialize() {
   let filteredBy;
 
   function filterMedias(e) {
+    mediaState.forEach(media => media.lastFocused = false);
     const tagValue = e.currentTarget.dataset.value;
     tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
     if (!filteredBy || filteredBy !== tagValue) {
@@ -422,13 +433,16 @@ async function initialize() {
 
   function incrementLike(e) {
     const mediaId = parseInt(e.currentTarget.dataset.id);
+    mediaState.forEach(media => media.lastFocused = false);
     const media = mediaState.find((media) => media.id === mediaId);
     if (media.liked) {
+      media.lastFocused = true;
       media.liked = !media.liked;
       media.likes -= 1;
       photographerState.likes--;
       document.dispatchEvent(new CustomEvent("stateChanged"));
     } else {
+      media.lastFocused = true;
       media.liked = !media.liked;
       media.likes += 1;
       photographerState.likes++;

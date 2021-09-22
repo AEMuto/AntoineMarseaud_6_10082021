@@ -1,8 +1,9 @@
-export function Photography({ id, photographerId, title, image, tags, liked, likes, date, desc }) {
+export function Photography({ id, photographerId, title, image, tags, lastFocused,liked, likes, date, desc }) {
 	this.id = id;
 	this.photographerId = photographerId;
 	this.title = title;
 	this.tags = tags;
+	this.lastFocused = lastFocused;
 	this.liked = liked;
 	this.likes = likes;
 	this.date = date;
@@ -20,7 +21,7 @@ export function Photography({ id, photographerId, title, image, tags, liked, lik
                   ${this.title}
                   <span class="card-photo__like" tabindex="0">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike">
+                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -35,7 +36,7 @@ export function Photography({ id, photographerId, title, image, tags, liked, lik
                   ${this.title}
                   <span class="card-photo__like" tabindex="0">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike">
+                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -45,11 +46,12 @@ export function Photography({ id, photographerId, title, image, tags, liked, lik
 	}
 }
 
-export function Video({ id, photographerId, title, video, tags, liked, likes, date, desc }) {
+export function Video({ id, photographerId, title, video, tags, lastFocused, liked, likes, date, desc }) {
 	this.id = id;
 	this.photographerId = photographerId;
 	this.title = title;
 	this.tags = tags;
+	this.lastFocused = lastFocused;
 	this.liked = liked;
 	this.likes = likes;
 	this.date = date;
@@ -67,7 +69,7 @@ export function Video({ id, photographerId, title, video, tags, liked, likes, da
                   ${this.title}
                   <span class="card-photo__like" tabindex="0">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike">
+                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -82,7 +84,7 @@ export function Video({ id, photographerId, title, video, tags, liked, likes, da
                   ${this.title}
                   <span class="card-photo__like" tabindex="0">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike">
+                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>

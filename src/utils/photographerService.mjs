@@ -34,7 +34,10 @@ function organizeData(data) {
   const usersMedias = data.media;
   // Rajouter la propriété liked aux medias,
   // permet de savoir si un média a été 'liké'
-  usersMedias.forEach(media => media.liked = false);
+  usersMedias.forEach(media => {
+    media.liked = false;
+    media.lastFocused = false;
+  });
   const users = [];
   usersInfo.forEach(({ city, country, id, name, portrait, price, tagline, tags }) => {
     const userMedias = usersMedias.filter(media => media.photographerId === id).sort((a, b) => b.likes - a.likes);
