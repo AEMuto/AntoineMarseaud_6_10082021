@@ -1,4 +1,4 @@
-export function PhotographerInfoHeader({ city, country, name, portrait, price, tagline, tags, likes, selectedTag }) {
+export function PhotographerInfoHeader({ city, country, name, portrait, price, tagline, tags, likes, selectedTag, lastSelectedTag }) {
   this.city = city;
   this.country = country;
   this.name = name;
@@ -7,6 +7,7 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
   this.tags = tags;
   this.likes = likes;
   this.selectedTag = selectedTag;
+  this.lastSelectedTag = lastSelectedTag;
   this.portraitSlug = portrait.split(".")[0];
   this.getTemplate = () => {
     return `<h1 class="info__name" tabindex="0">${this.name}</h1>
@@ -22,7 +23,11 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
         </div>
         <nav aria-label="Photography categories tags" class="info__tags">
           ${this.tags.map(tag => {
-      return `<button aria-label="Filter by ${tag} tag" class="btn btn--tag" data-value="${tag}" aria-selected="${(this.selectedTag === tag)}">
+      return `<button aria-label="Filter by ${tag} tag"
+                      class="btn btn--tag"
+                      data-value="${tag}"
+                      data-lastSelected="${(this.lastSelectedTag === tag)}"
+                      aria-selected="${(this.selectedTag === tag)}">
                       <span aria-hidden="true">#</span>${tag}
                     </button>`;}).join("")}
         </nav>
@@ -38,8 +43,8 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
           <div class="info__aside__wrapper">
             <span>
               ${this.likes}
-              <span class="sr-only">.</span>
-              <img alt="" class="info__aside__like" src="../medias/icons/like-black.svg" />
+              <span class="sr-only">likes.</span>
+              <img alt="" class="info__aside__like" src="../medias/icons/like-black.svg" aria-hidden="true"/>
             </span>
             <span class="info__aside__rate">
 							${this.price}€

@@ -58,7 +58,6 @@ async function initialize() {
   // Mis à jour de l'état *************************************************************************
 
   function updateState() {
-
     if (!tempPhotographerState) {
       tempPhotographerState = photographerState;
     }
@@ -84,8 +83,11 @@ async function initialize() {
 
     tags = photographerInfoSection.querySelectorAll(".btn--tag");
     galleryCards = gallery.querySelectorAll(".card-photo");
-    const lastFocusedLikeButton = document.querySelector('[data-lastfocused="true"]');
-    contactOpenButton = Array.from(document.querySelectorAll(".btn--cta"));
+    const lastFocusedLikeButton = gallery.querySelector('[data-lastfocused="true"]');
+    const lastFocusedTagButton = photographerInfoSection.querySelector(`[aria-selected="true"]`)
+      ? photographerInfoSection.querySelector(`[aria-selected="true"]`)
+      : photographerInfoSection.querySelector(`[data-lastselected="true"]`);
+    contactOpenButton = Array.from(photographerInfoSection.querySelectorAll(".btn--cta"));
 
     tags.forEach((tag) => tag.addEventListener("click", filterMedias));
 
@@ -97,12 +99,7 @@ async function initialize() {
       button.addEventListener("click", openContactForm);
     });
 
-    if (lastFocusedLikeButton) {
-      console.log(lastFocusedLikeButton);
-      lastFocusedLikeButton.focus();
-    } else {
-      document.querySelector('[aria-selected="true"]').focus();
-    }
+    lastFocusedLikeButton ? lastFocusedLikeButton.focus() : (lastFocusedTagButton ? lastFocusedTagButton.focus() : '');
   }
 
   document.addEventListener("stateChanged", updateState);
@@ -181,7 +178,6 @@ async function initialize() {
 
   function cycleThroughOptions(e) {
     let index;
-    console.log(e.key);
     switch (e.key) {
       case "Tab":
         dropdownVisible = !dropdownVisible;
@@ -244,7 +240,7 @@ async function initialize() {
         sortingMenu.setAttribute('aria-activedescendant', selectedSort);
         break;
       default:
-        console.log(e.key);
+        break;
     }
   }
 
@@ -254,7 +250,6 @@ async function initialize() {
       dropdownVisible = !dropdownVisible;
       sortingMenu.hidden = !sortingMenu.hidden;
       toggleAriaExpanded(sortingButton);
-      // sortingMenu.tabIndex = -1;
       document.removeEventListener("click", outsideClick);
       sortingMenu.removeEventListener("keydown", cycleThroughOptions);
     }
@@ -318,6 +313,7 @@ async function initialize() {
     dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingButton);
+    sortingButton.focus();
   }
 
   sortingButton.addEventListener("click", toggleDropdown);
@@ -353,6 +349,7 @@ async function initialize() {
       e.currentTarget.setAttribute('aria-selected', 'false');
       filteredBy = undefined;
       photographerState.selectedTag = '';
+      photographerState.lastSelectedTag = tagValue;
       tempPhotographerState = photographerState;
       tempMediaState = mediaState;
       sortMedia(selectedSort);
@@ -467,7 +464,6 @@ async function initialize() {
       switch (e.key) {
         case 'Enter':
           e.preventDefault();
-          console.log('Enter pressed!');
           if (e.target.className.includes('btn--close')) {
             closeLightbox();
           }
@@ -491,7 +487,7 @@ async function initialize() {
           e.preventDefault();
           break;
         default:
-          console.log(e.key);
+          break;
       }
     }
     if (e.shiftKey) /* shift + tab */ {
@@ -556,7 +552,6 @@ async function initialize() {
             handleSubmit();
           }
           if(e.target.className.includes('btn--close')) {
-            console.log('Close Contact Form!');
             closeContactForm();
           }
           break;
@@ -566,22 +561,18 @@ async function initialize() {
           break;
         case 'ArrowLeft':
           e.preventDefault();
-          console.log('ArrowLeft pressed');
           break;
         case 'ArrowRight':
           e.preventDefault();
-          console.log('ArrowRight pressed');
           break;
         case 'ArrowDown':
           e.preventDefault();
-          console.log('ArrowDown pressed');
           break;
         case 'ArrowUp':
           e.preventDefault();
-          console.log('ArrowUp pressed');
           break;
         default:
-          console.log(e.key);
+          break;
       }
     }
     if (e.shiftKey) /* shift + tab */ {

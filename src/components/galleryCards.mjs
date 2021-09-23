@@ -13,7 +13,15 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
 	this.thumbnailPath = `../medias/${this.photographerId}/thumbnail-${this.imageSlug}.webp`;
 	this.getTemplate = () => {
 		if (this.liked) {
-			return `<div class="card card-photo" data-liked="${this.liked}" data-desc="${this.desc}" data-path=${this.imagePath} data-tag="${this.tags[0]}" data-id="${this.id}" data-photographerId="${this.photographerId}" data-title="${this.title}" data-date="${this.date}">
+			return `<div class="card card-photo"
+									 data-liked="${this.liked}"
+									 data-desc="${this.desc}"
+									 data-path=${this.imagePath}
+									 data-tag="${this.tags[0]}"
+									 data-id="${this.id}"
+									 data-photographerId="${this.photographerId}"
+									 data-title="${this.title}"
+									 data-date="${this.date}">
                 <a class="card-photo__img-wrapper" href="#" data-behaviour="openLightbox">
                   <img alt="${this.desc}" src=${this.thumbnailPath} data-behaviour="openLightbox" />
                 </a>
@@ -21,14 +29,27 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
                   ${this.title}
                   <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" aria-label="Aimer cette photographie" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
-                      <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
+                    <button class="btn btn--like"
+														aria-label="Aimer cette photographie"
+														data-behaviour="incrementLike"
+														data-lastFocused="${this.lastFocused}">
+                      <img alt="likes"
+													 src="../medias/icons/like-primary.svg"
+													 data-behaviour="incrementLike"/>
                     </button>
                   </span>
                 </p>
               </div>`;
 		} else {
-			return `<div class="card card-photo" data-liked="${this.liked}" data-desc="${this.desc}" data-path=${this.imagePath} data-tag="${this.tags[0]}" data-id="${this.id}" data-photographerId="${this.photographerId}" data-title="${this.title}" data-date="${this.date}">
+			return `<div class="card card-photo"
+									 data-liked="${this.liked}"
+									 data-desc="${this.desc}"
+									 data-path=${this.imagePath}
+									 data-tag="${this.tags[0]}"
+									 data-id="${this.id}"
+									 data-photographerId="${this.photographerId}"
+									 data-title="${this.title}"
+									 data-date="${this.date}">
                 <a class="card-photo__img-wrapper" href="#" data-behaviour="openLightbox">
                   <img alt="${this.desc}" src=${this.thumbnailPath} data-behaviour="openLightbox" />
                 </a>
@@ -36,8 +57,13 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
                   ${this.title}
                   <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" aria-label="Aimer cette photographie" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
-                      <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
+                    <button class="btn btn--like"
+														aria-label="Aimer cette photographie"
+														data-behaviour="incrementLike"
+														data-lastFocused="${this.lastFocused}">
+                      <img alt="likes"
+													 src="../medias/icons/like-primary-stroke.svg"
+													 data-behaviour="incrementLike"/>
                     </button>
                   </span>
                 </p>
@@ -61,7 +87,15 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
 	this.thumbnailPath = `../medias/${this.photographerId}/thumbnail-${this.videoSlug}.webp`;
 	this.getTemplate = () => {
 		if (this.liked) {
-			return `<div class="card card-photo" data-liked="${this.liked}" data-desc="${this.desc}" data-path=${this.videoPath} data-tag="${this.tags[0]}" data-id="${this.id}" data-photographerId="${this.photographerId}" data-title="${this.title}" data-date="${this.date}">
+			return `<div class="card card-photo"
+									 data-liked="${this.liked}"
+									 data-desc="${this.desc}"
+									 data-path=${this.videoPath}
+									 data-tag="${this.tags[0]}"
+									 data-id="${this.id}"
+									 data-photographerId="${this.photographerId}"
+									 data-title="${this.title}"
+									 data-date="${this.date}">
                 <a class="card-photo__img-wrapper" href="#" data-behaviour="openLightbox">
                   <img alt="${this.desc}" src=${this.thumbnailPath} data-behaviour="openLightbox" />
                 </a>
@@ -69,14 +103,27 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
                   ${this.title}
                   <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" aria-label="Aimer cette vidéo" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
-                      <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
+                    <button class="btn btn--like"
+														aria-label="Aimer cette vidéo"
+														data-behaviour="incrementLike"
+														data-lastFocused="${this.lastFocused}">
+                      <img alt="likes"
+													 src="../medias/icons/like-primary.svg"
+													 data-behaviour="incrementLike"/>
                     </button>
                   </span>
                 </p>
               </div>`;
 		} else {
-			return `<div class="card card-photo" data-liked="${this.liked}" data-desc="${this.desc}" data-path=${this.videoPath} data-tag="${this.tags[0]}" data-id="${this.id}" data-photographerId="${this.photographerId}" data-title="${this.title}" data-date="${this.date}">
+			return `<div class="card card-photo"
+									 data-liked="${this.liked}"
+									 data-desc="${this.desc}"
+									 data-path=${this.videoPath}
+									 data-tag="${this.tags[0]}"
+									 data-id="${this.id}"
+									 data-photographerId="${this.photographerId}"
+									 data-title="${this.title}"
+									 data-date="${this.date}">
                 <a class="card-photo__img-wrapper" href="#" data-behaviour="openLightbox">
                   <img alt="${this.desc}" src=${this.thumbnailPath} data-behaviour="openLightbox" />
                 </a>
@@ -84,8 +131,13 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
                   ${this.title}
                   <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" aria-label="Aimer cette vidéo" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
-                      <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
+                    <button class="btn btn--like"
+														aria-label="Aimer cette vidéo"
+														data-behaviour="incrementLike"
+														data-lastFocused="${this.lastFocused}">
+                      <img alt="likes"
+													 src="../medias/icons/like-primary-stroke.svg"
+													 data-behaviour="incrementLike"/>
                     </button>
                   </span>
                 </p>
