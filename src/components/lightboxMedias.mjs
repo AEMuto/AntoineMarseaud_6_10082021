@@ -9,9 +9,9 @@ export function PhotographyLightbox({ id, photographerId, title, image, desc }) 
 	this.nextMedia = false;
 	this.getTemplate = () => {
 		return `<div class="item__wrapper">
-              <img src="../medias/${this.photographerId}/${this.imageSlug}.webp" alt="${this.desc}" tabindex="0"/>
+              <img src="../medias/${this.photographerId}/${this.imageSlug}.webp" alt="${this.desc}" tabindex="-1"/>
             </div>
-            <figcaption class="item__title" tabindex="0">${this.title}</figcaption>`;
+            <figcaption class="item__title" tabindex="-1">${this.title}</figcaption>`;
 	}
 }
 
@@ -30,6 +30,6 @@ export function VideoLightbox({ id, photographerId, title, video, desc }) {
               <source src="../medias/${this.photographerId}/${this.videoSlug}.mp4" type="video/mp4">
               </video>
             </div>
-            <figcaption class="item__title" tabindex="0">${this.title}</figcaption>`;
+            <figcaption class="item__title" tabindex="-1">${this.title}</figcaption>`;
 	}
 }

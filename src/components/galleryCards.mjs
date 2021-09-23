@@ -19,9 +19,9 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
                 </a>
                 <p class="card-photo__txt" tabindex="0">
                   ${this.title}
-                  <span class="card-photo__like" tabindex="0">
+                  <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
+                    <button class="btn btn--like" aria-label="Aimer cette photographie" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -34,9 +34,9 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
                 </a>
                 <p class="card-photo__txt" tabindex="0">
                   ${this.title}
-                  <span class="card-photo__like" tabindex="0">
+                  <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
+                    <button class="btn btn--like" aria-label="Aimer cette photographie" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -67,9 +67,9 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
                 </a>
                 <p class="card-photo__txt" tabindex="0">
                   ${this.title}
-                  <span class="card-photo__like" tabindex="0">
+                  <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
+                    <button class="btn btn--like" aria-label="Aimer cette vidéo" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>
@@ -82,9 +82,9 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
                 </a>
                 <p class="card-photo__txt" tabindex="0">
                   ${this.title}
-                  <span class="card-photo__like" tabindex="0">
+                  <span class="card-photo__like">
                     ${this.likes}
-                    <button class="btn btn--like" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
+                    <button class="btn btn--like" aria-label="Aimer cette vidéo" data-behaviour="incrementLike" data-lastFocused="${this.lastFocused}">
                       <img alt="likes" src="../medias/icons/like-primary-stroke.svg" data-behaviour="incrementLike"/>
                     </button>
                   </span>

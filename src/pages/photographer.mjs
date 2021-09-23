@@ -144,11 +144,16 @@ async function initialize() {
       : element.setAttribute("tabindex", "0");
   }
 
-  function toggleFocusable(element) {
+  function toggleFocusableOnModal(element) {
     const selector = element.className.split(' ')[0];
     const elements = Array.from(element.querySelectorAll(`.${selector} [tabindex]`));
     toggleAriaHidden(element);
     toggleTabindex(element);
+    elements.forEach(element => toggleTabindex(element));
+  }
+
+  function toggleFocusableOnLightboxMediaContainer() {
+    const elements = Array.from(lightboxMediaContainer.querySelectorAll(`[tabindex]`));
     elements.forEach(element => toggleTabindex(element));
   }
 
@@ -363,7 +368,7 @@ async function initialize() {
   const lightboxPrevButton = lightboxModal.querySelector(".btn--prev");
   const lightboxNextButton = lightboxModal.querySelector(".btn--next");
 
-  let selectedMedia;
+  let lastGalleryCardFocused;
 
   function selectMedia(id) {
     const index = lightboxMediaInstances.findIndex((media) => media.id === id);
@@ -389,33 +394,41 @@ async function initialize() {
     const id = lightboxMediaInstances.find((media) => media.nextMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    toggleFocusableOnLightboxMediaContainer();
     addTrapFocus(lightboxModal);
+    lightboxMediaContainer.querySelector('img')
+      ? lightboxMediaContainer.querySelector('img').focus()
+      : lightboxMediaContainer.querySelector('video').focus();
   }
 
   function prevMedia() {
     const id = lightboxMediaInstances.find((media) => media.prevMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    toggleFocusableOnLightboxMediaContainer();
     addTrapFocus(lightboxModal);
+    lightboxMediaContainer.querySelector('img')
+      ? lightboxMediaContainer.querySelector('img').focus()
+      : lightboxMediaContainer.querySelector('video').focus();
   }
 
   function closeLightbox() {
+    lightboxMediaContainer.innerHTML = '';
     resetMedias();
-    toggleFocusable(lightboxModal);
-    lightboxModal.focus();
+    toggleFocusableOnModal(lightboxModal);
     lightboxModal.classList.remove("open");
-    selectedMedia.focus();
-    document.removeEventListener('keydown', handleLightboxKeysBehaviour);
+    lastGalleryCardFocused.focus();
+    lightboxModal.removeEventListener('keydown', handleLightboxKeysBehaviour);
   }
 
   function openLightbox(e) {
     const mediaId = parseInt(e.currentTarget.dataset.id);
     lightboxMediaContainer.innerHTML = selectMedia(mediaId);
     lightboxModal.classList.add("open");
-    toggleFocusable(lightboxModal);
+    toggleFocusableOnModal(lightboxModal);
     addTrapFocus(lightboxModal);
     lightboxModal.focus();
-    document.addEventListener('keydown', handleLightboxKeysBehaviour);
+    lightboxModal.addEventListener('keydown', handleLightboxKeysBehaviour);
   }
 
   function incrementLike(e) {
@@ -440,7 +453,7 @@ async function initialize() {
   function handleGalleryCardClicks(e) {
     e.preventDefault();
     if (e.target.dataset.behaviour === "openLightbox") {
-      selectedMedia = e.target;
+      lastGalleryCardFocused = e.target;
       openLightbox(e);
     }
     if (e.target.dataset.behaviour === "incrementLike") {
@@ -454,6 +467,7 @@ async function initialize() {
       switch (e.key) {
         case 'Enter':
           e.preventDefault();
+          console.log('Enter pressed!');
           if (e.target.className.includes('btn--close')) {
             closeLightbox();
           }
@@ -519,17 +533,17 @@ async function initialize() {
   function openContactForm(e) {
     currentContactOpenButton = e.target;
     contactModal.classList.add("open");
-    toggleFocusable(contactModal);
+    toggleFocusableOnModal(contactModal);
     contactModal.focus();
     addTrapFocus(contactModal);
-    document.addEventListener('keydown', handleContactKeysBehaviour);
+    contactModal.addEventListener('keydown', handleContactKeysBehaviour);
   }
 
   function closeContactForm() {
-    toggleFocusable(contactModal);
+    toggleFocusableOnModal(contactModal);
     contactModal.classList.remove("open");
     currentContactOpenButton.focus();
-    document.removeEventListener('keydown', handleContactKeysBehaviour);
+    contactModal.removeEventListener('keydown', handleContactKeysBehaviour);
   }
 
   function handleContactKeysBehaviour(e) {
