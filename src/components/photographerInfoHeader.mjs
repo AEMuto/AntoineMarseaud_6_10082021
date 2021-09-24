@@ -43,7 +43,7 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
           <div class="info__aside__wrapper">
             <span>
               ${this.likes}
-              <span class="sr-only">likes.</span>
+              <span class="sr-only">likes<span aria-hidden="true">.</span></span>
               <img alt="" class="info__aside__like" src="../medias/icons/like-black.svg" aria-hidden="true"/>
             </span>
             <span class="info__aside__rate">

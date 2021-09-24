@@ -13,7 +13,12 @@
   </head>
 
   <body class="preload">
-    <button class="scrollToTop">Passer au contenu</button>
+    <button class="sr-only goToContent">Passer au contenu</button>
+    <div class="scrollToTop-container" tabindex="-1">
+      <button class="btn btn--scrollToTop" tabindex="-1" aria-hidden="true">
+        Remonter
+      </button>
+    </div>
 
     <!-- HEADER-start -------------------------------------------------------->
     <header class="header header-homepage">
@@ -90,7 +95,7 @@
     <!-- HEADER-end ---------------------------------------------------------->
 
     <!-- MAIN-start ---------------------------------------------------------->
-    <main class="main main-homepage"></main>
+    <main class="main main-homepage" tabindex="-1"></main>
     <!-- MAIN-end ------------------------------------------------------------>
   </body>
   <script type="module" src="src/main.mjs"></script>

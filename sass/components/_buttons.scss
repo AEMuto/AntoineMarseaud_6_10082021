@@ -127,3 +127,22 @@ button {
     }
   }
 }
+
+.btn.btn--scrollToTop {
+  position: fixed;
+  padding: 0.5rem 0.65rem;
+  margin-top: 1rem;
+  background: $tertiary;
+  border-radius: 0.313rem;
+  color: black;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: ease-in-out 0.5s;
+}
+
+.btn.btn--scrollToTop.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}

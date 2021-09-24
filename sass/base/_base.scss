@@ -55,6 +55,12 @@ textarea {
   white-space: nowrap;
 }
 
-.scrollToTop {
-  display: none;
+.scrollToTop-container {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 50vh;
+  justify-content: center;
+  // background: rgba(225, 50, 25, 0.5);
+  pointer-events: none;
 }
