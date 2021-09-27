@@ -22,7 +22,7 @@ async function initialize() {
   const gallery = document.querySelector(".gallery__wrapper");
 
   const lightboxModal = document.querySelector(".modal-lightbox");
-  const lightboxMediaContainer = lightboxModal.querySelector(".item");
+  const lightboxMediaContainer = lightboxModal.querySelector(".lightbox__wrapper");
 
   const contactModal = document.querySelector(".modal-contact");
   const contactPhotographerName = contactModal.querySelector(".modal-contact__form__title");
