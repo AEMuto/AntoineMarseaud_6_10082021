@@ -101,33 +101,6 @@ button {
   }
 }
 
-.btn.btn--lightbox {
-  background: none;
-  &.btn--prev {
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    img {
-      width: clamp(13px, 2.5vw, 48px);
-    }
-  }
-  &.btn--next {
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    img {
-      width: clamp(13px, 2.5vw, 48px);
-    }
-  }
-  &.btn--close {
-    top: 0;
-    right: 0;
-    img {
-      width: clamp(14px, 3vw, 42px);
-    }
-  }
-}
-
 .btn.btn--scrollToTop {
   position: fixed;
   padding: 0.5rem 0.65rem;
@@ -143,6 +116,6 @@ button {
 
 .btn.btn--scrollToTop.visible {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: all;
+  transform: translateY(0);
 }

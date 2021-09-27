@@ -1,143 +1,122 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-      name="viewport"
-    />
-    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
-    <meta name="PhotographerId" content="195" />
-    <link href="../css/normalize.css" rel="stylesheet" />
-    <link href="../css/pages.css" rel="stylesheet" />
-    <title>Marcel Nikolic</title>
-  </head>
-  <body class="preload">
-    <!-- HEADER-start -------------------------------------------------------->
-    <header class="header header-photographer">
-      <a class="logo" href="../../index.html">
-        <img alt="Fisheye Home page" src="../medias/logo.svg" />
-      </a>
-    </header>
-    <!-- HEADER-end ---------------------------------------------------------->
-    <!-- MAIN-start ---------------------------------------------------------->
-    <main class="main main-photographer">
-      <!-- INFO_SECTION-start ------------------------------------------------>
-      <section class="info"></section>
-      <!-- INFO_SECTION-end -------------------------------------------------->
-      <!-- GALLERY_SECTION-start --------------------------------------------->
-      <section aria-label="Photographies gallery" class="gallery">
-        <div class="gallery__sort">
-          <span class="gallery__sort__instruction" id="sort-instruction">Trier par</span>
-          <div class="gallery__sort__wrapper">
-            <button
-              aria-haspopup="listbox"
-              aria-labelledby="sort-instruction btn--dropdown"
-              aria-expanded="false"
-              class="btn btn--dropdown"
-              id="btn--dropdown"
-            >
-              Popularité
-              <img
-                alt=""
-                class="dropdown-arrow"
-                src="../medias/icons/dropdown-arrow-down.svg"
-              />
-            </button>
-            <ul
-              aria-labelledby="sort-instruction"
-              aria-activedescendant="Popularité"
-              class="dropdown"
-              role="listbox"
-              tabindex="-1"
-              hidden
-            >
-              <li aria-selected="true" id="Popularité" role="option">
-                Popularité
-                <img
-                  alt=""
-                  class="dropdown-arrow"
-                  src="../medias/icons/dropdown-arrow-up.svg"
-                />
-              </li>
-              <li aria-selected="false" id="Date" role="option">Date</li>
-              <li aria-selected="false" id="Titre" role="option">Titre</li>
-            </ul>
-          </div>
-        </div>
-        <div class="gallery__wrapper"></div>
-      </section>
-      <!-- GALLERY_SECTION-end ----------------------------------------------->
-    </main>
-    <!-- MAIN-end ------------------------------------------------------------>
-    <!-- MODAL_CONTACT-start ------------------------------------------------->
-    <div
-      class="modal-contact"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal__form__label"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <form class="modal-contact__form" action="" autocomplete="off" tabindex="-1">
-        <h1 class="modal-contact__form__title" id="modal__form__label" tabindex="-1">
-          Contactez-moi
-          <br />
-        </h1>
-        <label for="firstname">Prénom</label>
-        <input type="text" id="firstname" tabindex="-1" />
-        <label for="lastname">Nom</label>
-        <input type="text" id="lastname" tabindex="-1" />
-        <label for="email">Email</label>
-        <input type="email" id="email" tabindex="-1" />
-        <label for="message">Votre Message</label>
-        <textarea type="text" id="message" tabindex="-1"></textarea>
-        <input class="btn btn--form btn--submit" type="submit" tabindex="-1" />
-        <button aria-label="Close Form" class="btn btn--form btn--close" tabindex="-1">
-          <img role="button" src="../medias/icons/close.svg" alt="" />
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport"/>
+  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+  <meta name="PhotographerId" content="195"/>
+  <link href="../css/normalize.css" rel="stylesheet"/>
+  <link href="../css/pages.css" rel="stylesheet"/>
+  <title>Marcel Nikolic</title>
+</head>
+<body class="preload">
+<!-- HEADER-start -------------------------------------------------------->
+<header class="header header-photographer">
+  <a class="logo" href="../../index.html">
+    <img alt="Fisheye Home page" src="../medias/logo.svg"/>
+  </a>
+</header>
+<!-- HEADER-end ---------------------------------------------------------->
+<!-- MAIN-start ---------------------------------------------------------->
+<main class="main main-photographer">
+  <!-- INFO_SECTION-start ------------------------------------------------>
+  <section class="info"></section>
+  <!-- INFO_SECTION-end -------------------------------------------------->
+  <!-- GALLERY_SECTION-start --------------------------------------------->
+  <section aria-label="Photographies gallery" class="gallery">
+    <div class="gallery__sort">
+      <span class="gallery__sort__instruction" id="sort-instruction">
+        Trier par
+      </span>
+      <div class="gallery__sort__wrapper">
+        <button aria-haspopup="listbox"
+                aria-labelledby="sort-instruction btn--dropdown"
+                aria-expanded="false"
+                class="btn btn--dropdown" id="btn--dropdown">
+          Popularité
+          <img alt="" class="dropdown-arrow"
+               src="../medias/icons/dropdown-arrow-down.svg"/>
         </button>
-      </form>
-    </div>
-    <!-- MODAL_CONTACT-end --------------------------------------------------->
-    <!-- MODAL_LIGHTBOX-start ------------------------------------------------>
-    <div
-      class="modal-lightbox"
-      role="dialog"
-      aria-modal="true"
-      aria-hidden="true"
-      aria-label="Lightbox"
-      tabindex="-1"
-    >
-      <div class="lightbox">
-        <div class="lightbox__items">
-          <figure class="item" aria-roledescription="slide"></figure>
-          <div class="lightbox__items__controls">
-            <button
-              class="btn btn--lightbox btn--prev"
-              aria-label="Image précédente"
-              tabindex="-1"
-            >
-              <img src="../medias/icons/chevron_left-primary.svg" alt="" />
-            </button>
-            <button
-              class="btn btn--lightbox btn--next"
-              aria-label="Image suivante"
-              tabindex="-1"
-            >
-              <img src="../medias/icons/chevron_right-primary.svg" alt="" />
-            </button>
-            <button
-              class="btn btn--lightbox btn--close"
-              aria-label="Fermer la lightbox"
-              tabindex="-1"
-            >
-              <img src="../medias/icons/close-primary.svg" alt="" />
-            </button>
-          </div>
-        </div>
+        <ul aria-labelledby="sort-instruction"
+            aria-activedescendant="Popularité"
+            class="dropdown"
+            role="listbox"
+            tabindex="-1"
+            hidden>
+          <li aria-selected="true" id="Popularité" role="option">
+            Popularité
+            <img alt="" class="dropdown-arrow"
+                 src="../medias/icons/dropdown-arrow-up.svg"/>
+          </li>
+          <li aria-selected="false" id="Date" role="option">Date</li>
+          <li aria-selected="false" id="Titre" role="option">Titre</li>
+        </ul>
       </div>
     </div>
-    <!-- MODAL_LIGHTBOX-end -------------------------------------------------->
-  </body>
-  <script type="module" src="../../src/pages/photographer.mjs"></script>
+    <div class="gallery__wrapper"></div>
+  </section>
+  <!-- GALLERY_SECTION-end ----------------------------------------------->
+</main>
+<!-- MAIN-end ------------------------------------------------------------>
+<!-- MODAL_CONTACT-start ------------------------------------------------->
+<div class="modal-contact"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modal__form__label"
+     tabindex="-1"
+     aria-hidden="true">
+  <form class="modal-contact__form" action="" autocomplete="off" tabindex="-1">
+    <h1 class="modal-contact__form__title" id="modal__form__label"
+        tabindex="-1">
+      Contactez-moi<br/>
+    </h1>
+    <label for="firstname">Prénom</label>
+    <input type="text" id="firstname" tabindex="-1"/>
+    <label for="lastname">Nom</label>
+    <input type="text" id="lastname" tabindex="-1"/>
+    <label for="email">Email</label>
+    <input type="email" id="email" tabindex="-1"/>
+    <label for="message">Votre Message</label>
+    <textarea type="text" id="message" tabindex="-1"></textarea>
+    <input class="btn btn--form btn--submit" type="submit" tabindex="-1"/>
+    <button aria-label="Close Form"
+            class="btn btn--form btn--close"
+            tabindex="-1">
+      <img role="button" src="../medias/icons/close.svg" alt=""/>
+    </button>
+  </form>
+</div>
+<!-- MODAL_CONTACT-end --------------------------------------------------->
+<!-- MODAL_LIGHTBOX-start ------------------------------------------------>
+<div class="modal-lightbox"
+     role="dialog"
+     aria-modal="true"
+     aria-hidden="true"
+     aria-label="Lightbox"
+     tabindex="-1">
+  <div class="lightbox" aria-roledescription="slide">
+    <figure class="lightbox__wrapper"></figure>
+    <div class="lightbox__controls">
+      <button class="btn btn--lightbox btn--prev"
+              aria-label="Image précédente"
+              tabindex="-1">
+        <img src="../medias/icons/chevron_left-primary.svg" alt=""/>
+      </button>
+      <button class="btn btn--lightbox btn--next"
+              aria-label="Image suivante"
+              tabindex="-1">
+        <img src="../medias/icons/chevron_right-primary.svg" alt=""/>
+      </button>
+      <button class="btn btn--lightbox btn--close"
+              aria-label="Fermer la lightbox"
+              tabindex="-1">
+        <img src="../medias/icons/close-primary.svg" alt=""/>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- MODAL_LIGHTBOX-end -------------------------------------------------->
+</body>
+<script type="module" src="../../src/pages/photographer.mjs"></script>
 </html>

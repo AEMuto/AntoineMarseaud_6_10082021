@@ -238,6 +238,7 @@
   display: flex;
   width: 100vw;
   height: 100vh;
+  align-items: center;
   justify-content: center;
   background: white;
   inset: 0;
@@ -245,69 +246,72 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.8s;
+
   .lightbox {
     position: relative;
-    display: grid;
-    max-width: 100vw;
-    height: 100vh;
-    place-items: center;
-    &__items {
-      position: relative;
-      display: grid;
-      place-items: center;
-      &__controls {
-        position: absolute;
-        z-index: 2;
-        top: 50%;
-        left: 50%;
-        width: calc(
-          340 * (1px - ((100vw - 375px) / 1065)) + 1200 * ((100vw - 375px) / 1065)
-        );
-        max-width: 1200px;
-        height: calc(
-          300 * (1px - ((100vw - 375px) / 1065)) + 900 * ((100vw - 375px) / 1065)
-        );
-        max-height: 85vh;
-        transform: translateX(-50%) translateY(-50%);
-        & > * {
-          position: absolute;
-          cursor: pointer;
-        }
-      }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox__item {
+    display: flex;
+    overflow: hidden;
+    max-width: min(85vw, 1300px);
+    height: 50vh;
+    justify-content: center;
+    border-radius: 5px;
+    @include responsive(landscape) {
+      height: 85vh;
     }
-    .item {
+    @include responsive(sm) {
+      height: 85vh;
+    }
+    img {
+      width: auto;
+      height: auto;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+  .lightbox__title {
+    align-self: start;
+    margin-top: 0.5rem;
+    color: $primary;
+    font-size: clamp(0.875rem, 2vw, 1.5rem);
+  }
+  .lightbox__controls {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 120%;
+    max-width: 95vw;
+    height: 100%;
+    pointer-events: all;
+    @include responsive(sm) {
+      //width: ;
+      max-width: min(95vw, 1500px);
+    }
+    & > * {
       position: absolute;
-      z-index: 3;
+      background: none;
     }
-    .item__wrapper {
-      position: relative;
-      display: flex;
-      overflow: hidden;
-      width: calc(
-        290 * (1px - ((100vw - 375px) / 1065)) + 1050 * ((100vw - 375px) / 1065)
-      );
-      max-width: 1050px;
-      height: calc(
-        290 * (1px - ((100vw - 375px) / 1065)) + 900 * ((100vw - 375px) / 1065)
-      );
-      max-height: 85vh;
-      border-radius: 5px;
-      // border: solid yellow 5px;
+    .btn:nth-child(-n + 2) {
+      top: 50%;
+      transform: translateY(-50%);
       img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-      video {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
+        width: clamp(13px, 2.5vw, 48px);
       }
     }
-    .item__title {
-      margin-top: 0.5rem;
-      color: $primary;
-      font-size: clamp(0.875rem, 2vw, 1.5rem);
+    .btn:nth-child(n + 2) {
+      right: 0;
+    }
+    .btn--close img {
+      width: clamp(14px, 3vw, 42px);
     }
   }
 }
