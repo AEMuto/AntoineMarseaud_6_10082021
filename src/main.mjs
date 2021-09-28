@@ -18,9 +18,6 @@ async function initialize() {
   await verifySessionStorage();
 
   const main = document.querySelector(".main");
-  const scrollToTopContainer = document.querySelector(".scrollToTop-container");
-  const scrollToTopButton = scrollToTopContainer.querySelector('.btn--scrollToTop');
-  let tags;
 
   // Chercher les données présentes dans le sessionStorage
   const photographersState = getPhotographers();
@@ -35,7 +32,7 @@ async function initialize() {
   cardsArray.forEach((card) => main.insertAdjacentHTML("afterbegin", card.getTemplate()));
 
   // Variable post-insertion
-  tags = Array.from(document.querySelectorAll(".btn--tag"));
+  const tags = Array.from(document.querySelectorAll(".btn--tag"));
 
   // Par défaut l'élément .card-photographer à une opacité de 0
   // Pour chacun d'entre eux rajouter la classe .loaded
@@ -46,6 +43,7 @@ async function initialize() {
   }
 
   // Filtrage des Photographes lors du click sur un tag *******************************************
+
   let filteredBy;
 
   function displayAllCards() {
@@ -77,14 +75,17 @@ async function initialize() {
   // Intersection observer pour fonctionnalité du bouton "Remonter" *******************************
   // ! fonctionnalité indisponible pour les possesseurs de lecteur d'écran !
 
+  const scrollToTopContainer = document.querySelector(".scrollToTop-container");
+  const scrollToTopButton = scrollToTopContainer.querySelector(".btn--scrollToTop");
+
   function scrollToTop(entries) {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        scrollToTopButton.classList.remove('visible');
+        scrollToTopButton.classList.remove("visible");
       } else {
-        scrollToTopButton.classList.add('visible');
+        scrollToTopButton.classList.add("visible");
       }
-    })
+    });
   }
 
   const scrollToTopObserver = new IntersectionObserver(scrollToTop, {
@@ -94,18 +95,13 @@ async function initialize() {
 
   scrollToTopObserver.observe(scrollToTopContainer);
 
-  scrollToTopButton.addEventListener('click', () => {
-    scrollToTopContainer.focus();
-  });
+  scrollToTopButton.addEventListener("click", () => scrollToTopContainer.focus());
 
   // Fonctionnalité pour le bouton "Passer au contenu" (uniquement visible pour lecteur d'écran)
 
-  const goToContentButton = document.querySelector('.goToContent');
+  const goToContentButton = document.querySelector(".goToContent");
 
-  goToContentButton.addEventListener('click', () => {
-    main.focus();
-  })
-
+  goToContentButton.addEventListener("click", () => main.focus());
 }
 
 initialize();

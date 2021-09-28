@@ -25,7 +25,9 @@ async function initialize() {
   const lightboxMediaContainer = lightboxModal.querySelector(".lightbox__wrapper");
 
   const contactModal = document.querySelector(".modal-contact");
-  const contactPhotographerName = contactModal.querySelector(".modal-contact__form__title");
+  const contactPhotographerName = contactModal.querySelector(
+    ".modal-contact__form__title"
+  );
 
   // States
   let photographerState = getPhotographers(photographerId);
@@ -34,17 +36,17 @@ async function initialize() {
   let tempMediaState;
 
   // Instanciation
-  let infoHeader = templateFactory.createInstance(photographerState, 'infoHeader');
+  let infoHeader = templateFactory.createInstance(photographerState, "infoHeader");
   let galleryCardInstances = [];
   let lightboxMediaInstances = [];
-  mediaState.forEach(media => {
-    galleryCardInstances.push(templateFactory.createInstance(media, 'card'));
-    lightboxMediaInstances.push(templateFactory.createInstance(media, 'lightbox'))
+  mediaState.forEach((media) => {
+    galleryCardInstances.push(templateFactory.createInstance(media, "card"));
+    lightboxMediaInstances.push(templateFactory.createInstance(media, "lightbox"));
   });
 
   // Insertion
   photographerInfoSection.insertAdjacentHTML("afterbegin", infoHeader.getTemplate());
-  galleryCardInstances.forEach(card =>
+  galleryCardInstances.forEach((card) =>
     gallery.insertAdjacentHTML("beforeend", card.getTemplate())
   );
   contactPhotographerName.insertAdjacentHTML("beforeend", photographerState.name);
@@ -58,48 +60,49 @@ async function initialize() {
   // Mis à jour de l'état *************************************************************************
 
   function updateState() {
-    if (!tempPhotographerState) {
-      tempPhotographerState = photographerState;
-    }
-    if (!tempMediaState) {
-      tempMediaState = mediaState;
-    }
-
+    // MàJ ne se fait qu'à partir d'un état temporaire
+    !tempPhotographerState ? tempPhotographerState = photographerState : "";
+    !tempMediaState ? tempMediaState = mediaState : "";
+    // Reset de l'html et des instances
     photographerInfoSection.innerHTML = "";
     gallery.innerHTML = "";
     galleryCardInstances = [];
     lightboxMediaInstances = [];
-
-    infoHeader = templateFactory.createInstance(tempPhotographerState, 'infoHeader');
-    tempMediaState.forEach(media => {
-      galleryCardInstances.push(templateFactory.createInstance(media, 'card'));
-      lightboxMediaInstances.push(templateFactory.createInstance(media, 'lightbox'))
+    // Ré-instanciation des templates
+    infoHeader = templateFactory.createInstance(tempPhotographerState, "infoHeader");
+    tempMediaState.forEach((media) => {
+      galleryCardInstances.push(templateFactory.createInstance(media, "card"));
+      lightboxMediaInstances.push(templateFactory.createInstance(media, "lightbox"));
     });
-
+    // Ré-insertion des templates
     photographerInfoSection.insertAdjacentHTML("afterbegin", infoHeader.getTemplate());
-    galleryCardInstances.forEach(card =>
+    galleryCardInstances.forEach((card) =>
       gallery.insertAdjacentHTML("beforeend", card.getTemplate())
     );
-
+    // Ré-initialisation des variables post-insertions
     tags = photographerInfoSection.querySelectorAll(".btn--tag");
     galleryCards = gallery.querySelectorAll(".card-photo");
-    const lastFocusedLikeButton = gallery.querySelector('[data-lastfocused="true"]');
-    const lastFocusedTagButton = photographerInfoSection.querySelector(`[aria-selected="true"]`)
-      ? photographerInfoSection.querySelector(`[aria-selected="true"]`)
-      : photographerInfoSection.querySelector(`[data-lastselected="true"]`);
     contactOpenButton = Array.from(photographerInfoSection.querySelectorAll(".btn--cta"));
-
+    // Rajout des listeners (ceux de l'état initial sont détruit lors du reset
     tags.forEach((tag) => tag.addEventListener("click", filterMedias));
-
     galleryCards.forEach((img) => {
       img.addEventListener("click", handleGalleryCardClicks);
     });
-
     contactOpenButton.forEach((button) => {
       button.addEventListener("click", openContactForm);
     });
 
-    lastFocusedLikeButton ? lastFocusedLikeButton.focus() : (lastFocusedTagButton ? lastFocusedTagButton.focus() : '');
+    // Garder le focus sur le dernier élément focusé
+    const lastFocusedLikeButton = gallery.querySelector('[data-lastfocused="true"]');
+    const lastFocusedTagButton = photographerInfoSection.querySelector(
+      `[aria-selected="true"]`
+    ) ? photographerInfoSection.querySelector(`[aria-selected="true"]`)
+      : photographerInfoSection.querySelector(`[data-lastselected="true"]`);
+    lastFocusedLikeButton
+      ? lastFocusedLikeButton.focus()
+      : lastFocusedTagButton
+      ? lastFocusedTagButton.focus()
+      : "";
   }
 
   document.addEventListener("stateChanged", updateState);
@@ -110,9 +113,22 @@ async function initialize() {
   let firstFocusableEl;
   let lastFocusableEl;
 
-  function addTrapFocus(element) {
-    const selector = element.className.split(' ')[0];
-    focusableEls = Array.from(element.querySelectorAll(`.${selector} [tabindex="0"]`));
+  /**
+   * Lorsque l'on ouvre une modale on ne doit pouvoir
+   * tabulé qu'à travers les éléments de celles-ci.
+   * Cette fonction nous obtient ces éléments.
+   * 1. Les éléments nécessite d'avoir un tabindex de 0
+   * 2. La gestion des keyboards events est défini dans
+   * une fonction indépendante à chaque modale :
+   * - handleLightboxKeysBehaviour()
+   * - handleContactKeysBehaviour()
+   * Se base sur la notion de trapFocus
+   * cf: https://hiddedevries.nl/en/blog/2017-01-29-using-javascript-to-trap-focus-in-an-element
+   * @param modal
+   */
+  function getAllowedFocusableElemsIn(modal) {
+    const selector = modal.className.split(" ")[0];
+    focusableEls = Array.from(modal.querySelectorAll(`.${selector} [tabindex="0"]`));
     firstFocusableEl = focusableEls[0];
     lastFocusableEl = focusableEls[focusableEls.length - 1];
   }
@@ -142,16 +158,16 @@ async function initialize() {
   }
 
   function toggleFocusableOnModal(element) {
-    const selector = element.className.split(' ')[0];
+    const selector = element.className.split(" ")[0];
     const elements = Array.from(element.querySelectorAll(`.${selector} [tabindex]`));
     toggleAriaHidden(element);
     toggleTabindex(element);
-    elements.forEach(element => toggleTabindex(element));
+    elements.forEach((element) => toggleTabindex(element));
   }
 
   function toggleFocusableOnLightboxMediaContainer() {
     const elements = Array.from(lightboxMediaContainer.querySelectorAll(`[tabindex]`));
-    elements.forEach(element => toggleTabindex(element));
+    elements.forEach((element) => toggleTabindex(element));
   }
 
   // Gallery's Medias Sorting *********************************************************************
@@ -161,10 +177,8 @@ async function initialize() {
   const sortingMenuOptions = Array.from(sortingMenu.querySelectorAll('[role="option"]'));
 
   let selectedSort = "popularity";
-  let dropdownVisible = false;
 
   function toggleDropdown() {
-    dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingButton);
     sortingMenu.focus();
@@ -180,7 +194,6 @@ async function initialize() {
     let index;
     switch (e.key) {
       case "Tab":
-        dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
         galleryCards[0].focus();
@@ -188,7 +201,6 @@ async function initialize() {
         document.removeEventListener("click", outsideClick);
         break;
       case "Escape":
-        dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
         sortingButton.focus();
@@ -199,7 +211,6 @@ async function initialize() {
         e.preventDefault();
         sortingButton.firstChild.textContent = selectedSort;
         sortMedia(selectedSort);
-        dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
         sortingButton.focus();
@@ -210,7 +221,6 @@ async function initialize() {
         e.preventDefault();
         sortingButton.firstChild.textContent = selectedSort;
         sortMedia(selectedSort);
-        dropdownVisible = !dropdownVisible;
         sortingMenu.hidden = !sortingMenu.hidden;
         toggleAriaExpanded(sortingButton);
         sortingButton.focus();
@@ -219,25 +229,33 @@ async function initialize() {
         break;
       case "ArrowDown":
         e.preventDefault();
-        index = sortingMenuOptions.findIndex(option => option.getAttribute('aria-selected') === 'true');
+        index = sortingMenuOptions.findIndex(
+          (option) => option.getAttribute("aria-selected") === "true"
+        );
         toggleAriaSelected(sortingMenuOptions[index]);
         index++;
-        if (index > sortingMenuOptions.length - 1) { index = 0 }
+        if (index > sortingMenuOptions.length - 1) {
+          index = 0;
+        }
         toggleAriaSelected(sortingMenuOptions[index]);
         sortingMenuOptions[index].focus();
         selectedSort = sortingMenuOptions[index].id;
-        sortingMenu.setAttribute('aria-activedescendant', selectedSort);
+        sortingMenu.setAttribute("aria-activedescendant", selectedSort);
         break;
       case "ArrowUp":
         e.preventDefault();
-        index = sortingMenuOptions.findIndex(option => option.getAttribute('aria-selected') === 'true');
+        index = sortingMenuOptions.findIndex(
+          (option) => option.getAttribute("aria-selected") === "true"
+        );
         toggleAriaSelected(sortingMenuOptions[index]);
         index--;
-        if (index < 0) { index = sortingMenuOptions.length - 1 }
+        if (index < 0) {
+          index = sortingMenuOptions.length - 1;
+        }
         toggleAriaSelected(sortingMenuOptions[index]);
         sortingMenuOptions[index].focus();
         selectedSort = sortingMenuOptions[index].id;
-        sortingMenu.setAttribute('aria-activedescendant', selectedSort);
+        sortingMenu.setAttribute("aria-activedescendant", selectedSort);
         break;
       default:
         break;
@@ -247,7 +265,6 @@ async function initialize() {
   function outsideClick(e) {
     const isOutside = !e.target.closest(".dropdown");
     if (isOutside) {
-      dropdownVisible = !dropdownVisible;
       sortingMenu.hidden = !sortingMenu.hidden;
       toggleAriaExpanded(sortingButton);
       document.removeEventListener("click", outsideClick);
@@ -260,7 +277,7 @@ async function initialize() {
   function sortMedia(sortBy) {
     switch (sortBy) {
       case "Popularité":
-        if(tempMediaState) {
+        if (tempMediaState) {
           tempMediaState.sort((a, b) => b.likes - a.likes);
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
@@ -270,27 +287,31 @@ async function initialize() {
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Date":
-        if(tempMediaState) {
-          tempMediaState.sort((a, b) => a.date < b.date ? 1 : b.date < a.date ? -1 : 0);
+        if (tempMediaState) {
+          tempMediaState.sort((a, b) => (a.date < b.date ? 1 : b.date < a.date ? -1 : 0));
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
         tempMediaState = mediaState;
-        tempMediaState.sort((a, b) => a.date < b.date ? 1 : b.date < a.date ? -1 : 0);
+        tempMediaState.sort((a, b) => (a.date < b.date ? 1 : b.date < a.date ? -1 : 0));
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       case "Titre":
         if (tempMediaState) {
-          tempMediaState.sort((a, b) => a.title > b.title ? 1 : b.title > a.title ? -1 : 0);
+          tempMediaState.sort((a, b) =>
+            a.title > b.title ? 1 : b.title > a.title ? -1 : 0
+          );
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
         }
         tempMediaState = mediaState;
-        tempMediaState.sort((a, b) => a.title > b.title ? 1 : b.title > a.title ? -1 : 0);
+        tempMediaState.sort((a, b) =>
+          a.title > b.title ? 1 : b.title > a.title ? -1 : 0
+        );
         document.dispatchEvent(new CustomEvent("stateChanged"));
         break;
       default:
-        if(tempMediaState) {
+        if (tempMediaState) {
           tempMediaState.sort((a, b) => b.likes - a.likes);
           document.dispatchEvent(new CustomEvent("stateChanged"));
           break;
@@ -303,14 +324,13 @@ async function initialize() {
   }
 
   function handleClickOptions(e) {
-    sortingMenuOptions.forEach(option => {
+    sortingMenuOptions.forEach((option) => {
       option.setAttribute("aria-selected", "false");
     });
     e.currentTarget.setAttribute("aria-selected", "true");
     sortingButton.firstChild.textContent = e.currentTarget.textContent;
     selectedSort = e.currentTarget.id;
     sortMedia(selectedSort);
-    dropdownVisible = !dropdownVisible;
     sortingMenu.hidden = !sortingMenu.hidden;
     toggleAriaExpanded(sortingButton);
     sortingButton.focus();
@@ -327,11 +347,11 @@ async function initialize() {
   let filteredBy;
 
   function filterMedias(e) {
-    mediaState.forEach(media => media.lastFocused = false);
+    mediaState.forEach((media) => (media.lastFocused = false));
     const tagValue = e.currentTarget.dataset.value;
-    tags.forEach(tag => tag.setAttribute('aria-selected', 'false'));
+    tags.forEach((tag) => tag.setAttribute("aria-selected", "false"));
     if (!filteredBy || filteredBy !== tagValue) {
-      e.currentTarget.setAttribute('aria-selected', 'true');
+      e.currentTarget.setAttribute("aria-selected", "true");
       filteredBy = tagValue;
       if (!tempMediaState && !tempPhotographerState) {
         tempMediaState = mediaState.filter((media) => media.tags.includes(tagValue));
@@ -346,9 +366,9 @@ async function initialize() {
         document.dispatchEvent(new CustomEvent("stateChanged"));
       }
     } else {
-      e.currentTarget.setAttribute('aria-selected', 'false');
+      e.currentTarget.setAttribute("aria-selected", "false");
       filteredBy = undefined;
-      photographerState.selectedTag = '';
+      photographerState.selectedTag = "";
       photographerState.lastSelectedTag = tagValue;
       tempPhotographerState = photographerState;
       tempMediaState = mediaState;
@@ -391,46 +411,55 @@ async function initialize() {
     const id = lightboxMediaInstances.find((media) => media.nextMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    setTimeout(() => {
+      lightboxMediaContainer.firstElementChild.classList.add("loaded");
+    }, 10);
     toggleFocusableOnLightboxMediaContainer();
-    addTrapFocus(lightboxModal);
-    lightboxMediaContainer.querySelector('img')
-      ? lightboxMediaContainer.querySelector('img').focus()
-      : lightboxMediaContainer.querySelector('video').focus();
+    getAllowedFocusableElemsIn(lightboxModal);
+    lightboxMediaContainer.querySelector("img")
+      ? lightboxMediaContainer.querySelector("img").focus()
+      : lightboxMediaContainer.querySelector("video").focus();
   }
 
   function prevMedia() {
     const id = lightboxMediaInstances.find((media) => media.prevMedia).id;
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
+    setTimeout(() => {
+      lightboxMediaContainer.firstElementChild.classList.add("loaded");
+    }, 10);
     toggleFocusableOnLightboxMediaContainer();
-    addTrapFocus(lightboxModal);
-    lightboxMediaContainer.querySelector('img')
-      ? lightboxMediaContainer.querySelector('img').focus()
-      : lightboxMediaContainer.querySelector('video').focus();
+    getAllowedFocusableElemsIn(lightboxModal);
+    lightboxMediaContainer.querySelector("img")
+      ? lightboxMediaContainer.querySelector("img").focus()
+      : lightboxMediaContainer.querySelector("video").focus();
   }
 
   function closeLightbox() {
-    lightboxMediaContainer.innerHTML = '';
+    lightboxMediaContainer.innerHTML = "";
     resetMedias();
     toggleFocusableOnModal(lightboxModal);
     lightboxModal.classList.remove("open");
     lastGalleryCardFocused.focus();
-    lightboxModal.removeEventListener('keydown', handleLightboxKeysBehaviour);
+    lightboxModal.removeEventListener("keydown", handleLightboxKeysBehaviour);
   }
 
   function openLightbox(e) {
     const mediaId = parseInt(e.currentTarget.dataset.id);
     lightboxMediaContainer.innerHTML = selectMedia(mediaId);
+    setTimeout(() => {
+      lightboxMediaContainer.firstElementChild.classList.add("loaded");
+    }, 10);
     lightboxModal.classList.add("open");
     toggleFocusableOnModal(lightboxModal);
-    addTrapFocus(lightboxModal);
+    getAllowedFocusableElemsIn(lightboxModal);
     lightboxModal.focus();
-    lightboxModal.addEventListener('keydown', handleLightboxKeysBehaviour);
+    lightboxModal.addEventListener("keydown", handleLightboxKeysBehaviour);
   }
 
   function incrementLike(e) {
     const mediaId = parseInt(e.currentTarget.dataset.id);
-    mediaState.forEach(media => media.lastFocused = false);
+    mediaState.forEach((media) => (media.lastFocused = false));
     const media = mediaState.find((media) => media.id === mediaId);
     if (media.liked) {
       media.lastFocused = true;
@@ -459,30 +488,30 @@ async function initialize() {
   }
 
   function handleLightboxKeysBehaviour(e) {
-    const isTabPressed = (e.key === 'Tab');
+    const isTabPressed = e.key === "Tab";
     if (!isTabPressed) {
       switch (e.key) {
-        case 'Enter':
+        case "Enter":
           e.preventDefault();
-          if (e.target.className.includes('btn--close')) {
+          if (e.target.className.includes("btn--close")) {
             closeLightbox();
           }
-          if (e.target.className.includes('btn--prev')) {
+          if (e.target.className.includes("btn--prev")) {
             prevMedia();
           }
-          if (e.target.className.includes('btn--next')) {
+          if (e.target.className.includes("btn--next")) {
             nextMedia();
           }
           break;
-        case 'Escape':
+        case "Escape":
           closeLightbox();
           e.preventDefault();
           break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
           prevMedia();
           e.preventDefault();
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           nextMedia();
           e.preventDefault();
           break;
@@ -490,12 +519,12 @@ async function initialize() {
           break;
       }
     }
-    if (e.shiftKey) /* shift + tab */ {
-      if (document.activeElement === firstFocusableEl) {
+    if (e.shiftKey) {
+      /* shift + tab */ if (document.activeElement === firstFocusableEl) {
         lastFocusableEl.focus();
         e.preventDefault();
       }
-    } else /* tab */ {
+    } /* tab */ else {
       if (document.activeElement === lastFocusableEl) {
         firstFocusableEl.focus();
         e.preventDefault();
@@ -513,74 +542,76 @@ async function initialize() {
 
   // Contact Modal ********************************************************************************
 
-  const contactModalForm = contactModal.querySelector('.modal-contact__form');
-  const contactModalFormInputs = contactModalForm.querySelectorAll('[type="text"], [type="email"]');
+  const contactModalForm = contactModal.querySelector(".modal-contact__form");
+  const contactModalFormInputs = contactModalForm.querySelectorAll(
+    '[type="text"], [type="email"]'
+  );
   const contactSubmitButton = contactModalForm.querySelector(".btn--submit");
   const contactCloseButton = contactModal.querySelector(".btn--close");
 
   let currentContactOpenButton;
   let clientInputs = {
-    firstname: '',
-    lastname: '',
-    email: '',
-    message: ''
-  }
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+  };
 
   function openContactForm(e) {
     currentContactOpenButton = e.target;
     contactModal.classList.add("open");
     toggleFocusableOnModal(contactModal);
     contactModal.focus();
-    addTrapFocus(contactModal);
-    contactModal.addEventListener('keydown', handleContactKeysBehaviour);
+    getAllowedFocusableElemsIn(contactModal);
+    contactModal.addEventListener("keydown", handleContactKeysBehaviour);
   }
 
   function closeContactForm() {
     toggleFocusableOnModal(contactModal);
     contactModal.classList.remove("open");
     currentContactOpenButton.focus();
-    contactModal.removeEventListener('keydown', handleContactKeysBehaviour);
+    contactModal.removeEventListener("keydown", handleContactKeysBehaviour);
   }
 
   function handleContactKeysBehaviour(e) {
-    const isTabPressed = (e.key === 'Tab');
+    const isTabPressed = e.key === "Tab";
     if (!isTabPressed) {
       switch (e.key) {
-        case 'Enter':
+        case "Enter":
           e.preventDefault();
-          if (e.target.nodeName === 'INPUT' || e.target.nodeName === 'TEXTAREA') {
+          if (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA") {
             handleSubmit();
           }
-          if(e.target.className.includes('btn--close')) {
+          if (e.target.className.includes("btn--close")) {
             closeContactForm();
           }
           break;
-        case 'Escape':
+        case "Escape":
           e.preventDefault();
           closeContactForm();
           break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
           e.preventDefault();
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           e.preventDefault();
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           break;
         default:
           break;
       }
     }
-    if (e.shiftKey) /* shift + tab */ {
-      if (document.activeElement === firstFocusableEl) {
+    if (e.shiftKey) {
+      /* shift + tab */ if (document.activeElement === firstFocusableEl) {
         lastFocusableEl.focus();
         e.preventDefault();
       }
-    } else /* tab */ {
+    } /* tab */ else {
       if (document.activeElement === lastFocusableEl) {
         firstFocusableEl.focus();
         e.preventDefault();
@@ -590,26 +621,26 @@ async function initialize() {
 
   function handleSubmit() {
     console.log(clientInputs);
-    contactModalFormInputs.forEach(input => input.value = '');
+    contactModalFormInputs.forEach((input) => (input.value = ""));
     setTimeout(() => closeContactForm(), 250);
   }
 
   function handleClientInput(e) {
     switch (e.target.id) {
-      case 'firstname':
+      case "firstname":
         clientInputs.firstname = e.target.value;
         break;
-      case 'lastname':
+      case "lastname":
         clientInputs.lastname = e.target.value;
         break;
-      case 'email':
+      case "email":
         clientInputs.email = e.target.value;
         break;
-      case 'message':
+      case "message":
         clientInputs.message = e.target.value;
         break;
       default:
-        console.log('Wrong Input');
+        console.log("Wrong Input");
     }
   }
 
@@ -625,12 +656,39 @@ async function initialize() {
     return isOutside && closeContactForm();
   });
 
-  contactModalFormInputs.forEach(input => input.addEventListener('change', handleClientInput));
+  contactModalFormInputs.forEach((input) =>
+    input.addEventListener("change", handleClientInput)
+  );
 
-  contactModalForm.addEventListener('submit', handleSubmit);
+  contactModalForm.addEventListener("submit", handleSubmit);
 
-  contactSubmitButton.addEventListener('click', handleSubmit);
+  contactSubmitButton.addEventListener("click", handleSubmit);
 
+  // Intersection observer pour fonctionnalité du bouton "Remonter" *******************************
+  // ! fonctionnalité indisponible pour les possesseurs de lecteur d'écran !
+  const scrollToTopContainer = document.querySelector(".scrollToTop-container");
+  const scrollToTopButton = scrollToTopContainer.querySelector(".btn--scrollToTop");
+
+  function scrollToTop(entries) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        scrollToTopButton.classList.remove("visible");
+      } else {
+        scrollToTopButton.classList.add("visible");
+      }
+    });
+  }
+
+  const scrollToTopObserver = new IntersectionObserver(scrollToTop, {
+    root: null,
+    threshold: 0,
+  });
+
+  scrollToTopObserver.observe(scrollToTopContainer);
+
+  scrollToTopButton.addEventListener("click", () => {
+    scrollToTopContainer.focus();
+  });
 }
 
 initialize();

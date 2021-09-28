@@ -103,6 +103,7 @@ button {
 
 .btn.btn--scrollToTop {
   position: fixed;
+  z-index: 2;
   padding: 0.5rem 0.65rem;
   margin-top: 1rem;
   background: $tertiary;
