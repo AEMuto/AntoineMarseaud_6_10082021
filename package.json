@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/AEMuto/AntoineMarseaud_6_10082021#readme",
   "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
     "stylelint": "^13.13.1",
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-sass-guidelines": "^8.0.0",

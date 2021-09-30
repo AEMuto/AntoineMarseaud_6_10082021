@@ -1,4 +1,6 @@
-export function Photography({ id, photographerId, title, image, tags, lastFocused,liked, likes, date, desc }) {
+export function Photography({
+  id, photographerId, title, image, tags, lastFocused, liked, likes, date, desc,
+}) {
   this.id = id;
   this.photographerId = photographerId;
   this.title = title;
@@ -8,11 +10,10 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
   this.likes = likes;
   this.date = date;
   this.desc = desc;
-  this.imageSlug = image.split(".")[0];
+  this.imageSlug = image.split('.')[0];
   this.imagePath = `../medias/${this.photographerId}/${this.imageSlug}.webp`;
   this.thumbnailPath = `../medias/${this.photographerId}/thumbnail-${this.imageSlug}.webp`;
-  this.getTemplate = () => {
-    return `
+  this.getTemplate = () => `
     <div class="card card-photo"
          data-liked="${this.liked}"
          data-desc="${this.desc}"
@@ -34,16 +35,17 @@ export function Photography({ id, photographerId, title, image, tags, lastFocuse
                   data-behaviour="incrementLike"
                   data-lastFocused="${this.lastFocused}">
             <img alt="likes"
-                 src=${this.liked ? "../medias/icons/like-primary.svg" : "../medias/icons/like-primary-stroke.svg"}
+                 src=${this.liked ? '../medias/icons/like-primary.svg' : '../medias/icons/like-primary-stroke.svg'}
                  data-behaviour="incrementLike"/>
           </button>
         </span>
       </p>
     </div>`;
-  }
 }
 
-export function Video({ id, photographerId, title, video, tags, lastFocused, liked, likes, date, desc }) {
+export function Video({
+  id, photographerId, title, video, tags, lastFocused, liked, likes, date, desc,
+}) {
   this.id = id;
   this.photographerId = photographerId;
   this.title = title;
@@ -53,11 +55,10 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
   this.likes = likes;
   this.date = date;
   this.desc = desc;
-  this.videoSlug = video.split(".")[0];
+  this.videoSlug = video.split('.')[0];
   this.videoPath = `../medias/${this.photographerId}/${this.videoSlug}.webp`;
   this.thumbnailPath = `../medias/${this.photographerId}/thumbnail-${this.videoSlug}.webp`;
-  this.getTemplate = () => {
-    return `
+  this.getTemplate = () => `
     <div class="card card-photo"
          data-liked="${this.liked}"
          data-desc="${this.desc}"
@@ -79,27 +80,27 @@ export function Video({ id, photographerId, title, video, tags, lastFocused, lik
                   data-behaviour="incrementLike"
                   data-lastFocused="${this.lastFocused}">
             <img alt="likes"
-                 src=${this.liked ? "../medias/icons/like-primary.svg" : "../medias/icons/like-primary-stroke.svg"}
+                 src=${this.liked ? '../medias/icons/like-primary.svg' : '../medias/icons/like-primary-stroke.svg'}
                  data-behaviour="incrementLike"/>
           </button>
         </span>
       </p>
     </div>`;
-  }
 }
 
-export function PhotographerCard({ city, country, name, portrait, price, tagline, tags }) {
+export function PhotographerCard({
+  city, country, name, portrait, price, tagline, tags,
+}) {
   this.city = city;
   this.country = country;
   this.name = name;
   this.price = price;
   this.tagline = tagline;
   this.tags = tags;
-  this.nameSlug = name.toLowerCase().split(" ").join("-");
-  this.portraitSlug = portrait.split(".")[0];
-  this.getTemplate = () => {
-    return `
-    <div class="card card-photographer" data-tags="${this.tags.map(tag => tag).join(' ')}">
+  this.nameSlug = name.toLowerCase().split(' ').join('-');
+  this.portraitSlug = portrait.split('.')[0];
+  this.getTemplate = () => `
+    <div class="card card-photographer" data-tags="${this.tags.map((tag) => tag).join(' ')}">
       <a
         class="card-photographer__heading"
         href="public/pages/${this.nameSlug}.html"
@@ -128,12 +129,10 @@ export function PhotographerCard({ city, country, name, portrait, price, tagline
         </li>
       </ul>
       <nav class="card-photographer__tags" aria-label="${this.name} Tags">
-        ${this.tags.map(tag => {
-            return `
+        ${this.tags.map((tag) => `
             <button class="btn btn--tag" aria-label="${tag} tag" data-value="${tag}">
               <span aria-hidden="true">#</span>${tag}
-            </button>`;}).join("")}
+            </button>`).join('')}
       </nav>
     </div>`;
-  }
 }

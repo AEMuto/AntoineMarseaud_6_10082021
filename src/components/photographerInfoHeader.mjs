@@ -1,4 +1,6 @@
-export function PhotographerInfoHeader({ city, country, name, portrait, price, tagline, tags, likes, selectedTag, lastSelectedTag }) {
+export default function PhotographerInfoHeader({
+  city, country, name, portrait, price, tagline, tags, likes, selectedTag, lastSelectedTag,
+}) {
   this.city = city;
   this.country = country;
   this.name = name;
@@ -8,9 +10,8 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
   this.likes = likes;
   this.selectedTag = selectedTag;
   this.lastSelectedTag = lastSelectedTag;
-  this.portraitSlug = portrait.split(".")[0];
-  this.getTemplate = () => {
-    return `
+  this.portraitSlug = portrait.split('.')[0];
+  this.getTemplate = () => `
     <h1 class="info__name" tabindex="0">${this.name}</h1>
     <div tabindex="0">
       <p class="info__location">
@@ -23,15 +24,14 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
       </p>
     </div>
     <nav aria-label="Photography categories tags" class="info__tags">
-      ${this.tags.map(tag => {
-          return `
+      ${this.tags.map((tag) => `
           <button aria-label="Filter by ${tag} tag"
                   class="btn btn--tag"
                   data-value="${tag}"
                   data-lastSelected="${(this.lastSelectedTag === tag)}"
                   aria-selected="${(this.selectedTag === tag)}">
             <span aria-hidden="true">#</span>${tag}
-          </button>`;}).join("")}
+          </button>`).join('')}
     </nav>
     <button class="btn btn--cta btn--mobile">Contactez-moi</button>
     <button class="btn btn--cta btn--desktop">Contactez-moi</button>
@@ -56,5 +56,4 @@ export function PhotographerInfoHeader({ city, country, name, portrait, price, t
         </span>
       </div>
     </aside>`;
-  }
 }
