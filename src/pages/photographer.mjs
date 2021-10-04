@@ -1,4 +1,4 @@
-import { getPhotographers, verifySessionStorage } from '../utils/photographerService.mjs';
+import { getPhotographers, verifySessionStorage, wait } from '../utils/photographerService.mjs';
 import templateFactory from '../components/factory.mjs';
 
 // Enlever la classe preload sur body après chargement de la page
@@ -399,39 +399,36 @@ async function initialize() {
     });
   }
 
-  function nextMedia() {
+  async function nextMedia() {
     const { id } = lightboxMediaInstances.find((media) => media.nextMedia);
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
-    setTimeout(() => {
-      lightboxMediaContainer.firstElementChild.classList.add('loaded');
-    }, 10);
+    await wait(10);
     toggleFocusableOnLightboxMediaContainer();
     getAllowedFocusableElemsIn(lightboxModal);
     lightboxMediaContainer.querySelector('img')
-      ? lightboxMediaContainer.querySelector('img').focus()
-      : lightboxMediaContainer.querySelector('video').focus();
+      ? setTimeout(() => lightboxMediaContainer.querySelector('img').focus(), 50)
+      : setTimeout(() => lightboxMediaContainer.querySelector('video').focus(), 50);
   }
 
-  function prevMedia() {
+  async function prevMedia() {
     const { id } = lightboxMediaInstances.find((media) => media.prevMedia);
     resetMedias();
     lightboxMediaContainer.innerHTML = selectMedia(id);
-    setTimeout(() => {
-      lightboxMediaContainer.firstElementChild.classList.add('loaded');
-    }, 10);
+    await wait(10);
     toggleFocusableOnLightboxMediaContainer();
     getAllowedFocusableElemsIn(lightboxModal);
     lightboxMediaContainer.querySelector('img')
-      ? lightboxMediaContainer.querySelector('img').focus()
-      : lightboxMediaContainer.querySelector('video').focus();
+      ? setTimeout(() => lightboxMediaContainer.querySelector('img').focus(), 50)
+      : setTimeout(() => lightboxMediaContainer.querySelector('video').focus(), 50);
   }
 
-  function closeLightbox() {
+  async function closeLightbox() {
     lightboxMediaContainer.innerHTML = '';
     resetMedias();
     toggleFocusableIn(lightboxModal);
     lightboxModal.classList.remove('open');
+    await wait(10);
     lastGalleryCardFocused.focus();
     lightboxModal.removeEventListener('keydown', handleLightboxKeysBehaviour);
   }
