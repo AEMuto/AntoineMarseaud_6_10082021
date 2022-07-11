@@ -22,20 +22,20 @@ async function initialize() {
   // Chercher les données présentes dans le sessionStorage
   const photographersState = getPhotographers();
 
-  // Remplir un tableau avec pour chaque photographes une instance les représentant.
+  // Remplir un tableau avec pour chaque photographe une instance le représentant.
   const cardsArray = [];
   photographersState.forEach((photographer) => {
     cardsArray.push(templateFactory.createInstance(photographer, 'card'));
   });
 
-  // Injecter chaque template HTML dans le DOM
+  // Injecter chaque modèle HTML dans le DOM
   cardsArray.forEach((card) => main.insertAdjacentHTML('afterbegin', card.getTemplate()));
 
   // Variable post-insertion
   const tags = Array.from(document.querySelectorAll('.btn--tag'));
 
   // Par défaut l'élément .card-photographer à une opacité de 0
-  // Pour chacun d'entre eux rajouter la classe .loaded
+  // Pour chacun d'entre eux rajouter la classe 'loaded'
   const currentCards = document.querySelectorAll('.card-photographer');
   for (const card of currentCards) {
     await wait(50);

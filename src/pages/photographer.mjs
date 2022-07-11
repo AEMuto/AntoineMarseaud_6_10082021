@@ -43,7 +43,6 @@ async function initialize() {
     galleryCardInstances.push(templateFactory.createInstance(media, 'card'));
     lightboxMediaInstances.push(templateFactory.createInstance(media, 'lightbox'));
   });
-
   // Insertion
   photographerInfoSection.insertAdjacentHTML('afterbegin', infoHeader.getTemplate());
   galleryCardInstances.forEach((card) => gallery.insertAdjacentHTML('beforeend', card.getTemplate()));
@@ -116,7 +115,7 @@ async function initialize() {
    * Lorsque l'on ouvre une modale on ne doit pouvoir
    * tabulé qu'à travers les éléments de celles-ci.
    * Cette fonction nous obtient ces éléments.
-   * 1. Les éléments nécessite d'avoir un tabindex de 0
+   * 1. Les éléments nécessitent d'avoir un tabindex de 0
    * 2. La gestion des keyboards events est défini dans
    * une fonction indépendante à chaque modale :
    * - handleLightboxKeysBehaviour()
@@ -605,7 +604,6 @@ async function initialize() {
   }
 
   function handleSubmit() {
-    console.log(clientInputs);
     contactModalFormInputs.forEach((input) => (input.value = ''));
     setTimeout(() => closeContactForm(), 250);
   }
@@ -625,7 +623,7 @@ async function initialize() {
         clientInputs.message = e.target.value;
         break;
       default:
-        console.log('Wrong Input');
+        throw new Error('Wrong Input');
     }
   }
 
